@@ -1,0 +1,37 @@
+# Ignore application specific files
+.env
+
+# Ignore Node.js specific files and directories
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Ignore log files
+*.lock
+*.log
+*.zip
+*.rar
+*.exe
+*.ico
+*.txt
+
+# Ignore editor and IDE specific files
+.vscode/
+.idea/
+*.sublime-*
+
+# Ignore test directories and files
+test/
+test*.*
+
+# Ignore database files
+*.sqlite3
+
+# Ignore dependencies, config files, and lock files
+jest.config.js
+.eslintrc.js
+.npmrc
+.npmignore
+
+# Ignore text editor backup files
+*.bak
