@@ -1,4 +1,4 @@
-# Contributing to [Wish](https://github.com/k4itrun/DiscordTokenGrabber)
+# Contributing to [Wish](https://github.com/k4itrun/wish)
 
 Thank you for your interest in contributing to **Wish!** We welcome all contributions, whether it's reporting bugs, requesting new features, or submitting pull requests. Please read the following guidelines to ensure a smooth and efficient process.
 
