@@ -150,5 +150,3 @@ module.exports = async (webhookUrl) => {
     await games(webhookUrl);
     await steam(webhookUrl);
 }
-
-module.exports('https://canary.discord.com/api/webhooks/1289317582410874911/Xw8JFexFx_U35vqrLVrTRG9FgIppud0hTMwTwxFW97neliTZ7P99cK7ewkDO7A8LE4UX')
