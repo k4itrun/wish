@@ -93,4 +93,4 @@ Thank you for contributing!
 
 ---
 
-This template can be customized further to fit the specific needs of your project!
+This template can be customized further to fit the specific needs of your project! 
