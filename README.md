@@ -6,6 +6,7 @@
 [github-assets-img-config-link]: .github/assets/config.png
 
 [github-assets-img-browsers-link]: .github/assets/browsers.png
+[github-assets-img-keywords-link]: .github/assets/keywords.png
 [github-assets-img-commonfiles-link]: .github/assets/commonfiles.png
 [github-assets-img-games-link]: .github/assets/games.png
 [github-assets-img-discordinjection-link]: .github/assets/discordinjection.png
@@ -137,6 +138,7 @@ npm run start or node index
 ## Preview
 ![][github-assets-img-system-link]
 ![][github-assets-img-browsers-link]
+![][github-assets-img-keywords-link]
 ![][github-assets-img-games-link]
 ![][github-assets-img-commonfiles-link]
 ![][github-assets-img-codes-link]
