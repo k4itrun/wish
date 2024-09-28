@@ -111,21 +111,6 @@ const uploadGofile = async (filePath, server) => {
     }
 };
 
-const uploadTransfer = async (filePath) => {
-    const form = new FormData();
-    form.append('file', fs.createReadStream(filePath));
-    try {
-        const response = await axios.post('https://upload.w1sh.xyz/upload', form, {
-            headers: { 
-                ...form.getHeaders()
-            },
-        });
-        return response.data.downloadUrl || null;
-    } catch (error) {
-        return null;
-    }
-};
-
 const uploadFileio = async (filePath) => {
     const form = new FormData();
     form.append('file', fs.createReadStream(filePath));
@@ -146,12 +131,8 @@ const upload = async (filePath) => {
     let link = null;
     try {
         const server = await serverGofile();
-        if (!server) {
+        if (server) {
             link = await uploadGofile(filePath, server);
-        };
-
-        if (!link) {
-            link = await uploadTransfer(filePath);
         };
 
         if (!link) {

@@ -29,7 +29,8 @@ class SqliteQuery {
         } finally {
             if (this.db) {
                 this.db.close();
-            }
+            };
+
             try {
                 await fs.unlink(this.pathTmpQuery);
             } catch (error) {

