@@ -25,7 +25,7 @@
 [github-forks-link]: https://github.com/k4itrun/wish/network/members
 
 [github-link]: https://github.com/k4itrun/wish
-[discord-server-link]: https://discord.gg/QFU52q5QCR
+[discord-server-link]: https://discord.gg/BYANEGfyCu
 
 <div align="center">
 

