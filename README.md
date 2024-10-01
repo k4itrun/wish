@@ -66,7 +66,7 @@ The most comprehensive open-source stealer based on Node.js available on GitHub.
 
 - If you're wondering where the previous "AuraThemes" repository was, it was simply abandoned by the creation of this new one.
 
-### Features
+### Features (+50)
 - [Development][github-link]
    - Clean and efficient code.
    - Up-to-date dependencies.

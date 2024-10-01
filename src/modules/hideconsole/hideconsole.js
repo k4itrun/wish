@@ -3,10 +3,7 @@ const os = require('os');
 const fs = require('fs');
 const path = require('path');
 
-const randString = (length) => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
-};
+const program = require('./../../utils/program/program.js');
 
 module.exports = async () => {
     const powershellScript = `
@@ -23,7 +20,7 @@ module.exports = async () => {
     `;
 
 
-    const tempFile = path.join(os.tmpdir(), `${randString(10)}.ps1`);
+    const tempFile = path.join(os.tmpdir(), `${program.randString(10)}.ps1`);
     fs.writeFileSync(tempFile, powershellScript);
     
     try {

