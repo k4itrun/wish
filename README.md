@@ -6,6 +6,9 @@
 [github-assets-img-config-link]: .github/assets/config.png
 
 [github-assets-img-browsers-link]: .github/assets/browsers.png
+[github-assets-img-sessioninstagram-link]: .github/assets/sessioninstagram.png
+[github-assets-img-sessionspotify-link]: .github/assets/sessionspotify.png
+[github-assets-img-sessiontiktok-link]: .github/assets/sessiontiktok.png
 [github-assets-img-keywords-link]: .github/assets/keywords.png
 [github-assets-img-commonfiles-link]: .github/assets/commonfiles.png
 [github-assets-img-games-link]: .github/assets/games.png
@@ -75,6 +78,7 @@ The most comprehensive open-source stealer based on Node.js available on GitHub.
    - [browsers](src/modules/browsers/browsers.js): 
       - Captures logins, cookies, credit cards, bookmarks, autofills, history, and downloads from 37 Chromium-based browsers.
       - Captures logins, cookies, history, bookmarks, and downloads from 10 Gecko/Firefox browsers.
+   - [sessions](src/modules/browsers/sessions.js): Take open sessions like spotify, tiktok, instagram.
    - [clipper](src/modules/clipper/clipper.js): Monitors clipboard for crypto addresses and replaces them with predefined ones.
    - [commonfiles](src/modules/commonfiles/commonfiles.js): Collects sensitive files from common directories.
    - [fakerror](src/modules/fakeerror/fakeerror.js): Misleads the user into thinking the program has crashed.
@@ -138,6 +142,9 @@ npm run start or node index
 ## Preview
 ![][github-assets-img-system-link]
 ![][github-assets-img-browsers-link]
+![][github-assets-img-sessioninstagram-link]
+![][github-assets-img-sessionspotify-link]
+![][github-assets-img-sessiontiktok-link]
 ![][github-assets-img-keywords-link]
 ![][github-assets-img-games-link]
 ![][github-assets-img-commonfiles-link]

