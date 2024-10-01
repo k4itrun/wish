@@ -46,7 +46,7 @@ Node.js malware for Windows that steals data from Discord, browsers, and crypto 
 
 ## Table of Contents
 1. [Overview](#overview)
-   - [Features](#features)
+   - [Features](#features-50)
 2. [Getting Started](#getting-started)
    - [Requirements](#requirements)
    - [Installation](#installation)
