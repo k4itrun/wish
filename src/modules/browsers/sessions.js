@@ -365,7 +365,7 @@ const tiktok = async (webhookUrl) => {
                         },
                         {
                             name: 'Account Creation',
-                            value: '`' + full_profile.create_time + '`',
+                            value: '<t:' + full_profile.create_time + '>',
                             inline: true
                         },
                         { name: '\u200b', value: '\u200b', inline: false },
