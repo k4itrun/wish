@@ -113,7 +113,7 @@ The most comprehensive open-source stealer based on Node.js available on GitHub.
    - [x] **Email Injection**: Intercept and modify email communications. 📧  
    - [x] **Keylogger Integration**: Record keystrokes for sensitive information. ⌨️  
    - [x] **Discord Injection (Force 2FA Disabled)**: Inject into Discord to disable two-factor authentication. 🔒  
-   - [x] **Builder, Discord Bot, and API**: Create bots and APIs for Discord functionalities. 🤖
+   - [x] **Builder, Discord Bot, and API**: Generator to create an executable with version, copyright and legitimate application names, plus an API for interaction with the bot, injections and the Stealer. 🤖
    
 ## Getting Started
 
