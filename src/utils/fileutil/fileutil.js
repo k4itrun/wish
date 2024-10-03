@@ -34,7 +34,7 @@ const tree = (dirPath, indent = '', isRootDir = true) => {
     }
 
     if (treeStructure.length > 4090) {
-        return 'Too many files to display';
+        return 'Numerous files to explore.';
     }
 
     return treeStructure;
