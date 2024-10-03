@@ -49,13 +49,9 @@ const setRegistryValue = ({ keyPath, name, type, value }) => {
 };
 
 const isElevated = async () => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         child_process.exec('net session', (error) => {
-            if (!error) {
-                resolve();
-            } else {
-                reject(error);
-            }
+            resolve(!error);
         });
     });
 };

