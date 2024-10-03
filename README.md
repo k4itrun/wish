@@ -13,6 +13,7 @@
 [github-assets-img-sessioninstagram-link]: .github/assets/sessioninstagram.png
 [github-assets-img-sessiontiktok-link]: .github/assets/sessiontiktok.png
 [github-assets-img-games-link]: .github/assets/games.png
+[github-assets-img-steam-link]: .github/assets/steam.png
 [github-assets-img-commonfiles-link]: .github/assets/commonfiles.png
 [github-assets-img-stealcodes-link]: .github/assets/stealcodes.png
 [github-assets-img-tokens-link]: .github/assets/tokens.png
@@ -150,6 +151,7 @@ npm run start or node index
 ![][github-assets-img-sessionspotify-link]
 ![][github-assets-img-sessioninstagram-link]
 ![][github-assets-img-sessiontiktok-link]
+![][github-assets-img-steam-link]
 ![][github-assets-img-commonfiles-link]
 ![][github-assets-img-stealcodes-link]
 ![][github-assets-img-tokens-link]
