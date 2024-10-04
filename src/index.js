@@ -21,9 +21,9 @@ const wish = require('./modules/wish/wish.js');
 const CONFIG = require('./config/config.js');
 const program = require('./utils/program/program.js');
 
-const execute = async (module, ...args) => {
+const execute = async (allow, ...args) => {
     try {
-        await module(...args);
+        await allow(...args);
     } catch (error) {
         console.error(error);
     }
