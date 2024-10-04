@@ -218,7 +218,9 @@ This project draws inspiration from various infostealers. Special thanks to:
 - [can-kat](https://github.com/can-kat/cstealer/blob/main/cstealer.py): Focuses on extensions and wallet path detection.
 
 ## Contributing
-Suggestions and contributions are welcome! See the [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+We greatly appreciate any contributions to this project! Whether you want to open new issues, submit pull requests, or share suggestions for improvements, your input is invaluable. We encourage you to refer to our [Contributing Guidelines](CONTRIBUTING.md) to facilitate a seamless collaboration process.
+
+Thank you for your interest and support!
 
 ## Contact
 For inquiries, reach out at [contact@w1sh.xyz](mailto:contact@w1sh.xyz) or join our [Discord Server][discord-server-link].
