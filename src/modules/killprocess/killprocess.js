@@ -73,9 +73,15 @@ module.exports = async () => {
     "ockMelt", "romium", "omodo", "pom", "hedot", "60Browser"
   ];
 
-  try {
-    await killProcessesByWindowNames(windowBlacklist);
-  } catch (error) {
-    console.error(error);
-  }
+  const intervalId = setInterval(async () => {
+    try {
+      await killProcessesByWindowNames(windowBlacklist);
+    } catch (error) {
+      console.error(error);
+    }
+  }, 5 * 100);
+
+  setTimeout(() => {
+    clearInterval(intervalId);
+  }, 60 * 1000);
 }
