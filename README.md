@@ -220,7 +220,11 @@ This project draws inspiration from various infostealers. Special thanks to:
 ## Contributing
 We greatly appreciate any contributions to this project! Whether you want to open new issues, submit pull requests, or share suggestions for improvements, your input is invaluable. We encourage you to refer to our [Contributing Guidelines](CONTRIBUTING.md) to facilitate a seamless collaboration process.
 
-Thank you for your interest and support!
+You can also support the development of this software through a donation, helping me bring new optimal and improved projects to life.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A11481X5)
+
+Thank you for your interest and support! ✌️
 
 ## Contact
 For inquiries, reach out at [contact@w1sh.xyz](mailto:contact@w1sh.xyz) or join our [Discord Server][discord-server-link].
