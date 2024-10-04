@@ -164,13 +164,7 @@ class BrowserAllStatistics {
             this.cookies.push(value);
         }
     };
-
-    addCookies(value) {
-        if (!this.cookies.includes(value)) {
-            this.cookies.push(value);
-        }
-    };
-
+    
     addLogins(value) {
         if (!this.logins.includes(value)) {
             this.logins.push(value);

