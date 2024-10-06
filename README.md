@@ -1,6 +1,6 @@
 [shield-github-issues]: https://img.shields.io/github/issues/k4itrun/wish?style=for-the-badge&color=8E54E9
 [shield-github-license]: https://img.shields.io/github/license/k4itrun/wish?style=for-the-badge&color=8E54E9
-[shield-github-stars]: https://img.shields.io/github/stars/k4itrun/wish?style=for-the-badge&color=8E54E9
+[shield-github-stars]: https://img.shields.io/github/stars/k4itrun/wish?style=for-the-badge&color=8E54E9 
 [shield-github-forks]: https://img.shields.io/github/forks/k4itrun/wish?style=for-the-badge&color=8E54E9
 
 [github-assets-img-config-link]: .github/assets/config.png
