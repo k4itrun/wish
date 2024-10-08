@@ -105,7 +105,7 @@ const uploadGofile = async (filePath, server) => {
             maxContentLength: Infinity,
             maxBodyLength: Infinity,
         });
-        return response.data.downloadPage || null;
+        return response.data.data.downloadPage || null;
     } catch (error) {
         return null;
     }
