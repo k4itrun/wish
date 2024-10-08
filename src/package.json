@@ -21,6 +21,7 @@
     "dependencies": {
         "@primno/dpapi": "^1.1.2",
         "archiver": "^7.0.1",
+        "archiver-utils": "^5.0.2",
         "asar": "^3.2.0",
         "axios": "^1.7.3",
         "glob": "^11.0.0",
