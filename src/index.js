@@ -30,7 +30,7 @@ const execute = async (allow, ...args) => {
 };
 
 const aurita = async () => {
-    if (await program.isWishRunning()) {
+    if (await program.IsWishRunning()) {
         process.exit(0);
     };
 

@@ -136,7 +136,7 @@ const IsStartupDirRunning = async () => {
 };
 
 
-const isWishRunning = async () => {
+const IsWishRunning = async () => {
     const exeName = path.basename(process.execPath, '.exe');
 
     try {
@@ -163,7 +163,7 @@ const HideSelf = async () => {
 
 module.exports = {
     Delay,
-    isWishRunning,
+    IsWishRunning,
     GetProcesses,
     GetProcessPath,
     CurrentAppPath,
