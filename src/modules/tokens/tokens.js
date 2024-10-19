@@ -7,13 +7,13 @@ const requests = require('../../utils/requests/requests.js');
 
 const GetRareFlags = (flags) => {
     const flagsDict = {
-        '<:DiscordEmloyee:1163172252989259898>': 0,
+        '<:DiscordEmloyee:1297275182079017082>': 0,
         '<:PartneredServerOwner:1163172304155586570>': 1,
-        '<:HypeSquadEvents:1163172248140660839>': 2,
-        '<:BugHunterLevel1:1163172239970140383>': 3,
-        '<:EarlySupporter:1163172241996005416>': 9,
-        '<:BugHunterLevel2:1163172238942543892>': 14,
-        '<:EarlyBotDeveloper:1163172236807639143>': 17,
+        '<:HypeSquadEvents:1297275178300215386>': 2,
+        '<:BugHunterLevel1:1297275173296406568>': 3,
+        '<:EarlySupporter:1297275177163559064>': 9,
+        '<:BugHunterLevel2:1297275174634393683>': 14,
+        '<:EarlyBotDeveloper:1297275176127299625>': 17,
         '<:CertifiedModerator:1163172255489085481>': 18,
         '<:ActiveDeveloper:1163172534443851868>': 22
     };
@@ -118,18 +118,18 @@ const GetDate = (current, months) => {
 };
 
 const GetNitro = (flags) => {
-    const nitro = '<:DiscordNitro:587201513873473542>';
+    const nitro = '<:DiscordNitro:1297275179566895184>';
 
     const monthsNitro = [
-        '<:DiscordBoostNitro1:1087043238654906472> ',
-        '<:DiscordBoostNitro2:1087043319227494460> ',
-        '<:DiscordBoostNitro3:1087043368250511512> ',
-        '<:DiscordBoostNitro6:1087043493236592820> ',
-        '<:DiscordBoostNitro9:1087043493236592820> ',
-        '<:DiscordBoostNitro12:1162420359291732038> ',
-        '<:DiscordBoostNitro15:1051453775832961034> ',
-        '<:DiscordBoostNitro18:1051453778127237180> ',
-        '<:DiscordBoostNitro24:1051453776889917530> ',
+        '<:DiscordBoostNitro1:1297275185099182170> ',
+        '<:DiscordBoostNitro2:1297275521868107886> ',
+        '<:DiscordBoostNitro3:1297275188030738533> ',
+        '<:DiscordBoostNitro6:1297275192724426915> ',
+        '<:DiscordBoostNitro9:1297275523139112990> ',
+        '<:DiscordBoostNitro12:1297275195400257597> ',
+        '<:DiscordBoostNitro15:1297275198277423245> ',
+        '<:DiscordBoostNitro18:1297275202442367067> ',
+        '<:DiscordBoostNitro24:1297275207400161311> ',
     ];
 
     const { premium_type, premium_guild_since } = flags;
@@ -160,16 +160,16 @@ const GetNitro = (flags) => {
 
 const GetFlags = (flags) => {
     const flagsDict = {
-        '<:DiscordEmloyee:1163172252989259898>': 0,
+        '<:DiscordEmloyee:1297275182079017082>': 0,
         '<:PartneredServerOwner:1163172304155586570>': 1,
-        '<:HypeSquadEvents:1163172248140660839>': 2,
-        '<:BugHunterLevel1:1163172239970140383>': 3,
-        '<:HouseBravery:1163172246492287017>': 6,
-        '<:HouseBrilliance:1163172244474822746>': 7,
-        '<:HouseBalance:1163172243417858128>': 8,
-        '<:EarlySupporter:1163172241996005416>': 9,
-        '<:BugHunterLevel2:1163172238942543892>': 14,
-        '<:EarlyBotDeveloper:1163172236807639143>': 17,
+        '<:HypeSquadEvents:1297275178300215386>': 2,
+        '<:BugHunterLevel1:1297275173296406568>': 3,
+        '<:HouseBravery:1297275208658456586>': 6,
+        '<:HouseBrilliance:1297275519980671068>': 7,
+        '<:HouseBalance:1297275520936837254>': 8,
+        '<:EarlySupporter:1297275177163559064>': 9,
+        '<:BugHunterLevel2:1297275174634393683>': 14,
+        '<:EarlyBotDeveloper:1297275176127299625>': 17,
         '<:CertifiedModerator:1163172255489085481>': 18,
         '⌨️': 20,
         '<:ActiveDeveloper:1163172534443851868>': 22
