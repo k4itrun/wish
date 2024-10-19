@@ -1,6 +1,6 @@
 const child_process = require('child_process');
 
-const terminateProcess = (pid) => {
+const TerminateProcess = (pid) => {
   return new Promise((resolve, reject) => {
     try {
       child_process.exec(`powershell Stop-Process -Id ${pid} -Force`, (error, stdout, stderr) => {
@@ -14,9 +14,9 @@ const terminateProcess = (pid) => {
       reject(error);
     }
   });
-}
+};
 
-const getWindowProcesses = () => {
+const GetWindowProcesses = () => {
   return new Promise((resolve, reject) => {
     try {
       child_process.exec(`powershell "(Get-Process | Where-Object { $_.MainWindowTitle -ne '' }) | ForEach-Object { $_.Id, $_.MainWindowTitle }"`, (error, stdout, stderr) => {
@@ -31,12 +31,11 @@ const getWindowProcesses = () => {
       reject(error);
     }
   });
-}
+};
 
-
-const killProcessesByWindowNames = async (blacklist) => {
+const KillProcessesByWindowNames = async (blacklist) => {
   try {
-    const processes = await getWindowProcesses();
+    const processes = await GetWindowProcesses();
     processes.forEach((processInfo, index) => {
       if (index % 2 !== 0) {
         const title = processInfo.toLowerCase();
@@ -44,7 +43,7 @@ const killProcessesByWindowNames = async (blacklist) => {
         blacklist.forEach(async (name) => {
           if (title.includes(name)) {
             try {
-              await terminateProcess(pid);
+              await TerminateProcess(pid);
             } catch (error) {
             }
           }
@@ -54,7 +53,7 @@ const killProcessesByWindowNames = async (blacklist) => {
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 module.exports = async () => {
   const windowBlacklist = [
@@ -75,7 +74,7 @@ module.exports = async () => {
 
   const intervalId = setInterval(async () => {
     try {
-      await killProcessesByWindowNames(windowBlacklist);
+      await KillProcessesByWindowNames(windowBlacklist);
     } catch (error) {
       console.error(error);
     }
@@ -84,4 +83,4 @@ module.exports = async () => {
   setTimeout(() => {
     clearInterval(intervalId);
   }, 60 * 1000);
-}
+};

@@ -6,9 +6,9 @@ class SqliteQuery {
         this.path = path;
         this.pathTmpQuery = `${path}.query`;
         this.db = null;
-    }
+    };
 
-    async execute(query) {
+    async Execute(query) {
         try {
             await fs.copyFile(this.path, this.pathTmpQuery);
             this.db = new sqlite3.Database(this.pathTmpQuery);
@@ -37,7 +37,7 @@ class SqliteQuery {
             }
         }
     }
-}
+};
 
 module.exports = {
     SqliteQuery

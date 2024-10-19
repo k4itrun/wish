@@ -5,7 +5,7 @@ const archiver = require('archiver');
 
 const program = require('../program/program.js');
 
-const tree = (dirPath, indent = '', isRootDir = true) => {
+const Tree = (dirPath, indent = '', isRootDir = true) => {
     let treeStructure = '';
 
     try {
@@ -23,7 +23,7 @@ const tree = (dirPath, indent = '', isRootDir = true) => {
                 treeStructure += `${connector}📂 - ${entry.name}\n`;
 
                 const newIndent = isLastEntry ? `${indent}    ` : `${indent}│   `;
-                treeStructure += tree(path.join(dirPath, entry.name), newIndent, false);
+                treeStructure += Tree(path.join(dirPath, entry.name), newIndent, false);
             } else {
                 const fileSizeKB = (fs.statSync(path.join(dirPath, entry.name)).size / 1024).toFixed(2);
                 treeStructure += `${connector}📄 - ${entry.name} (${fileSizeKB} kb)\n`;
@@ -41,7 +41,7 @@ const tree = (dirPath, indent = '', isRootDir = true) => {
 };
 
 
-const writeDataToFile = async (profilePath, fileName, data) => {
+const WriteDataToFile = async (profilePath, fileName, data) => {
     if (data.length === 0) return;
 
     const filePath = path.join(profilePath, fileName);
@@ -51,7 +51,7 @@ const writeDataToFile = async (profilePath, fileName, data) => {
         writeData = data
             .filter(response => response)
             .map(response => {
-                return (typeof response.write === 'function') ? response.write() : response;
+                return (typeof response.Write === 'function') ? response.Write() : response;
             })
             .join(fileName.toLowerCase().includes('cookies') ? '' : '\n');
 
@@ -63,7 +63,6 @@ const writeDataToFile = async (profilePath, fileName, data) => {
         console.log(error);
     }
 };
-
 
 const WishTempDir = (createDir = '') => {
     const destWish = path.join(os.tmpdir(), 'wish', createDir);
@@ -90,9 +89,9 @@ const WishBanner = () => {
 \n\n
 \t               by k4itrun | https://github.com/k4itrun/wish
 `;
-}
+};
 
-const zipDirectory = async ({ inputDir, outputZip }) => {
+const ZipDirectory = async ({ inputDir, outputZip }) => {
     if (typeof inputDir !== 'string' || typeof outputZip !== 'string') {
         throw new TypeError('Both "inputDir" and "outputZip" arguments must be strings.');
     }
@@ -123,14 +122,14 @@ const zipDirectory = async ({ inputDir, outputZip }) => {
     });
 };
 
-const removeDir = async (dirPath, retries = 5) => {
+const RemoveDir = async (dirPath, retries = 5) => {
     for (let i = 0; i < retries; i++) {
         try {
             await fs.promises.rm(dirPath, { recursive: true, force: true });
             return;
         } catch (error) {
             if (error.code === 'ENOTEMPTY' && i < retries - 1) {
-                await program.delay(1000);
+                await program.Delay(1000);
             } else {
                 throw error;
             }
@@ -138,7 +137,7 @@ const removeDir = async (dirPath, retries = 5) => {
     }
 };
 
-const copyFile = async (src, dest) => {
+const CopyFile = async (src, dest) => {
     const inStream = fs.createReadStream(src);
     const outStream = fs.createWriteStream(dest);
 
@@ -153,14 +152,17 @@ const copyFile = async (src, dest) => {
     });
 };
 
-const copyDir = async (src, dest) => {
+const CopyDir = async (src, dest) => {
     const srcStats = await fs.promises.stat(src);
 
     if (!srcStats.isDirectory()) {
         throw new Error('The source is not a directory');
     }
 
-    await fs.promises.mkdir(dest, { recursive: true, mode: srcStats.mode });
+    await fs.promises.mkdir(dest, { 
+        recursive: true, 
+        mode: srcStats.mode 
+    });
 
     const entries = await fs.promises.readdir(src, { withFileTypes: true });
 
@@ -173,7 +175,7 @@ const copyDir = async (src, dest) => {
                 await fs.promises.stat(dstPath);
             } catch (error) {
                 if (error.code === 'ENOENT') {
-                    await copyDir(srcPath, dstPath);
+                    await CopyDir(srcPath, dstPath);
                 }
             }
         } else if (!entry.isSymbolicLink()) {
@@ -181,20 +183,21 @@ const copyDir = async (src, dest) => {
                 await fs.promises.stat(dstPath);
             } catch (error) {
                 if (error.code === 'ENOENT') {
-                    await copyFile(srcPath, dstPath);
+                    await CopyFile(srcPath, dstPath);
                 }
             }
         }
     }));
 };
 
-const copy = async (src, dest) => {
+const Copy = async (src, dest) => {
     try {
         const stats = await fs.promises.stat(src);
+
         if (stats.isDirectory()) {
-            await copyDir(src, dest);
+            await CopyDir(src, dest);
         } else {
-            await copyFile(src, dest);
+            await CopyFile(src, dest);
         }
     } catch (error) {
         console.error('Error copying:', error);
@@ -203,13 +206,13 @@ const copy = async (src, dest) => {
 
 
 module.exports = {
-    removeDir,
-    copy,
-    copyFile,
-    copyDir,
-    writeDataToFile,
-    zipDirectory,
+    RemoveDir,
+    Copy,
+    CopyFile,
+    CopyDir,
+    WriteDataToFile,
+    ZipDirectory,
     WishBanner,
     WishTempDir,
-    tree
+    Tree
 }

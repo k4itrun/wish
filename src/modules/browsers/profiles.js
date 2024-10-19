@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const getChromiumProfiles = (filePath, browserName) => {
+const GetChromiumProfiles = (filePath, browserName) => {
     if (!fs.existsSync(filePath)) return [];
     const dirs = fs.readdirSync(filePath);
 
@@ -18,7 +18,7 @@ const getChromiumProfiles = (filePath, browserName) => {
     }, []);
 };
 
-const getGeckoProfiles = (filePath, browserName) => {
+const GetGeckoProfiles = (filePath, browserName) => {
     if (!fs.existsSync(filePath)) return [];
     const dirs = fs.readdirSync(filePath);
 
@@ -36,6 +36,6 @@ const getGeckoProfiles = (filePath, browserName) => {
 };
 
 module.exports = {
-    getChromiumProfiles,
-    getGeckoProfiles
-}
+    GetChromiumProfiles,
+    GetGeckoProfiles
+};

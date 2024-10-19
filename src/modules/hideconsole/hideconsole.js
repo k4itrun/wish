@@ -19,7 +19,7 @@ module.exports = async () => {
         [Console.Window]::ShowWindow($consoleHandle, 0)
     `;
 
-    const tempFile = path.join(os.tmpdir(), `${program.randString(10)}.ps1`);
+    const tempFile = path.join(os.tmpdir(), `${program.RandString(10)}.ps1`);
     fs.writeFileSync(tempFile, powershellScript);
     
     try {

@@ -1,4 +1,4 @@
-const getVpns = () => {
+const GetVpns = () => {
     return {
         'OpenVPN Connect':   'AppData\\Roaming\\OpenVPN Connect\\profiles',
         'Mullvad VPN':       'AppData\\Roaming\\Mullvad VPN',
@@ -16,7 +16,6 @@ const getVpns = () => {
         'HMA (HideMyAss)':   'AppData\\Local\\HMA VPN',
         'ZenMate':           'AppData\\Local\\ZenMate',
         'Pure VPN':          'AppData\\Local\\PureVPN',
-        'Windscribe':        'AppData\\Local\\Windscribe',
         'TorGuard':          'AppData\\Local\\TorGuard',
         'Betternet':         'AppData\\Local\\Betternet',
         'PrivateVPN':        'AppData\\Local\\PrivateVPN',
@@ -28,5 +27,5 @@ const getVpns = () => {
 };
 
 module.exports = {
-    getVpns,
-}
+    GetVpns,
+};

