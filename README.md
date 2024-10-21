@@ -137,6 +137,7 @@ to correctly install node-gyp go to its repo: [node-gyp](https://github.com/node
 
 ## Usage
 1. If you want to create an **Executable** all at once, simply do:
+ - If an error occurs in the create of your Executable: Try to open the `CMD` with `Administrator Permissions`
 
 ```bash
 git clone https://github.com/k4itrun/wish.git
