@@ -1,13 +1,12 @@
-# Ignore application specific files
+# App-specific files
 .env
 
-# Ignore Node.js specific files and directories
+# Node.js files
 node_modules/
 npm-debug.log
 package-lock.json
 
-# Ignore log files
-*.lock
+# Log, archive, and exec files
 *.log
 *.zip
 *.rar
@@ -15,23 +14,26 @@ package-lock.json
 *.ico
 *.txt
 
-# Ignore editor and IDE specific files
+# Editor and IDE files
 .vscode/
 .idea/
 *.sublime-*
 
-# Ignore test directories and files
-test/
+# Test files
+test/**
 test*.*
 
-# Ignore database files
+# Database files
 *.sqlite3
 
-# Ignore dependencies, config files, and lock files
+# Config and dependency files
 jest.config.js
 .eslintrc.js
 .npmrc
 .npmignore
 
-# Ignore text editor backup files
+# Backup files
 *.bak
+
+# Build files (dist)
+**/build/**
