@@ -9,7 +9,7 @@
         "src:start": "cd src && node index.js",
         "src:install": "cd src && install.bat",
         "update": "npm i electron@latest -g",
-        "eslint": "npx eslint .",
+        "eslint": "npx eslint ."
     },
     "author": "k4itrun",
     "license": "MIT",
