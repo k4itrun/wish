@@ -8,7 +8,8 @@
         "builder:install": "cd builder && install.bat",
         "src:start": "cd src && node index.js",
         "src:install": "cd src && install.bat",
-        "eslint": "npx eslint ."
+        "update": "npm i electron@latest -g",
+        "eslint": "npx eslint .",
     },
     "author": "k4itrun",
     "license": "MIT",
