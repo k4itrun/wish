@@ -131,7 +131,7 @@ JavaScript, in its native form, lacks direct control over hardware. Therefore, t
 to correctly install node-gyp go to its repo: [node-gyp](https://github.com/nodejs/node-gyp?tab=readme-ov-file#on-windows)
 
 ### Installation
-1. Follow these steps to have it or watch the video <a href="https://www.youtube.com/watch?v=_Kfq557P0n4" target="_blank">YouTube!</a>
+1. Follow these steps to have it or watch the video <a href="https://www.youtube.com/watch?v=4MWMONVS6J4" target="_blank">YouTube!</a>
 
 2. Install [Git](https://git-scm.com/) and then use these commands in the console.
 
