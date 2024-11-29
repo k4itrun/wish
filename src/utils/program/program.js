@@ -141,7 +141,7 @@ const IsWishRunning = async () => {
 
     try {
         const runningProcesses = await GetProcesses(exeName);
-        return runningProcesses.length > 5;
+        return runningProcesses.length > 4;
     } catch (error) {
         return false;
     }
