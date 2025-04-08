@@ -2,29 +2,34 @@
     "name": "wish",
     "version": "1.0.0",
     "description": "Node.js malware for Windows that extracts user data from Discord, browsers, crypto wallets, and more, affecting all users on every disk.",
-    "main": "builder/index.js",
+    "exports": null,
+    "type": "module",
     "scripts": {
+        "start": "cd src && node index.js",
+        "install": "cd src && install.bat",
         "builder:start": "cd builder && node index.js",
         "builder:install": "cd builder && install.bat",
-        "src:start": "cd src && node index.js",
-        "src:install": "cd src && install.bat",
         "update": "npm i electron@latest -g",
-        "eslint": "npx eslint ."
+        "format": "prettier . --write --cache --ignore-unknown",
+        "format:check": "prettier . --check --cache --ignore-unknown",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
     },
-    "author": "k4itrun",
-    "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/k4itrun/wish"
+        "url": "git+https://github.com/k4itrun/wish.git"
     },
+    "keywords": [],
+    "author": "k4itrun",
+    "license": "MIT",
     "bugs": {
         "url": "https://github.com/k4itrun/wish/issues"
     },
     "homepage": "https://github.com/k4itrun/wish#readme",
-    "dependencies": {},
     "devDependencies": {
-        "@eslint/js": "^9.13.0",
-        "eslint": "^9.12.0",
-        "globals": "^15.11.0"
+        "@k4i/eslint-config": "^2.0.0",
+        "@k4i/prettier-config": "^2.0.0",
+        "eslint": "^9.24.0",
+        "prettier": "^3.5.3"
     }
 }

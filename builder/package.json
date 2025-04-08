@@ -2,17 +2,19 @@
   "name": "wish",
   "version": "1.0.0",
   "description": "Node.js malware for Windows that extracts user data from Discord, browsers, crypto wallets, and more, affecting all users on every disk.",
-  "main": "index.js",
+  "exports": null,
+  "type": "commonjs",
   "scripts": {
     "start": "node index.js",
     "install": "npm install -g node-gyp && npm install node-gyp"
   },
-  "author": "k4itrun",
-  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/k4itrun/wish"
+    "url": "git+https://github.com/k4itrun/wish.git"
   },
+  "keywords": [],
+  "author": "k4itrun",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/k4itrun/wish/issues"
   },

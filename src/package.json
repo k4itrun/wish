@@ -3,7 +3,8 @@
     "version": "%VERSION%",
     "description": "%DESCRIPTION% by k4itrun",
     "productVersion": "%PRODUCTVERSION%",
-    "main": "index.js",
+    "exports": null,
+    "type": "commonjs",
     "scripts": {
         "start": "node index.js",
         "rebuild": "npm rebuild",
@@ -15,12 +16,13 @@
         "appLegalCopyright": "%APPLEGALCOPYRIGHT%",
         "appFileDescription": "%APPFILEDESCRIPTION%"
     },
-    "author": "%AUTHOR%",
-    "license": "%LICENSE%",
     "repository": {
         "type": "git",
         "url": "https://github.com/k4itrun/wish"
     },
+    "keywords": [],
+    "author": "%AUTHOR%",
+    "license": "%LICENSE%",
     "bugs": {
         "url": "https://github.com/k4itrun/wish/issues"
     },
@@ -36,10 +38,5 @@
         "node-gyp": "^11.0.0",
         "sqlite3": "^5.1.7",
         "winreg": "^1.2.5"
-    },
-    "devDependencies": {
-        "@eslint/js": "^9.13.0",
-        "eslint": "^9.12.0",
-        "globals": "^16.0.0"
     }
 }

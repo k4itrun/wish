@@ -1,0 +1,3 @@
+{
+  "extends": ["github>k4itrun/my-shared-configs//packages/renovate-config/src/index.json"]
+}

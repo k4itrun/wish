@@ -6,7 +6,7 @@ const path = require('path');
 const program = require('./../../utils/program/program.js');
 
 module.exports = async () => {
-    const powershellScript = `
+  const powershellScript = `
         Add-Type -Name Window -Namespace Console -MemberDefinition '
         [DllImport("Kernel32.dll")]
         public static extern IntPtr GetConsoleWindow();
@@ -19,13 +19,13 @@ module.exports = async () => {
         [Console.Window]::ShowWindow($consoleHandle, 0)
     `;
 
-    const tempFile = path.join(os.tmpdir(), `${program.RandString(10)}.ps1`);
-    fs.writeFileSync(tempFile, powershellScript);
-    
-    try {
-        child_process.execSync(`powershell.exe -ExecutionPolicy Bypass -File "${tempFile}"`, { stdio: 'inherit' });
-    } catch (error) {
-    } finally {
-        fs.unlinkSync(tempFile);
-    }
+  const tempFile = path.join(os.tmpdir(), `${program.RandString(10)}.ps1`);
+  fs.writeFileSync(tempFile, powershellScript);
+
+  try {
+    child_process.execSync(`powershell.exe -ExecutionPolicy Bypass -File "${tempFile}"`, { stdio: 'inherit' });
+  } catch (error) {
+  } finally {
+    fs.unlinkSync(tempFile);
+  }
 };

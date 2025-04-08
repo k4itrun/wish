@@ -8,181 +8,176 @@ const program = require('../program/program.js');
 let drives = [];
 
 const CheckDiskUsage = async (rootPath) => {
-	return new Promise((resolve, reject) => {
-		child_process.exec(`wmic logicaldisk where "DeviceID='${rootPath}'" get FreeSpace,Size /format:value`, (error, stdout) => {
-			if (error) {
-				return reject(error);
-			}
+  return new Promise((resolve, reject) => {
+    child_process.exec(`wmic logicaldisk where "DeviceID='${rootPath}'" get FreeSpace,Size /format:value`, (error, stdout) => {
+      if (error) {
+        return reject(error);
+      }
 
-			const result = {};
+      const result = {};
 
-			stdout.split('\n').forEach(line => {
-				if (line.includes('FreeSpace=')) {
-					result.free = parseInt(line.split('=')[1]);
-				} else if (line.includes('Size=')) {
-					result.total = parseInt(line.split('=')[1]);
-				}
-			});
+      stdout.split('\n').forEach((line) => {
+        if (line.includes('FreeSpace=')) {
+          result.free = parseInt(line.split('=')[1]);
+        } else if (line.includes('Size=')) {
+          result.total = parseInt(line.split('=')[1]);
+        }
+      });
 
-			result.available = result.total - result.free;
-			
-			resolve(result);
-		});
-	});
+      result.available = result.total - result.free;
+
+      resolve(result);
+    });
+  });
 };
 
 const GetDrives = async (callback) => {
-	child_process.exec('wmic logicaldisk get Caption,FreeSpace,Size,VolumeSerialNumber,Description  /format:list', (err, stdout, stderr) => {
-		if (err) {
-			return callback(err, null);
-		}
+  child_process.exec('wmic logicaldisk get Caption,FreeSpace,Size,VolumeSerialNumber,Description  /format:list', (err, stdout, stderr) => {
+    if (err) {
+      return callback(err, null);
+    }
 
-		let lines = stdout.split('\r\r\n');
-		let newline = false;
+    let lines = stdout.split('\r\r\n');
+    let newline = false;
 
-		let caption = '';
-		let description = '';
-		let freeSpace = '';
-		let size = '';
-		let volume = '';
+    let caption = '';
+    let description = '';
+    let freeSpace = '';
+    let size = '';
+    let volume = '';
 
-		for (let i = 0; i < lines.length; i++) {
-			if (lines[i] != '') {
-				let tokens = lines[i].split('=');
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i] != '') {
+        let tokens = lines[i].split('=');
 
-				switch (tokens[0]) {
-					case 'Caption':
-						caption = tokens[1];
-						newline = true;
-						break;
+        switch (tokens[0]) {
+          case 'Caption':
+            caption = tokens[1];
+            newline = true;
+            break;
 
-					case 'Description':
-						description = tokens[1];
-						break;
+          case 'Description':
+            description = tokens[1];
+            break;
 
-					case 'FreeSpace':
-						freeSpace = tokens[1];
-						break;
+          case 'FreeSpace':
+            freeSpace = tokens[1];
+            break;
 
-					case 'Size':
-						size = tokens[1];
-						break;
+          case 'Size':
+            size = tokens[1];
+            break;
 
-					case 'VolumeSerialNumber':
-						volume = tokens[1];
-						break;
-				}
-			} else {
-				if (newline) {
-					size = parseFloat(size);
-					if (isNaN(size)) {
-						size = 0;
-					}
+          case 'VolumeSerialNumber':
+            volume = tokens[1];
+            break;
+        }
+      } else {
+        if (newline) {
+          size = parseFloat(size);
+          if (isNaN(size)) {
+            size = 0;
+          }
 
-					freeSpace = parseFloat(freeSpace);
+          freeSpace = parseFloat(freeSpace);
 
-					if (isNaN(freeSpace)) {
-						freeSpace = 0;
-					}
+          if (isNaN(freeSpace)) {
+            freeSpace = 0;
+          }
 
-					let used = (size - freeSpace);
-					let percent = '0%';
+          let used = size - freeSpace;
+          let percent = '0%';
 
-					if (size != '' && parseFloat(size) > 0) {
-						percent = Math.round((parseFloat(used) / parseFloat(size)) * 100) + '%';
-					}
+          if (size != '' && parseFloat(size) > 0) {
+            percent = Math.round((parseFloat(used) / parseFloat(size)) * 100) + '%';
+          }
 
-					drives[drives.length] = {
-						filesystem: description,
-						blocks: size,
-						used: used,
-						available: freeSpace,
-						capacity: percent,
-						mounted: caption
-					};
+          drives[drives.length] = {
+            filesystem: description,
+            blocks: size,
+            used: used,
+            available: freeSpace,
+            capacity: percent,
+            mounted: caption,
+          };
 
-					newline = false;
-					caption = '';
-					description = '';
-					freeSpace = '';
-					size = '';
-					volume = '';
-				}
+          newline = false;
+          caption = '';
+          description = '';
+          freeSpace = '';
+          size = '';
+          volume = '';
+        }
+      }
+    }
 
-			}
-		}
+    if (callback != null) {
+      callback(null, drives);
+    }
 
-		if (callback != null) {
-			callback(null, drives);
-		}
-
-		return drives;
-	});
+    return drives;
+  });
 };
 
 const GetUsers = async () => {
-	if (!(await program.IsElevated())) {
-		return [os.homedir()];
-	};
+  if (!(await program.IsElevated())) {
+    return [os.homedir()];
+  }
 
-	return new Promise((resolve, reject) => {
-		GetDrives((err, drives) => {
-			if (err) {
-				return reject(err);
-			}
+  return new Promise((resolve, reject) => {
+    GetDrives((err, drives) => {
+      if (err) {
+        return reject(err);
+      }
 
-			let users = [];
+      let users = [];
 
-			let drivePromises = drives.map(drive => {
-				const mountpoint = drive.mountpoint;
-				if (!mountpoint) {
-					return Promise.resolve([]);
-				};
+      let drivePromises = drives.map((drive) => {
+        const mountpoint = drive.mountpoint;
+        if (!mountpoint) {
+          return Promise.resolve([]);
+        }
 
-				const usersDir = path.join(mountpoint, 'Users');
+        const usersDir = path.join(mountpoint, 'Users');
 
-				return new Promise((resolveDir, rejectDir) => {
-					fs.readdir(usersDir, { withFileTypes: true }, (err, files) => {
-						if (err) {
-							return resolveDir([]);
-						}
+        return new Promise((resolveDir, rejectDir) => {
+          fs.readdir(usersDir, { withFileTypes: true }, (err, files) => {
+            if (err) {
+              return resolveDir([]);
+            }
 
-						let userDirs = files
-							.filter(file => file.isDirectory())
-							.map(file => path.join(usersDir, file.name));
+            let userDirs = files.filter((file) => file.isDirectory()).map((file) => path.join(usersDir, file.name));
 
-						resolveDir(userDirs);
-					});
-				});
-			});
+            resolveDir(userDirs);
+          });
+        });
+      });
 
-			Promise.all(drivePromises)
-				.then(results => {
-					results.forEach(userDirs => users.push(...userDirs));
+      Promise.all(drivePromises)
+        .then((results) => {
+          results.forEach((userDirs) => users.push(...userDirs));
 
-					if (users.length === 0) {
-						const typicalUsersDir = path.join('C:', 'Users');
+          if (users.length === 0) {
+            const typicalUsersDir = path.join('C:', 'Users');
 
-						if (fs.existsSync(typicalUsersDir)) {
-							const files = fs.readdirSync(typicalUsersDir, { withFileTypes: true });
+            if (fs.existsSync(typicalUsersDir)) {
+              const files = fs.readdirSync(typicalUsersDir, { withFileTypes: true });
 
-							users = files
-								.filter(file => file.isDirectory())
-								.map(file => path.join(typicalUsersDir, file.name));
-						}
-					}
+              users = files.filter((file) => file.isDirectory()).map((file) => path.join(typicalUsersDir, file.name));
+            }
+          }
 
-					resolve(users);
-				})
-				.catch(err => {
-					reject(err);
-				});
-		});
-	});
+          resolve(users);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  });
 };
 
 module.exports = {
-	CheckDiskUsage,
-	GetDrives,
-	GetUsers,
+  CheckDiskUsage,
+  GetDrives,
+  GetUsers,
 };
