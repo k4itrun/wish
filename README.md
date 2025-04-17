@@ -263,7 +263,7 @@ Thank you for your interest and support! ✌️
 
 ## Contact
 
-For inquiries, reach out at [contact@w1sh.xyz](mailto:contact@w1sh.xyz) or join our [Discord Server][discord-server-link].
+For any inquiries or support, you can reach out via [billoneta@proto.me](mailto:billoneta@proto.me) or join our [Discord Server](https://discord.gg/A6Vu7gYE).
 
 ## License
 
