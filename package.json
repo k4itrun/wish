@@ -27,8 +27,7 @@
     },
     "homepage": "https://github.com/k4itrun/wish#readme",
     "devDependencies": {
-        "@k4i/eslint-config": "^2.0.0",
-        "@k4i/prettier-config": "^2.0.0",
+        "@k4i/config": "^1.0.1",
         "eslint": "^9.24.0",
         "prettier": "^3.5.3"
     }
