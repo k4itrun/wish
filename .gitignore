@@ -1,39 +1,128 @@
-# App-specific files
-.env
-
-# Node.js files
-node_modules/
-npm-debug.log
-package-lock.json
-
-# Log, archive, and exec files
+# Logs
 *.log
-*.zip
-*.rar
-*.exe
-*.ico
-*.txt
+**/logs/
+lerna-debug.log*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# Editor and IDE files
-.vscode/
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Editors
 .idea/
-*.sublime-*
+.tern-port
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 
-# Test files
-test/**
-test*.*
+# Build output
+lib/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.out/
+public/
+.contentlayer/
+next*.d.ts
 
-# Database files
-*.sqlite3
+# Coverage and test outputs
+coverage/
+.nyc_output/
+*.lcov
+.vitest/
+test-results/
+*.spec.ts.snap
 
-# Config and dependency files
-jest.config.js
-.eslintrc.js
-.npmrc
-.npmignore
+# Cache
+.cache/
+.rpt2_cache/
+.rts2_cache_*/
+.turbo/
+.eslintcache
+.prettier-cache
+.stylelintcache
+*.tsbuildinfo
+*.type-check-cache.json
+.pnpm-debug.log*
 
-# Backup files
+# Diagnostic reports
+report.*.json
+
+# Dependency directories
+node_modules/
+bower_components/
+jspm_packages/
+.pnpm-store/
+
+# Package manager state
+.yarn-integrity
+.pnp.*
+.yarn/
+
+# Misc
+.DS_Store
+.lock-wscript
+Thumbs.db
 *.bak
+*.orig
+*.tmp
+*.tgz
+*.pid
+*.pid.lock
+*.seed
+*.swp
+*.swo
 
-# Build files (dist)
-**/build/**
+# Local services
+.dynamodb/
+
+# SQLite
+*.sqlite
+*.sqlite3
+*.db
+*.db3
+*.sql
+*.bak
+*.sqlite-wal
+*.sqlite-shm
+
+# MongoDB
+dump/
+*.bson
+*.ns
+
+# PostgreSQL / MySQL dumps
+*.sql
+*.sql.gz
+*.pgsql
+*.mysql
+
+# Firebase local emulators
+firebase-debug.log
+firebase-export.json
+.firestore/
+
+# Prisma SQLite local
+prisma/dev.db
+prisma/*.sqlite
+prisma/*.sqlite3
+
+# Other backup files
+*.bak
+*.tmp
+*.old
+*.swp
+
+# Docker volumes (if using named volumes and storing db stuff)
+volumes/
+
+# Custom
+commitlint.md
+CHANGELOG.md
+**/\[id\]/
+**/\[db\]/

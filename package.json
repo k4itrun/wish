@@ -1,17 +1,20 @@
 {
-    "name": "wish",
+    "name": "@wish/main",
     "version": "1.0.0",
     "description": "Node.js malware for Windows that extracts user data from Discord, browsers, crypto wallets, and more, affecting all users on every disk.",
     "exports": null,
-    "type": "module",
+    "type": "commonjs",
     "scripts": {
-        "start": "cd src && node index.js",
-        "install": "cd src && install.bat",
-        "builder:start": "cd builder && node index.js",
-        "builder:install": "cd builder && install.bat",
-        "update": "npm i electron@latest -g",
+        "stealer:start": "cd apps/stealer && node index",
+        "stealer:install": "cd apps/stealer && install.bat",
+        "builder:start": "cd apps/builder && node index",
+        "builder:install": "cd apps/builder && install.bat",
+        "hooks:init": "husky",
+        "hooks:lint": "lint-staged",
+        "ci:release": "semantic-release",
+        "ci:commitlint": "commitlint --from=HEAD~10",
         "format": "prettier . --write --cache --ignore-unknown",
-        "format:check": "prettier . --check --cache --ignore-unknown",
+        "format:check": "prettier . --check --ignore-unknown",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix"
     },
@@ -20,15 +23,40 @@
         "url": "git+https://github.com/k4itrun/wish.git"
     },
     "keywords": [],
-    "author": "k4itrun",
+    "author": {
+        "name": "k4itrun",
+        "email": "billoneta@proto.me"
+    },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/k4itrun/wish/issues"
+        "url": "https://github.com/k4itrun/work-template/issues"
     },
-    "homepage": "https://github.com/k4itrun/wish#readme",
+    "homepage": "https://github.com/k4itrun/work-template#readme",
     "devDependencies": {
+        "@commitlint/cli": "^19.8.0",
+        "@commitlint/types": "^19.8.0",
+        "@dotenvx/dotenvx": "^1.41.0",
         "@k4i/config": "^1.0.1",
-        "eslint": "^9.24.0",
-        "prettier": "^3.5.3"
+        "@next/eslint-plugin-next": "^15.3.1",
+        "eslint": "^9.25.0",
+        "husky": "^9.1.7",
+        "lint-staged": "^15.5.1",
+        "prettier": "^3.5.3",
+        "semantic-release": "^24.2.3"
+    },
+    "lint-staged": {
+        "*.{ts,tsx,js,json,md}": [
+            "prettier . --write --cache --ignore-unknown"
+        ],
+        "*.{ts,tsx,js}": [
+            "eslint . --fix"
+        ]
+    },
+    "packageManager": "pnpm@10.9.0",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "esbuild",
+            "unrs-resolver"
+        ]
     }
 }
