@@ -20,6 +20,7 @@ pnpm-debug.log*
 !.vscode/extensions.json
 
 # Build output
+**/build/*
 lib/
 .next/
 .nuxt/
