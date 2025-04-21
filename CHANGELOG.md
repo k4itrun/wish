@@ -1,5 +1,10 @@
 # Changelog
 
+## <small>1.0.3 (2025-04-21)</small>
+
+* Merge branch 'main' of https://github.com/k4itrun/wish ([8ec09c0](https://github.com/k4itrun/wish/commit/8ec09c0))
+* fix: pkg repo url ([729a305](https://github.com/k4itrun/wish/commit/729a305))
+
 ## <small>1.0.2 (2025-04-21)</small>
 
 * fix: ignore builds ([b65c424](https://github.com/k4itrun/wish/commit/b65c424))
