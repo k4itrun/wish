@@ -29,9 +29,9 @@
     },
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/k4itrun/work-template/issues"
+        "url": "https://github.com/k4itrun/wish/issues"
     },
-    "homepage": "https://github.com/k4itrun/work-template#readme",
+    "homepage": "https://github.com/k4itrun/wish#readme",
     "devDependencies": {
         "@commitlint/cli": "^19.8.0",
         "@commitlint/types": "^19.8.0",
