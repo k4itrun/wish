@@ -1,5 +1,11 @@
 # Changelog
 
+## <small>1.0.2 (2025-04-21)</small>
+
+* fix: ignore builds ([b65c424](https://github.com/k4itrun/wish/commit/b65c424))
+* fix: install ([bc04851](https://github.com/k4itrun/wish/commit/bc04851))
+* Merge branch 'main' of https://github.com/k4itrun/wish ([c1bb811](https://github.com/k4itrun/wish/commit/c1bb811))
+
 ## <small>1.0.1 (2025-04-21)</small>
 
 * fix: a bit better ([08c95bb](https://github.com/k4itrun/wish/commit/08c95bb))
