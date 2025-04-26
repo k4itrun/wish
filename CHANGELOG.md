@@ -1,5 +1,9 @@
 # Changelog
 
+## <small>1.0.4 (2025-04-26)</small>
+
+* fix: update installation instructions and add git lts requirement ([5007f75](https://github.com/k4itrun/wish/commit/5007f75))
+
 ## <small>1.0.3 (2025-04-21)</small>
 
 * Merge branch 'main' of https://github.com/k4itrun/wish ([8ec09c0](https://github.com/k4itrun/wish/commit/8ec09c0))
