@@ -1,0 +1,4 @@
+{
+ "$schema": "https://json.schemastore.org/lefthook.json",
+ "extends": ["node_modules/@k4i/utils/dist/src/lefthook-config/base.json"]
+}

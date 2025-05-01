@@ -1,4 +1,25 @@
-# Configuration files
-package.json
-pnpm-lock.yaml
-README.md
+package*
+pnpm*
+tsconfig*
+jsconfig*
+.swcrc
+
+# Docs and markdown files
+*.md
+*.mdx
+
+# Common directories to ignore
+node_modules/**
+dist/**
+build/**
+coverage/**
+.next/**
+.git/
+.vscode/
+.idea/
+
+# Generated and binary files
+*.min.*
+
+# Custom
+turbo*

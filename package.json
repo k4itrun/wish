@@ -9,8 +9,7 @@
         "stealer:install": "cd apps/stealer && install.bat",
         "builder:start": "cd apps/builder && node index",
         "builder:install": "cd apps/builder && install.bat",
-        "hooks:init": "husky",
-        "hooks:lint": "lint-staged",
+        "hook:init": "lefthook install",
         "ci:release": "semantic-release",
         "ci:commitlint": "commitlint --from=HEAD~10",
         "format": "prettier . --write --cache --ignore-unknown",
@@ -35,24 +34,16 @@
     "devDependencies": {
         "@commitlint/cli": "^19.8.0",
         "@commitlint/types": "^19.8.0",
-        "@dotenvx/dotenvx": "^1.41.0",
-        "@k4i/config": "^1.0.1",
+        "@dotenvx/dotenvx": "^1.42.0",
+        "@k4i/config": "^1.0.2",
+        "@k4i/utils": "^1.0.0",
         "@next/eslint-plugin-next": "^15.3.1",
-        "eslint": "^9.25.0",
-        "husky": "^9.1.7",
-        "lint-staged": "^15.5.1",
+        "eslint": "^9.25.1",
+        "lefthook": "^1.11.12",
         "prettier": "^3.5.3",
         "semantic-release": "^24.2.3"
     },
-    "lint-staged": {
-        "*.{ts,tsx,js,json,md}": [
-            "prettier . --write --cache --ignore-unknown"
-        ],
-        "*.{ts,tsx,js}": [
-            "eslint . --fix"
-        ]
-    },
-    "packageManager": "pnpm@10.9.0",
+    "packageManager": "pnpm@10.10.0",
     "pnpm": {
         "onlyBuiltDependencies": [
             "esbuild",

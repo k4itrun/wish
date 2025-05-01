@@ -23,7 +23,7 @@
 
 <div align="center">
 
-<img src=".github/assets/avatar.png" width=100 alt="Aurita"/><br/>
+<img src=".github/assets/avatar.png" width=100 alt="Wisher"/><br/>
 
 # [@Wish Stealer][github-link]
 
@@ -261,15 +261,20 @@ This project draws inspiration from various infostealers. Special thanks to:
 - [addi00000](https://github.com/addi00000/empyrean): Includes browser-related embed customizations.
 - [can-kat](https://github.com/can-kat/cstealer/blob/main/cstealer.py): Focuses on extensions and wallet path detection.
 
+> [!WARNING]
+> 💤 I am not currently supporting this project in recommended updates, in the future maybe yes, for now you will have this minimalist version.
+
 ## Contributing
 
 We greatly appreciate any contributions to this project! Whether you want to open new issues, submit pull requests, or share suggestions for improvements, your input is invaluable. We encourage you to refer to our [Contributing Guidelines](CONTRIBUTING.md) to facilitate a seamless collaboration process.
 
 You can also support the development of this software through a donation, helping me bring new optimal and improved projects to life.
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/A0A11481X5)
+<a href="https://ko-fi.com/A0A11481X5">
+  <img src="https://storage.ko-fi.com/cdn/kofi4.png" alt="Buy me a coffee" width="150" />
+</a>
 
-Thank you for your interest and support! ✌️
+Thank you for your interest and support! ☕
 
 ## Contact
 

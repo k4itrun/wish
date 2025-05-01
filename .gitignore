@@ -1,6 +1,6 @@
-# Logs
+Logs
 *.log
-**/logs/
+logs/*
 lerna-debug.log*
 npm-debug.log*
 yarn-debug.log*
@@ -20,7 +20,8 @@ pnpm-debug.log*
 !.vscode/extensions.json
 
 # Build output
-**/build/*
+dist/
+build/
 lib/
 .next/
 .nuxt/
@@ -30,6 +31,8 @@ lib/
 public/
 .contentlayer/
 next*.d.ts
+.husky/
+*.session
 
 # Coverage and test outputs
 coverage/
@@ -123,7 +126,7 @@ prisma/*.sqlite3
 volumes/
 
 # Custom
-commitlint.md
-CHANGELOG.md
+*[Cc]ommit*.md
+*[Cc]hange*.md
 **/\[id\]/
 **/\[db\]/

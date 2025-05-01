@@ -1,9 +1,0 @@
-#!/bin/sh
-
-git add -A
-npx --no-install lint-staged || {
-  echo "ERR: lint-staged failed."
-  exit 1
-}
-
-echo "OK: lint-staged ran successfully."
