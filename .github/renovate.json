@@ -1,3 +1,4 @@
 {
- "extends": ["github>k4itrun/my-shared-config//packages/renovate-config/src/index.json"]
+ "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+ "extends": ["npm>@k4i/utils:renovate-config"]
 }
