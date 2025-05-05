@@ -23,6 +23,7 @@ const GetVpns = () => {
   "Goose VPN": "AppData\\Local\\GooseVPN",
   SaferVPN: "AppData\\Local\\SaferVPN",
   "Private Internet Access (PIA)": "AppData\\Local\\Private Internet Access",
+  "SoftEther VPN": "Program Files\\SoftEther VPN Client"
  };
 };
 
