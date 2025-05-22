@@ -1,4 +1,4 @@
-const gradient = require("gradient-string");
+const gradient = require('gradient-string');
 
 const WishBanner = () => {
  return `
@@ -22,7 +22,7 @@ const applyGradient = (colors, text) => {
   throw new Error('The "colors" parameter should be a non-empty array.');
  }
 
- if (typeof text !== "string" && typeof text !== "number") {
+ if (typeof text !== 'string' && typeof text !== 'number') {
   throw new Error('The "text" parameter should be a string or a number.');
  }
 

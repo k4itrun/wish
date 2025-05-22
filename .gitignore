@@ -32,7 +32,6 @@ public/
 .contentlayer/
 next*.d.ts
 .husky/
-*.session
 
 # Coverage and test outputs
 coverage/

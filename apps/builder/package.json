@@ -14,7 +14,7 @@
   "keywords": [],
   "author": {
     "name": "k4itrun",
-    "email": "billoneta@proto.me"
+    "email": "tsx@billoneta.xyz"
   },
   "license": "MIT",
   "bugs": {
@@ -35,7 +35,7 @@
     "electron-builder": "^25.1.7",
     "electron-rebuild": "^3.2.9"
   },
-  "packageManager": "pnpm@10.9.0",
+  "packageManager": "pnpm@10.11.0",
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",

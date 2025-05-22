@@ -1,25 +1,26 @@
+# Root-level files
 package*
 pnpm*
-tsconfig*
-jsconfig*
-.swcrc
+turbo*
 
-# Docs and markdown files
-*.md
-*.mdx
-
-# Common directories to ignore
+# Node.js
 node_modules/**
+
+# Build output
 dist/**
 build/**
-coverage/**
 .next/**
-.git/
-.vscode/
-.idea/
 
-# Generated and binary files
+# Test coverage
+coverage/**
+
+# Editor/IDE settings
+.git/**
+.vscode/**
+.idea/**
+
+# Minified files
 *.min.*
 
-# Custom
-turbo*
+# Misc
+CHANGELOG.md

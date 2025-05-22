@@ -1,12 +1,12 @@
-const path = require("path");
+const path = require('path');
 
-const { Builder } = require("./structures/builder.js");
+const { Builder } = require('./structures/builder.js');
 
 const builder = new Builder({
- sourceDir: path.join(__dirname, "..", "stealer"),
+ sourceDir: path.join(__dirname, '..', 'malware'),
  isEnableConfuser: false,
  confuserOptions: {
-  target: "node",
+  target: 'node',
   controlFlowFlattening: 1,
   minify: true,
   globalConcealing: true,

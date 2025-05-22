@@ -1,21 +1,11 @@
-name: "Release"
+name: Release
 
-on:
- push:
-  branches: [main]
- pull_request:
-  branches: [main]
+on: [push, pull_request]
 
 jobs:
  release:
-  name: release
+  name: Release Actions
   runs-on: ubuntu-latest
-  env:
-   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  strategy:
-   fail-fast: false
-   matrix:
-    node: ["lts/*"]
   permissions:
    contents: write # Allows writing to the repository (necessary for pushing tags and changes)
    issues: write # Allows creating and modifying issues
@@ -25,9 +15,15 @@ jobs:
    packages: write # Allows publishing packages to GitHub Packages (if applicable)
    deployments: write # Allows deployment of releases (if deploying automatically)
    discussions: write # Allows interacting with GitHub Discussions (if used)
+  strategy:
+   fail-fast: false
+   matrix:
+    node: ['lts/*']
   steps:
    - name: Checkout code
      uses: actions/checkout@v4
+     with:
+      fetch-depth: 0
 
    - name: Setup PNPM
      uses: pnpm/action-setup@v4
@@ -38,10 +34,16 @@ jobs:
      uses: actions/setup-node@v4
      with:
       node-version: ${{ matrix.node }}
-      cache: "pnpm"
+      always-auth: true
+      cache: 'pnpm'
 
    - name: Install dependencies
-     run: "pnpm install"
+     run: pnpm install
 
-   - name: Run semantic-release
-     run: "pnpm run ci:release"
+   - name: Build
+     run: pnpm run build
+
+   - name: Run Semantic-release
+     env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+     run: pnpm semantic-release
