@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.9`](https://github.com/k4itrun/wish/compare/v1.0.8...v1.0.9) (2025-05-23)
+
+
+### ♻ Code Refactoring
+
+* README and CONTRIBUTING files; add CodeQL analysis workflow and fix minor code formatting in hardware.js ([d6e9a06](https://github.com/k4itrun/wish/commit/d6e9a06))
+
 ## [`1.0.8`](https://github.com/k4itrun/wish/compare/v1.0.7...v1.0.8) (2025-05-23)
 
 
