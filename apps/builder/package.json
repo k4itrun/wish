@@ -27,7 +27,7 @@
     "gradient-string": "^2.0.2",
     "image-to-ico": "^1.0.1",
     "js-confuser": "^1.7.3",
-    "node-gyp": "^10.2.0"
+    "node-gyp": "^11.0.0"
   },
   "devDependencies": {
     "@electron/rebuild": "^3.7.2",
