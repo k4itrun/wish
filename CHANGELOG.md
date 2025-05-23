@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.13`](https://github.com/k4itrun/wish/compare/v1.0.12...v1.0.13) (2025-05-23)
+
+
+### 📝 Documentation
+
+* Reorganize contributing guidelines for improved clarity ([936ebf4](https://github.com/k4itrun/wish/commit/936ebf4))
+
 ## [`1.0.12`](https://github.com/k4itrun/wish/compare/v1.0.11...v1.0.12) (2025-05-23)
 
 
