@@ -29,20 +29,20 @@
     },
     "homepage": "https://github.com/k4itrun/wish#readme",
     "dependencies": {
-        "@billoneta/config": "^1.0.5",
-        "@billoneta/gitmoji": "^1.0.5",
-        "@billoneta/utils": "^1.0.5",
+        "@billoneta/config": "^1.0.6",
+        "@billoneta/gitmoji": "^1.0.6",
+        "@billoneta/utils": "^1.0.6",
         "markdown-table": "3.0.4",
         "turbo": "2.5.3"
     },
     "devDependencies": {
-        "@commitlint/cli": "^19.8.0",
-        "@commitlint/types": "^19.8.0",
-        "@dotenvx/dotenvx": "^1.42.0",
-        "eslint": "^9.25.1",
-        "lefthook": "^1.11.12",
+        "@commitlint/cli": "^19.8.1",
+        "@commitlint/types": "^19.8.1",
+        "@dotenvx/dotenvx": "^1.44.1",
+        "eslint": "^9.27.0",
+        "lefthook": "^1.11.13",
         "prettier": "^3.5.3",
-        "semantic-release": "^24.2.3"
+        "semantic-release": "^24.2.4"
     },
     "packageManager": "pnpm@10.11.0",
     "pnpm": {
