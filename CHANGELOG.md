@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.10`](https://github.com/k4itrun/wish/compare/v1.0.9...v1.0.10) (2025-05-23)
+
+
+### 🔧 Chores
+
+* **Deps**: Update semantic-release to version 24.2.5 ([d6e42cf](https://github.com/k4itrun/wish/commit/d6e42cf))
+
 ## [`1.0.9`](https://github.com/k4itrun/wish/compare/v1.0.8...v1.0.9) (2025-05-23)
 
 
