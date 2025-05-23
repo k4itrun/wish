@@ -26,7 +26,7 @@
     "chalk-animation": "^1.6.0",
     "gradient-string": "^2.0.2",
     "image-to-ico": "^1.0.1",
-    "js-confuser": "^1.7.3",
+    "js-confuser": "^2.0.0",
     "node-gyp": "^11.0.0"
   },
   "devDependencies": {
