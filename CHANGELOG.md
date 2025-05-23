@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.6`](https://github.com/k4itrun/wish/compare/v1.0.5...v1.0.6) (2025-05-23)
+
+
+### ♻ Code Refactoring
+
+* Code structure for improved readability and maintainability ([5de7270](https://github.com/k4itrun/wish/commit/5de7270))
+
 ## [`1.0.5`](https://github.com/k4itrun/wish/compare/v1.0.4...v1.0.5) (2025-05-23)
 
 
