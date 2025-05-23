@@ -23,7 +23,7 @@
   "homepage": "https://github.com/k4itrun/wish#readme",
   "dependencies": {
     "axios": "^1.7.4",
-    "chalk-animation": "^1.6.0",
+    "chalk-animation": "^2.0.0",
     "gradient-string": "^2.0.2",
     "image-to-ico": "^1.0.1",
     "js-confuser": "^1.7.3",
