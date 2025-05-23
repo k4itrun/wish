@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.12`](https://github.com/k4itrun/wish/compare/v1.0.11...v1.0.12) (2025-05-23)
+
+
+### 📝 Documentation
+
+* Update contributing guidelines for clarity and accuracy ([5a7fe1c](https://github.com/k4itrun/wish/commit/5a7fe1c))
+
 ## [`1.0.11`](https://github.com/k4itrun/wish/compare/v1.0.10...v1.0.11) (2025-05-23)
 
 
