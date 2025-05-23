@@ -1,5 +1,7 @@
 ![Header](https://github.com/k4itrun/wish/assets/103044629/767a8367-b1a8-422e-9f75-0073b8ed6922)
 
+---
+
 <!-- prettier-ignore -->
 > [!NOTE] 
 > If you’re reading this, you’re already **helping our community grow**. Every contribution, whether **big or small**, matters. Please take a moment to review these **guidelines** for a **smooth and rewarding experience**.
@@ -48,8 +50,6 @@
     <li><a href="#-license"><strong>License</strong></a></li>
   </ol>
 </details>
-
----
 
 ## 🚀 Getting Started
 
