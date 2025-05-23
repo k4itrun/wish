@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.11`](https://github.com/k4itrun/wish/compare/v1.0.10...v1.0.11) (2025-05-23)
+
+
+### 🔧 Chores
+
+* **Deps**: Update electron to version 36.3.1 ([2b182f2](https://github.com/k4itrun/wish/commit/2b182f2))
+
 ## [`1.0.10`](https://github.com/k4itrun/wish/compare/v1.0.9...v1.0.10) (2025-05-23)
 
 
