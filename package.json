@@ -31,14 +31,11 @@
     "dependencies": {
         "@billoneta/config": "^1.0.6",
         "@billoneta/gitmoji": "^1.0.6",
-        "@billoneta/utils": "^1.0.6",
-        "markdown-table": "3.0.4",
-        "turbo": "2.5.3"
+        "@billoneta/utils": "^1.0.6"
     },
     "devDependencies": {
         "@commitlint/cli": "^19.8.1",
         "@commitlint/types": "^19.8.1",
-        "@dotenvx/dotenvx": "^1.44.1",
         "eslint": "^9.27.0",
         "lefthook": "^1.11.13",
         "prettier": "^3.5.3",
