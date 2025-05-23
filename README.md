@@ -268,11 +268,11 @@ You can also support the development of this software through a donation, helpin
 
 ## Contact
 
-For any inquiries or support, you can reach out via [billoneta@proto.me](mailto:billoneta@proto.me) or join our [Discord Server](https://discord.gg/A6Vu7gYE).
+For any inquiries or support, you can reach out via <tsx@billoneta.xyz> or join our [Discord Server](https://discord.gg/A6Vu7gYE).
 
 ## License
 
-This software is licensed under the [MIT License](LICENSE).
+This software is licensed under the [MIT License](license.md).
 
 ## Disclaimer
 
