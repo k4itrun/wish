@@ -42,7 +42,7 @@
         "eslint": "^9.27.0",
         "lefthook": "^1.11.13",
         "prettier": "^3.5.3",
-        "semantic-release": "^24.2.4"
+        "semantic-release": "^24.2.5"
     },
     "packageManager": "pnpm@10.11.0",
     "pnpm": {
