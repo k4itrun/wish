@@ -30,7 +30,7 @@
     "node-gyp": "^11.0.0"
   },
   "devDependencies": {
-    "@electron/rebuild": "^3.7.2",
+    "@electron/rebuild": "^4.0.0",
     "electron": "^32.1.2",
     "electron-builder": "^25.1.7",
     "electron-rebuild": "^3.2.9"
