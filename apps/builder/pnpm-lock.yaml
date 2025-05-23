@@ -32,7 +32,7 @@ importers:
         version: 4.0.1
       electron:
         specifier: ^36.3.0
-        version: 36.3.0
+        version: 36.3.1
       electron-builder:
         specifier: ^26.0.12
         version: 26.0.12(electron-builder-squirrel-windows@25.1.8)
@@ -860,8 +860,8 @@ packages:
     deprecated: Please use @electron/rebuild moving forward.  There is no API change, just a package name change
     hasBin: true
 
-  electron@36.3.0:
-    resolution: {integrity: sha512-xk5AJtjxfFRAmehcChWSz/duxI+bJiUCIkH2IX2z8K1SyGsWdpqg+NoJ20JRQ6dpSJw89KXH6juESp8nSyBexA==}
+  electron@36.3.1:
+    resolution: {integrity: sha512-LeOZ+tVahmctHaAssLCGRRUa2SAO09GXua3pKdG+WzkbSDMh+3iOPONNVPTqGp8HlWnzGj4r6mhsIbM2RgH+eQ==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -3376,7 +3376,7 @@ snapshots:
       - bluebird
       - supports-color
 
-  electron@36.3.0:
+  electron@36.3.1:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 22.15.21
