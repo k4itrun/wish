@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.15`](https://github.com/k4itrun/wish/compare/v1.0.14...v1.0.15) (2025-05-24)
+
+
+### 📝 Documentation
+
+* Update CONTRIBUTING.md ([cd499ce](https://github.com/k4itrun/wish/commit/cd499ce))
+
 ## [`1.0.14`](https://github.com/k4itrun/wish/compare/v1.0.13...v1.0.14) (2025-05-24)
 
 
