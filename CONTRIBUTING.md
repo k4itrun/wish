@@ -118,8 +118,8 @@ git pull upstream main
 > [!IMPORTANT] 
 > **Before submitting your work:**
 >
-> - **Check the project as many times as necessary and make sure that everything is working.**
-> - **Documentation is updated for new features or major changes.**
+> - Check the project as many times as necessary and make sure that everything is working.
+> - Documentation is updated for new features or major changes.
 
 <!-- prettier-ignore-end -->
 
@@ -149,8 +149,8 @@ For full details on what your PR should include, (see [Pull Request Checklist](#
 > [!IMPORTANT] 
 > **Before submitting your work:**
 >
-> - **Check the project as many times as necessary and make sure that everything is working.**
-> - **Documentation is updated for new features or major changes.**
+> - Check the project as many times as necessary and make sure that everything is working.
+> - Documentation is updated for new features or major changes.
 
 <!-- prettier-ignore-end -->
 
@@ -215,12 +215,12 @@ If your code contains **non-obvious logic or important decisions**, add comments
 
 Before submitting your pull request, please ensure you:
 
-- [ ] **Describe your changes clearly** in the PR description.
-- [ ] **Reference related issues** if applicable (e.g., "**Closes #123**").
-- [ ] **Have tested your changes** and ensured existing tests pass.
-- [ ] **Added new tests** for new features or bug fixes (if appropriate).
-- [ ] **Updated documentation** as needed.
-- [ ] **Kept the branch up-to-date** with the latest main branch (`git pull upstream main`).
+- [ ] Described your changes clearly in this PR.
+- [ ] Referenced related issues if applicable (e.g., `Closes #123`).
+- [ ] Tested your changes and ensured existing tests pass.
+- [ ] Added new tests for new features or bug fixes (if appropriate).
+- [ ] Updated documentation as needed.
+- [ ] Kept your branch up-to-date with the latest `main` (`git pull upstream main`).
 
 ### 📝 Example Pull Request Structure
 
@@ -239,15 +239,15 @@ Include any setup, commands, or test scenarios needed.
 
 #### Related Issues
 
+Link any related issues, discussions, or pull requests.  
+Use keywords like `Closes`, `Fixes`, or `Resolves` to automatically close them when merging.
+
 <!-- prettier-ignore -->
 > [!NOTE]
 > **Example:**  
 > Closes [#42](https://www.youtube.com/shorts/OdEKu4WXs5c)
 
 <!-- prettier-ignore-end -->
-
-Link any related issues, discussions, or pull requests.  
-Use keywords like `Closes`, `Fixes`, or `Resolves` to automatically close them when merging.
 
 #### Additional Notes
 
