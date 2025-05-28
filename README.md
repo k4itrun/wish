@@ -218,7 +218,7 @@ You can also support the development of this software by making a **Donation**. 
 
 ## 📬 Contact
 
-If you have any **Questions** or need **Help**, feel free to email me at <tsx@billoneta.xyz> or join the **[Discord server](https://discord.gg/CMNd45AXvD)**.
+If you have any **Questions** or need **Help**, feel free to email me at [tsx@billoneta.xyz](mailto:tsx@billoneta.xyz) or better yet, start a discussion in our **[Github Community](../../discussions)**.
 
 ## 📋 License
 
