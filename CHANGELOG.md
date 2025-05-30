@@ -21,6 +21,13 @@
 
 ---
 
+## [`1.0.17`](https://github.com/k4itrun/wish/compare/v1.0.16...v1.0.17) (2025-05-30)
+
+
+### ♻ Code Refactoring
+
+* Some not so important changes ([8aa949d](https://github.com/k4itrun/wish/commit/8aa949d))
+
 ## [`1.0.16`](https://github.com/k4itrun/wish/compare/v1.0.15...v1.0.16) (2025-05-28)
 
 
