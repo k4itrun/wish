@@ -1,47 +1,53 @@
-Logs
+# Editors
+.vscode/
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+.tern-port
+
+# Dependency folders https://docs.npmjs.com/cli/v9/configuring-npm/package-json#files
+node_modules/
+bower_components/
+jspm_packages/
+.pnpm-store/
+
+# Logs
 *.log
-logs/*
+logs/
 lerna-debug.log*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Environment variables
+# Environment variables https://12factor.net/config
 .env
 .env.*
-!.env.example
+!example.env
 
-# Editors
-.idea/
-.tern-port
-.vscode/*
-!.vscode/settings.json
-!.vscode/extensions.json
+# Configs
+**/*-local.json
 
-# Build output
+# Build output https://nextjs.org/docs/basic-features/static-file-serving#ignored-files
 dist/
 build/
-lib/
 .next/
 .nuxt/
 .vuepress/dist/
 .serverless/
 .out/
-public/
 .contentlayer/
+
+# TypeScript cache and types https://www.typescriptlang.org/tsconfig#incremental
 next*.d.ts
+!next-compose-plugins.d.ts
+*.tsbuildinfo
+*.type-check-cache.json
+
+# Git hooks https://typicode.github.io/husky/#/
 .husky/
 
-# Coverage and test outputs
-coverage/
-.nyc_output/
-*.lcov
-.vitest/
-test-results/
-*.spec.ts.snap
-
-# Cache
+# Cache and temporary files https://eslint.org/docs/latest/user-guide/configuring/cache
 .cache/
 .rpt2_cache/
 .rts2_cache_*/
@@ -49,28 +55,24 @@ test-results/
 .eslintcache
 .prettier-cache
 .stylelintcache
-*.tsbuildinfo
-*.type-check-cache.json
-.pnpm-debug.log*
 
-# Diagnostic reports
+# Node.js diagnostic report files (https://nodejs.org/api/report.html)
 report.*.json
 
-# Dependency directories
-node_modules/
-bower_components/
-jspm_packages/
-.pnpm-store/
+# Coverage and test reports https://jestjs.io/docs/configuration#coveragepathignorepatterns-arraystring
+coverage/
+.nyc_output/
+*.lcov
+.vitest/
+test-results/
+*.spec.ts.snap
 
-# Package manager state
-.yarn-integrity
-.pnp.*
-.yarn/
-
-# Misc
+# System and OS files
 .DS_Store
 .lock-wscript
 Thumbs.db
+
+# Backup and temporary files
 *.bak
 *.orig
 *.tmp
@@ -80,52 +82,38 @@ Thumbs.db
 *.seed
 *.swp
 *.swo
+*.old
 
-# Local services
+# Databases and dumps
+dump/
 .dynamodb/
-
-# SQLite
 *.sqlite
 *.sqlite3
 *.db
 *.db3
 *.sql
-*.bak
 *.sqlite-wal
 *.sqlite-shm
-
-# MongoDB
-dump/
 *.bson
 *.ns
-
-# PostgreSQL / MySQL dumps
-*.sql
 *.sql.gz
 *.pgsql
 *.mysql
 
-# Firebase local emulators
+# Firebase local emulator files https://firebase.google.com/docs/emulator-suite
 firebase-debug.log
 firebase-export.json
 .firestore/
 
-# Prisma SQLite local
+# Prisma (SQLite) local files https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient#working-with-sqlite
 prisma/dev.db
 prisma/*.sqlite
 prisma/*.sqlite3
 
-# Other backup files
-*.bak
-*.tmp
-*.old
-*.swp
-
-# Docker volumes (if using named volumes and storing db stuff)
+# Docker volumes (for named volumes with db data) https://docs.docker.com/storage/volumes/
 volumes/
 
-# Custom
-*[Cc]ommit*.md
-*[Cc]hange*.md
-**/\[id\]/
-**/\[db\]/
+# Custom ignored files
+changelog*
+storage*
+tokens*
