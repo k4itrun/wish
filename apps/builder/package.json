@@ -35,7 +35,7 @@
     "electron-builder": "^26.0.12",
     "electron-rebuild": "^3.2.9"
   },
-  "packageManager": "pnpm@10.11.1",
+  "packageManager": "pnpm@10.12.1",
   "pnpm": {
     "onlyBuiltDependencies": [
       "electron",
